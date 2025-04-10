@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using IntroSE.Kanban.Backend.Buiesness_layer;
 
 namespace IntroSE.Kanban.Backend.ServiceLayer
 {
-    class TaskServices
+    public class TaskServices
     {
         private UserFacade uFacade;
 
@@ -26,13 +27,13 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             throw new NotImplementedException();
         }
 
-        public Response<TaskSL> EditTask(DateTime newDeadline, string newTitle, string newDescription, string bName, string idtask)
+        public Response<TaskSL> EditTask(DateTime newDeadline, string newTitle, string newDescription, long idtask, string bName,string email)
         {
             throw new NotImplementedException();
         }
 
 
-        public void AdvanceTask(string email, string boardName, string idtask)
+        public Response<string> AdvanceTask(string email, string boardName, long idtask)
         {
             throw new NotImplementedException();
         }

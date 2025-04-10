@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace IntroSE.Kanban.Backend.Buiesness_layer
 {
-    class UserFacade
+    public class UserFacade
     {
         private Dictionary<string, UserBL> users;
         private AuthenticationFacade aFacade;
@@ -25,7 +25,7 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
             throw new NotImplementedException();
         }
 
-        public UserBL Register(string email, string password) 
+        public UserBL Register(string email, string password)
         {
             throw new NotImplementedException();
         }

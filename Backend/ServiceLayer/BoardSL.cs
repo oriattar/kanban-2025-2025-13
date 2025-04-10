@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace IntroSE.Kanban.Backend.ServiceLayer
 {
-    class BoardSL
+    public class BoardSL
     {
         public string name;
         public int limit;

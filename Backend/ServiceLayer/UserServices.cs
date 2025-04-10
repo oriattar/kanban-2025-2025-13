@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using IntroSE.Kanban.Backend.Buiesness_layer;
+
 
 namespace IntroSE.Kanban.Backend.ServiceLayer
 {
-    class UserServices
+    public class UserServices
     {
         private UserFacade uFacade;
 

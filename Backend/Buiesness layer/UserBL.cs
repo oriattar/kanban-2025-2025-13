@@ -7,7 +7,7 @@ using IntroSE.Kanban.Backend.ServiceLayer;
 
 namespace IntroSE.Kanban.Backend.Buiesness_layer
 {
-    class UserBL
+    public class UserBL
     {
         private string email;
         private string password;

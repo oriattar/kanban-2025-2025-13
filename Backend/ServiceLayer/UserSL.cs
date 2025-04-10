@@ -4,25 +4,24 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Schema;
+using IntroSE.Kanban.Backend.Buiesness_layer;
 
 namespace IntroSE.Kanban.Backend.ServiceLayer
 {
-    class UserSL
+    public class UserSL
     {
-        public string email;
-        public List<BoardSL> boards;
+        private string email;
+        private List<BoardSL> boards;
 
-        public UserSL() { }
+        public string Email { get => email; set => email = value; }
+        public List<BoardSL> Boards { get => boards; set => boards = value; }
 
-        public string Email
+        public UserSL(UserBL u)
         {
-            get { return this.email; }
-            set { this.email = value; }
+            throw new NotImplementedException();
         }
-        public List<BoardSL> Boards
-        {
-            get { return this.boards; }
-            set { this.boards = value; }
-        }
+
+        
+        
     }
 }

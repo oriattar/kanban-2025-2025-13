@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace IntroSE.Kanban.Backend.Buiesness_layer
 {
-    class AuthenticationFacade
+    public class AuthenticationFacade
     {
         private Dictionary<string, bool> uStatus;
 
