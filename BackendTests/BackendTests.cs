@@ -6,6 +6,8 @@ using IntroSE.Kanban.Backend.ServiceLayer;
 using IntroSE.Kanban.Backend.Buiesness_layer;
 using System.Threading.Tasks;
 using System;
+using log4net.Config;
+using log4net;
 
 public class Test
 {
@@ -17,8 +19,12 @@ public class Test
 
     }
 
-    public void main()
+    public static void Main(string[] args)
+
     {
+        var logRepo = LogManager.GetRepository(Assembly.GetEntryAssembly());
+        XmlConfigurator.Configure(logRepo, new FileInfo("log4net.config")); //inits the logger
+
         Test tester = new Test();
     }
 
