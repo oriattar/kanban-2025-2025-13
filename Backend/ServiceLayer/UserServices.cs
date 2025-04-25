@@ -12,6 +12,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
     {
         private UserFacade uFacade;
 
+        /// <summary>
+        /// Constructor for the userFacade
+        /// </summary>
+        /// <param name="uFacade"></param>
         public UserServices(UserFacade uFacade)
         {
             this.uFacade = uFacade;

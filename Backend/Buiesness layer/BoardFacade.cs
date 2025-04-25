@@ -4,30 +4,44 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using IntroSE.Kanban.Backend.ServiceLayer;
+using log4net;
 
 namespace IntroSE.Kanban.Backend.Buiesness_layer
 {
-    public class BoardListBL
+    public class BoardFacade
     {
-        private Dictionary<string, BoardBL> boards;
+        private Dictionary<string, List<BoardBL>> boards;
         private AuthenticationFacade aFacade;
 
-        public BoardListBL(Dictionary<string, BoardBL> boards, AuthenticationFacade aFacade)
+        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
+        public BoardFacade(AuthenticationFacade aFacade)
         {
-            this.boards = boards;
+            this.boards  = new Dictionary<string, List<BoardBL>>();
             this.aFacade = aFacade;
         }
-
-        public Dictionary<string, BoardBL> Boards { get => boards; set => boards = value; }
-        internal AuthenticationFacade AFacade { get => aFacade; set => aFacade = value; }
 
         public string DeleteBoard(string nameboard, string email)
         {
             throw new NotImplementedException();
         }
+        /// <summary>
+        /// Registers a user's boardlist if one dosnt exist for the user in the facade
+        /// </summary>
+        /// <param name="b"></param>
+        /// <exception cref="Exception"></exception>
+        public void RegisterInFacade(UserBL user)
+        {
+            if (!this.boards.ContainsKey(user.Email))
+            {
+                this.boards.Add(user.Email,user.Boards);
+                Log.Info("A list was added to the user:" + user.Email + " in BOARDFACADE");
+            }
+        }
 
+        
 
-        public void advanceTasl(string idtask, string boardname)
+        public void advanceTasK(string idtask, string boardname)
         {
             throw new NotImplementedException();
         }

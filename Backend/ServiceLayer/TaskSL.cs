@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using IntroSE.Kanban.Backend.Buiesness_layer;
 
 namespace IntroSE.Kanban.Backend.ServiceLayer
 {
@@ -27,6 +28,15 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             this.Deadline = deadline;
             this.Title = title;
             this.Description = description;
+        }
+        
+        public TaskSL(TaskBL t)
+        {
+            this.id = t.Id;
+            this.creationtime = t.Creationtime;
+            this.deadline = t.Deadline;
+            this.title = t.Title;
+            this.description = t.Description;
         }
     }
 }

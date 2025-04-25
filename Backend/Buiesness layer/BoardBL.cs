@@ -10,24 +10,29 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
     {
         private string name;
         private int intpercol;
-        private List<TaskBL> backing;
+        private List<TaskBL> backlog;
         private List<TaskBL> ongoing;
         private List<TaskBL> done;
         private long nextTaskId;
 
-        public BoardBL(string name, int intpercol, List<TaskBL> backing, List<TaskBL> ongoing, List<TaskBL> done, long nextTaskId)
+        /// <summary>
+        /// Board BL constructor, gets name of board, and int limit to set the fields
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="intpercol"></param>
+        public BoardBL(string name, int intpercol)
         {
             this.name = name;
             this.intpercol = intpercol;
-            this.backing = backing;
-            this.ongoing = ongoing;
-            this.done = done;
-            this.nextTaskId = nextTaskId;
+            this.backlog = new List<TaskBL>();
+            this.ongoing = new List<TaskBL>();
+            this.done = new List<TaskBL>();
+            this.nextTaskId = 0;
         }
 
         public string Name { get => name; set => name = value; }
         public int Intpercol { get => intpercol; set => intpercol = value; }
-        internal List<TaskBL> Backing { get => backing; set => backing = value; }
+        internal List<TaskBL> Backlog { get => backlog; set => backlog = value; }
         internal List<TaskBL> Ongoing { get => ongoing; set => ongoing = value; }
         internal List<TaskBL> Done { get => done; set => done = value; }
         public long NextTaskId { get => nextTaskId; set => nextTaskId = value; }
