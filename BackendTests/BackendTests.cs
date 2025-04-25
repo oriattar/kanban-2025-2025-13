@@ -16,6 +16,7 @@ public class Test
     public Test()
     {
         this.sf = new ServiceFactory();
+        
 
     }
 
@@ -243,7 +244,7 @@ public class Test
     }
     public bool testBoardCreation()
     {
-        Response<BoardSL> res = this.sf.bs.CreateBoard("oriatta@post.bgu.ac.il", "Test1");//expecting success
+        Response<BoardSL> res = this.sf.bs.CreateBoard("oriatta@post.bgu.ac.il", "Test1",10);//expecting success
         if (res.errorMsg != null)
         {
             Console.WriteLine(res.errorMsg);
@@ -251,7 +252,7 @@ public class Test
         }
 
 
-        Response<BoardSL> res2 = this.sf.bs.CreateBoard("oriatta@post.bgu.ac.il", "Test1"); //expected error due to duplication
+        Response<BoardSL> res2 = this.sf.bs.CreateBoard("oriatta@post.bgu.ac.il", "Test1",10); //expected error due to duplication
         if (res2.errorMsg == null)
         {
             Console.WriteLine("Error - a duplicate board was created for the user.");
@@ -259,7 +260,7 @@ public class Test
         }
 
 
-        Response<BoardSL> res3 = this.sf.bs.CreateBoard("oriattar12@post.bgu.ac.il", "Test1");//expcted success
+        Response<BoardSL> res3 = this.sf.bs.CreateBoard("oriattar12@post.bgu.ac.il", "Test1",10);//expcted success
         if (res3.errorMsg != null)
         {
             Console.WriteLine(res.errorMsg);
@@ -267,7 +268,7 @@ public class Test
         }
 
 
-        Response<BoardSL> res4 = this.sf.bs.CreateBoard("o@post.bgu.ac.il", "Test1");// trying to create a board on a non existant user
+        Response<BoardSL> res4 = this.sf.bs.CreateBoard("o@post.bgu.ac.il", "Test1",10);// trying to create a board on a non existant user
         if (res2.errorMsg == null)
         {
             Console.WriteLine("Error - a  board was created for a non existant user.");
@@ -284,7 +285,7 @@ public class Test
      */
     public bool testBoardDeletion()
     {
-        Response<BoardSL> res = this.sf.bs.CreateBoard("oriatta@post.bgu.ac.il", "Test1"); // creating a board to test
+        Response<BoardSL> res = this.sf.bs.CreateBoard("oriatta@post.bgu.ac.il", "Test1",10); // creating a board to test
         if (res.errorMsg != null)
         {
             Console.WriteLine(res.errorMsg);
@@ -322,14 +323,14 @@ public class Test
      */
     public bool testLimitingColls()
     {
-        Response<BoardSL> res = this.sf.bs.CreateBoard("oriatta@post.bgu.ac.il", "Test1");
+        Response<BoardSL> res = this.sf.bs.CreateBoard("oriatta@post.bgu.ac.il", "Test1",10);
         if (res.errorMsg != null)
         {
             Console.WriteLine(res.errorMsg);
         }
 
         BoardSL b = res.returnValue;
-        if (b.limit != -1) //marking -1 as no limit
+        if (b.intpercol != -1) //marking -1 as no limit
         {
             Console.WriteLine("Defualt limit was set wrongly");
             return false; //ensuring no inital limit was set
@@ -361,7 +362,7 @@ public class Test
      */
     public bool GetInProgressList()
     {
-        Response<BoardSL> res = this.sf.bs.CreateBoard("oriatta@post.bgu.ac.il", "Test1");
+        Response<BoardSL> res = this.sf.bs.CreateBoard("oriatta@post.bgu.ac.il", "Test1",10);
         if (res.errorMsg != null)
         {
             Console.WriteLine(res.errorMsg);
@@ -369,7 +370,7 @@ public class Test
 
         BoardSL b1 = res.returnValue;
 
-        res = this.sf.bs.CreateBoard("oriatta@post.bgu.ac.il", "Test2");
+        res = this.sf.bs.CreateBoard("oriatta@post.bgu.ac.il", "Test2",10);
         if (res.errorMsg != null)
         {
             Console.WriteLine(res.errorMsg);
@@ -432,7 +433,7 @@ public class Test
     public void createTestBoard()
     {
         this.runBeforeBoardTest();
-        Response<BoardSL> res = this.sf.bs.CreateBoard("oriatta@post.bgu.ac.il", "test");
+        Response<BoardSL> res = this.sf.bs.CreateBoard("oriatta@post.bgu.ac.il", "test",10);
     }
 
     /// <summary>

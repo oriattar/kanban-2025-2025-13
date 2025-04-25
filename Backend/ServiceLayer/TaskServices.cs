@@ -11,15 +11,19 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
     public class TaskServices
     {
         private UserFacade uFacade;
+        private BoardFacade bFacade;
 
-        public TaskServices(UserFacade uFacade)
+        /// <summary>
+        /// Constructor to the TaskServices
+        /// </summary>
+        /// <param name="uFacade"></param>
+        /// <param name="boardFacade"></param>
+        public TaskServices(UserFacade uFacade, BoardFacade boardFacade)
         {
             this.uFacade = uFacade;
+            this.bFacade = boardFacade;
+
         }
-
-        public UserFacade UFacade { get => uFacade; set => uFacade = value; }
-
-
 
 
         public Response<TaskSL> CreateTask(DateTime deadline,string title,string description,string bName,string email)
