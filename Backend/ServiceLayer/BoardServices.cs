@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using IntroSE.Kanban.Backend.Buiesness_layer;
 using log4net;
@@ -26,40 +27,145 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <param name="boardName"></param>
         /// <param name="limit"></param>
         /// <returns></returns>
-        public Response<BoardSL> CreateBoard(string email, string boardName, int limit)
+        public string CreateBoard(string email, string boardName)
         {
-            Response<BoardSL> res = null;
+            Response<string> res = null;
             try
             {
+                this.uFacade.CreateBoard(boardName, email); // creates the board
                 bFacade.RegisterInFacade(uFacade.GetUserBL(email)); // adds the list in the board facade if user isnt registerd
-                BoardBL board = this.uFacade.CreateBoard(boardName, email,limit); // creates the board
-                res = new Response<BoardSL>(null, new BoardSL(board));
+                res = new Response<string>(null, null);
             }
             catch (Exception ex)
             {
-                res = new Response<BoardSL>(ex.Message,null);
+                res = new Response<string>(ex.Message,null);
                 Log.Error("Error in creating board BOARDSERVICES:" + ex.Message);
             }
-            return res;
+            return JsonSerializer.Serialize(res); //converts the response to json
         }
 
-        public Response<string> DeleteBoard(string email, string boardName)
+        /// <summary>
+        /// A method that operates the board deletion operation
+        /// returns a response accordingly.
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="boardName"></param>
+        /// <returns></returns>
+        public string DeleteBoard(string email, string boardName)
         {
-            throw new NotImplementedException();
+            Response<string> res = null;
+            try
+            {
+                this.bFacade.DeleteBoard(email, boardName);
+                res = new Response<string>(null,null);
+            }
+            catch (Exception ex)
+            {
+                res = new Response<string>(ex.Message, null);
+                Log.Error("Error in deleting board BOARDSERVICES:" + ex.Message);
+            }
+            return JsonSerializer.Serialize(res);
         }
-
-        public Response<string> SetLimit(string email, string boardName, int limit)
+        /// <summary>
+        /// A method the operates the limit set operation.
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="boardName"></param>
+        /// <param name="limit"></param>
+        /// <param name="collumn"></param>
+        /// <returns></returns>
+        public string SetLimit(string email, string boardName, int limit ,int col)
         {
-            throw new NotImplementedException();
+            Response<string> res = null;
+            try
+            {
+                this.bFacade.Setlimit(email, boardName, col, limit);
+                res = new Response<string>(null, null);
+            }
+            catch (Exception ex)
+            {
+                res = new Response<string> (ex.Message, null);
+                Log.Error("Error in setting column limit BOARDSERVICES:" + ex.Message);
+            }
+            return JsonSerializer.Serialize(res);
+        }
+        /// <summary>
+        /// A method that support the return column limit service.
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="bName"></param>
+        /// <param name="col"></param>
+        /// <returns></returns>
+        public string GetColLimit(string email, string bName, int col)
+        {
+            Response<int> res = null;
+            try
+            {
+                ColumnBL c = this.bFacade.GetColByID(email, bName, col);
+                res = new Response<int>(null, c.TaskLimit);
+            }
+            catch (Exception ex)
+            {
+                res = new Response<int>(ex.Message);
+                Log.Error("Error in finding column limit - BOARDSERVICES:" + ex.Message);
+            }
+            return JsonSerializer.Serialize(res);
         }
 
+        /// <summary>
+        /// A method that supports the get column name featrue
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="bName"></param>
+        /// <param name="col"></param>
+        /// <returns></returns>
+        public string GetColName(string email, string bName, int col)
+        {
+            Response<string> res = null;
+            try
+            {
+                ColumnBL c = this.bFacade.GetColByID(email, bName, col);
+                res = new Response<string>(null, c.Name);
+            }
+            catch (Exception ex)
+            {
+                res = new Response<string>(ex.Message,null);
+                Log.Error("Error in finding column name - BOARDSERVICES:" + ex.Message);
+            }
+            return JsonSerializer.Serialize(res);
+        }
+        /// <summary>
+        /// A method that returns the column tasks,given its ID
+        /// returns as respone of list of TaskSL
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="bName"></param>
+        /// <param name="col"></param>
+        /// <returns></returns>
+        public string GetColTasks(string email, string bName, int col)
+        {
+            Response<List<TaskSL>> res = null;
+            try
+            {
+                ColumnBL c = this.bFacade.GetColByID(email, bName, col);
+                res = new Response<List<TaskSL>>(null,(BoardFacade.ConvertTaskList(c.Tasks))); //converts the collumn taskList to list of TaskListSL
+            }
+            catch (Exception ex)
+            {
+                res = new Response<List<TaskSL>>(ex.Message,null);
+                Log.Error("Error in finding column tasks - BOARDSERVICES:" + ex.Message);
+            }
+            return JsonSerializer.Serialize(res);
+        }
         public Response<List<TaskSL>> GetInProgressList(string email)
         {
             throw new NotImplementedException();
         }
 
-
+        /// <summary>
+        /// A method that returns a taskListSL list from this column
+        /// </summary>
+        /// <returns></returns>
+        
     }
-
-
 }

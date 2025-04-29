@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using System;
 using log4net.Config;
 using log4net;
+using System.Text.Json.Nodes;
+using System.Text.Json;
 
 public class Test
 {
@@ -244,7 +246,7 @@ public class Test
     }
     public bool testBoardCreation()
     {
-        Response<BoardSL> res = this.sf.bs.CreateBoard("oriatta@post.bgu.ac.il", "Test1",10);//expecting success
+        Response<string> res = JsonSerializer.Deserialize <Response<string>> (this.sf.bs.CreateBoard("oriatta@post.bgu.ac.il", "Test1"));//expecting success
         if (res.errorMsg != null)
         {
             Console.WriteLine(res.errorMsg);
@@ -252,7 +254,7 @@ public class Test
         }
 
 
-        Response<BoardSL> res2 = this.sf.bs.CreateBoard("oriatta@post.bgu.ac.il", "Test1",10); //expected error due to duplication
+        Response<string> res2 = JsonSerializer.Deserialize < Response<string>> ((this.sf.bs.CreateBoard("oriatta@post.bgu.ac.il", "Test1"))); //expected error due to duplication
         if (res2.errorMsg == null)
         {
             Console.WriteLine("Error - a duplicate board was created for the user.");
@@ -260,7 +262,7 @@ public class Test
         }
 
 
-        Response<BoardSL> res3 = this.sf.bs.CreateBoard("oriattar12@post.bgu.ac.il", "Test1",10);//expcted success
+        Response<string> res3 = JsonSerializer.Deserialize<Response<string>>(this.sf.bs.CreateBoard("oriattar12@post.bgu.ac.il", "Test1"));//expcted success
         if (res3.errorMsg != null)
         {
             Console.WriteLine(res.errorMsg);
@@ -268,7 +270,7 @@ public class Test
         }
 
 
-        Response<BoardSL> res4 = this.sf.bs.CreateBoard("o@post.bgu.ac.il", "Test1",10);// trying to create a board on a non existant user
+        Response<string> res4 = JsonSerializer.Deserialize<Response<string>>(this.sf.bs.CreateBoard("o@post.bgu.ac.il", "Test1"));// trying to create a board on a non existant user
         if (res2.errorMsg == null)
         {
             Console.WriteLine("Error - a  board was created for a non existant user.");
@@ -285,14 +287,14 @@ public class Test
      */
     public bool testBoardDeletion()
     {
-        Response<BoardSL> res = this.sf.bs.CreateBoard("oriatta@post.bgu.ac.il", "Test1",10); // creating a board to test
+        Response<string> res = JsonSerializer.Deserialize<Response<string>>(this.sf.bs.CreateBoard("oriatta@post.bgu.ac.il", "Test1")); // creating a board to test
         if (res.errorMsg != null)
         {
             Console.WriteLine(res.errorMsg);
         }
 
 
-        Response<string> res1 = this.sf.bs.DeleteBoard("oriatta@post.bgu.ac.il", "Test1"); //expecting a succefull delition
+        Response<string> res1 = JsonSerializer.Deserialize<Response<string>>(this.sf.bs.DeleteBoard("oriatta@post.bgu.ac.il", "Test1")); //expecting a succefull delition
         if (res1.errorMsg != null)
         {
             Console.WriteLine(res.errorMsg);
@@ -300,7 +302,7 @@ public class Test
         }
 
 
-        Response<string> res2 = this.sf.bs.DeleteBoard("oriatta@post.bgu.ac.il", "Test1");//expecting failiure
+        Response<string> res2 = JsonSerializer.Deserialize<Response<string>>(this.sf.bs.DeleteBoard("oriatta@post.bgu.ac.il", "Test1"));//expecting failiure
         if (res.errorMsg == null)
         {
             Console.WriteLine("Error - non existent or already deleted board was successfuly deleted");
@@ -308,7 +310,7 @@ public class Test
         }
 
 
-        Response<string> res3 = this.sf.bs.DeleteBoard("o@post.bgu.ac.il", "Test1");//expectinf failiure
+        Response<string> res3 = JsonSerializer.Deserialize<Response<string>>(this.sf.bs.DeleteBoard("o@post.bgu.ac.il", "Test1"));//expectinf failiure
         if (res3.errorMsg == null) // failure is expceted as email isnt registered
         {
             Console.WriteLine("Error - non existent user's board was successfuly deleted");
@@ -323,22 +325,14 @@ public class Test
      */
     public bool testLimitingColls()
     {
-        Response<BoardSL> res = this.sf.bs.CreateBoard("oriatta@post.bgu.ac.il", "Test1",10);
+        Response<string> res = JsonSerializer.Deserialize<Response<string>>(this.sf.bs.CreateBoard("oriatta@post.bgu.ac.il", "Test1"));
         if (res.errorMsg != null)
         {
             Console.WriteLine(res.errorMsg);
         }
 
-        BoardSL b = res.returnValue;
-        if (b.intpercol != -1) //marking -1 as no limit
-        {
-            Console.WriteLine("Defualt limit was set wrongly");
-            return false; //ensuring no inital limit was set
-        }
-
-
         int limit = 0;
-        Response<string> res2 = this.sf.bs.SetLimit("oriatta@post.bgu.ac.il", "Test1", limit);//expecting failiure
+        Response<string> res2 = JsonSerializer.Deserialize<Response<string>>(this.sf.bs.SetLimit("oriatta@post.bgu.ac.il", "Test1", limit,0));//expecting failiure
         if (res2.errorMsg == null)
         {
             Console.WriteLine("ilegal limiting was succefull");
@@ -347,7 +341,7 @@ public class Test
 
 
         limit = 20;
-        res2 = this.sf.bs.SetLimit("oriatta@post.bgu.ac.il", "Test1", limit);//expecting success
+        res2 = JsonSerializer.Deserialize<Response<string>>(this.sf.bs.SetLimit("oriatta@post.bgu.ac.il", "Test1", limit,0));//expecting success
         if (res2.errorMsg != null)
         {
             Console.WriteLine(res2.errorMsg);
@@ -362,21 +356,21 @@ public class Test
      */
     public bool GetInProgressList()
     {
-        Response<BoardSL> res = this.sf.bs.CreateBoard("oriatta@post.bgu.ac.il", "Test1",10);
+        Response<string> res = JsonSerializer.Deserialize<Response<string>>(this.sf.bs.CreateBoard("oriatta@post.bgu.ac.il", "Test1"));
         if (res.errorMsg != null)
         {
             Console.WriteLine(res.errorMsg);
         }
 
-        BoardSL b1 = res.returnValue;
+        BoardSL b1 = null; //NOT IMPLIMENTED YET
 
-        res = this.sf.bs.CreateBoard("oriatta@post.bgu.ac.il", "Test2",10);
+        res = JsonSerializer.Deserialize<Response<string>>(this.sf.bs.CreateBoard("oriatta@post.bgu.ac.il", "Test2"));
         if (res.errorMsg != null)
         {
             Console.WriteLine(res.errorMsg);
         }
 
-        BoardSL b2 = res.returnValue;
+        BoardSL b2 = null;// NOT IMPLIMENTED YET
 
         //creating temp boards
         DateTime deadline = DateTime.Parse("30/12/2025 10:00:00 AM"); // creating temp deadline
@@ -433,7 +427,7 @@ public class Test
     public void createTestBoard()
     {
         this.runBeforeBoardTest();
-        Response<BoardSL> res = this.sf.bs.CreateBoard("oriatta@post.bgu.ac.il", "test",10);
+        Response<string> res = JsonSerializer.Deserialize<Response<string>>(this.sf.bs.CreateBoard("oriatta@post.bgu.ac.il", "test"));
     }
 
     /// <summary>
