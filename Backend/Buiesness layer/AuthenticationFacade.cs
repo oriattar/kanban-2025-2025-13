@@ -7,7 +7,7 @@ using log4net;
 
 namespace IntroSE.Kanban.Backend.Buiesness_layer
 {
-    public class AuthenticationFacade
+    internal class AuthenticationFacade
     {
         private Dictionary<string, bool> uStatus;
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
@@ -37,6 +37,8 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
 
             return this.uStatus[un];
         }
+
+
 
         /// <summary>
         /// Logging in a registerd user by updating its value in the dict, if user isnt registerd throws exception
