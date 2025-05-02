@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 
 
 namespace IntroSE.Kanban.Backend.ServiceLayer
@@ -49,10 +50,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
     /// </summary>
     public class GradingService
     {
-
+        ServiceFactory sf;
         public GradingService()
         {
-            throw new NotImplementedException();
+            this.sf = new ServiceFactory();
         }
 
 
@@ -100,7 +101,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>An empty response, unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string LimitColumn(string email, string boardName, int columnOrdinal, int limit)
         {
-            throw new NotImplementedException();
+            return sf.bs.SetLimit(email, boardName, limit, columnOrdinal);
         }
 
         /// <summary>
@@ -112,7 +113,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response with the column's limit, unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string GetColumnLimit(string email, string boardName, int columnOrdinal)
         {
-            throw new NotImplementedException();
+            return this.sf.bs.GetColLimit(email, boardName, columnOrdinal);
         }
 
 
@@ -125,7 +126,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response with the column's name, unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string GetColumnName(string email, string boardName, int columnOrdinal)
         {
-            throw new NotImplementedException();
+            return this.sf.bs.GetColName(email, boardName, columnOrdinal);
         }
 
 
@@ -212,7 +213,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response with a list of the column's tasks, unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string GetColumn(string email, string boardName, int columnOrdinal)
         {
-            throw new NotImplementedException();
+            return this.sf.bs.GetColTasks(email, boardName, columnOrdinal);
         }
 
 
@@ -224,7 +225,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>An empty response, unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string CreateBoard(string email, string name)
         {
-            throw new NotImplementedException();
+            return this.sf.bs.CreateBoard(email, name);
         }
 
 
@@ -236,7 +237,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>An empty response, unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string DeleteBoard(string email, string name)
         {
-            throw new NotImplementedException();
+            return this.sf.bs.DeleteBoard(email, name);
         }
 
 

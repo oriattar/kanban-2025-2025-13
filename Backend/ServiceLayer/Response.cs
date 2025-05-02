@@ -14,6 +14,14 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
         public Response() { }
 
+        /// <summary>
+        /// A constructor for respone, with no return value input
+        /// </summary>
+        /// <param name="errorMsg"></param>
+        public Response(string errorMsg)
+        {
+            this.errorMsg = errorMsg;
+        }
         public Response(string errorMsg, T returnValue)
         {
             this.errorMsg = errorMsg;
