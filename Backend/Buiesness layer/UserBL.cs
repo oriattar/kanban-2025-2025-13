@@ -1,20 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using IntroSE.Kanban.Backend.ServiceLayer;
 using log4net;
 
+[assembly: InternalsVisibleTo("UnitTests")]
+
 namespace IntroSE.Kanban.Backend.Buiesness_layer
 {
+
     internal class UserBL
     {
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         private string email;
         private string password;
-        private List<BoardBL> boards;
+        internal List<BoardBL> boards;
 
 
 

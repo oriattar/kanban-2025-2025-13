@@ -94,7 +94,7 @@ namespace UnitTests
             catch (Exception ex)
             {
                 Assert.Pass(ex.Message);
-            }      
+            }
         }
     }
 }

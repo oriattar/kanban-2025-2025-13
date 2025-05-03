@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using IntroSE.Kanban.Backend.Buiesness_layer;
 using log4net;
 
+[assembly: InternalsVisibleTo("UnitTests")]
 
 namespace IntroSE.Kanban.Backend.ServiceLayer
 {
@@ -31,19 +34,19 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <param name="email">The user's email address</param>
         /// <param name="password">The user's password</param>
         /// <returns>A Response containing either the logged-in user or an error message</returns>
-        public Response<UserSL> Login(string email, string password)
+        public string Login(string email, string password)
         {
             try
             {
                 Log.Info($"Attempting to log in user with email: {email}");
                 UserBL user = uFacade.Login(email, password);
                 Log.Info($"User with email {email} logged in successfully.");
-                return new Response<UserSL>(null, new UserSL(user));
+                return JsonSerializer.Serialize(new Response<UserSL>(null, new UserSL(user)));
             }
             catch (Exception ex)
             {
                 Log.Error($"Login failed for user {email}: {ex.Message}");
-                return new Response<UserSL>(ex.Message, null);
+                return JsonSerializer.Serialize(new Response<UserSL>(ex.Message, null));
             }
         }
 
@@ -53,19 +56,19 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// </summary>
         /// <param name="email">The email of the user to log out</param>
         /// <returns>A Response containing either a success message or an error message</returns>
-        public Response<string> Logout(string email)
+        public string Logout(string email)
         {
             try
             {
                 Log.Info($"Attempting to log out user with email: {email}");
                 uFacade.Logout(email);
                 Log.Info($"User with email {email} logged out successfully.");
-                return new Response<string>(null, "Logged out successfully");
+                return JsonSerializer.Serialize(new Response<string>(null, "Logged out successfully"));
             }
             catch (Exception ex)
             {
                 Log.Error($"Logout failed for user {email}: {ex.Message}");
-                return new Response<string>(ex.Message, null);
+                return JsonSerializer.Serialize(new Response<string>(ex.Message, null));
             }
         }
 
@@ -75,19 +78,19 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <param name="email">The email of the new user</param>
         /// <param name="password">The password of the new user</param>
         /// <returns>A Response containing either the registered user or an error message</returns>
-        public Response<UserSL> Register(string email, string password)
+        public string Register(string email, string password)
         {
             try
             {
                 Log.Info($"Attempting to register user with email: {email}");
                 UserBL user = uFacade.Register(email, password);
                 Log.Info($"User with email {email} registered successfully.");
-                return new Response<UserSL>(null, new UserSL(user));
+                return JsonSerializer.Serialize(new Response<UserSL>(null, new UserSL(user)));
             }
             catch (Exception ex)
             {
                 Log.Error($"Registration failed for user {email}: {ex.Message}");
-                return new Response<UserSL>(ex.Message, null);
+                return JsonSerializer.Serialize(new Response<UserSL>(ex.Message, null));
             }
         }
     }

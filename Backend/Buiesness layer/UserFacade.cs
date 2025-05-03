@@ -1,16 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using log4net;
+
+[assembly: InternalsVisibleTo("UnitTests")]
+
 
 namespace IntroSE.Kanban.Backend.Buiesness_layer
 {
     internal class UserFacade
     {
-        private Dictionary<string, UserBL> users;
-        private AuthenticationFacade aFacade;
+        internal Dictionary<string, UserBL> users;
+        internal AuthenticationFacade aFacade;
         
 
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
@@ -25,7 +29,7 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
             this.aFacade = aFacade;
         }
 
-        public UserBL Register(string email, string password) /* NOT FULLY IMPLEMENTED, PARTLY FOR TESTS */
+        public UserBL Register(string email, string password) 
         {
             Log.Info($"Attempting to register user with email: {email}");
 
@@ -84,6 +88,11 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
             return users[email];
         }
 
+
+        /// <summary>
+        /// Logs out the user associated with the given email by delegating to the AuthenticationFacade.
+        /// </summary>
+        /// <param name="email"></param>
         public void Logout(string email)
         {
             this.aFacade.Logout(email);

@@ -7,7 +7,7 @@ using IntroSE.Kanban.Backend.ServiceLayer;
 
 namespace IntroSE.Kanban.Backend.Buiesness_layer
 {
-    public class ColumnBL
+    internal class ColumnBL
     {
         private List<TaskBL> tasks;
         private string name;

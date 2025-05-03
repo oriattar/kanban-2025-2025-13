@@ -1,15 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
 using IntroSE.Kanban.Backend.ServiceLayer;
 using log4net;
 
 namespace IntroSE.Kanban.Backend.Buiesness_layer
 {
-    public class BoardFacade
+    internal class BoardFacade
     {
         private Dictionary<string, List<BoardBL>> boards;
         private AuthenticationFacade aFacade;
@@ -22,7 +18,7 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
         /// <param name="aFacade"></param>
         public BoardFacade(AuthenticationFacade aFacade)
         {
-            this.boards  = new Dictionary<string, List<BoardBL>>();
+            this.boards = new Dictionary<string, List<BoardBL>>();
             this.aFacade = aFacade;
         }
 
@@ -35,7 +31,7 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
         /// <exception cref="Exception"></exception>
         public void DeleteBoard(string email, string bName)
         {
-            if(!this.aFacade.IsLoggedIn(email))
+            if (!this.aFacade.IsLoggedIn(email))
             {
                 Log.Warn("Cant delete a board while not logged in. - BOARDFACADE");
                 throw new Exception("Cant delete a board while not logged in.");
@@ -55,12 +51,12 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
         {
             if (!this.boards.ContainsKey(user.Email))
             {
-                this.boards.Add(user.Email,user.Boards);
+                this.boards.Add(user.Email, user.Boards);
                 Log.Info("A list was added to the user:" + user.Email + " in BOARDFACADE");
             }
         }
 
-        
+
 
         public void advanceTasK(string idtask, string boardname)
         {
@@ -83,14 +79,14 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
         /// <exception cref="Exception"></exception>
         public void Setlimit(string email, string bName, int col, int limit)
         {
-            BoardBL board = this.GetBoard(email,bName);
-            if(limit <-1 || col <0 || col >2) //allows removing the limit aswell
+            BoardBL board = this.GetBoard(email, bName);
+            if (limit < -1 || col < 0 || col > 2) //allows removing the limit aswell
             {
                 Log.Warn("Can access collumn or ileagal limit - BOARDFACADE");
                 throw new Exception("Ileagal collumn number or limit");
             }
 
-            board.setLimit(col,limit);
+            board.setLimit(col, limit);
         }
 
         public TaskSL EditTask(DateTime deadline, string title, string description, string nboard, string idtask)
@@ -104,9 +100,9 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
         /// <param name="name"></param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public BoardBL GetBoard(string email,string name)
+        public BoardBL GetBoard(string email, string name)
         {
-     
+
             if (!this.boards.ContainsKey(email)) // if user is not in the facade
             {
                 Log.Warn("Access to non existent user's board in BOARDFACADE");
@@ -119,13 +115,13 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
                 if (userBoards[i].Name.Equals(name))
                 {
                     return userBoards[i];
-                    
+
                 }
             }
 
-            
-           Log.Info("Cant locate Board:" + name + " in facade - BOARDFACADE");
-           throw new Exception("Cant locate Board:" + name + " in facade");
+
+            Log.Info("Cant locate Board:" + name + " in facade - BOARDFACADE");
+            throw new Exception("Cant locate Board:" + name + " in facade");
         }
         /// <summary>
         /// A method that gets a column details and returns it columnBL object.
@@ -137,10 +133,10 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
         /// The input column task limit, if column is leagal.
         /// </returns>
         /// <exception cref="Exception"></exception>
-        public ColumnBL GetColByID(string email,string bName, int col)
+        public ColumnBL GetColByID(string email, string bName, int col)
         {
-            BoardBL b = this.GetBoard(email,bName);
-            if(col<0 || col>2)
+            BoardBL b = this.GetBoard(email, bName);
+            if (col < 0 || col > 2)
             {
                 Log.Warn("Ileagal column Id accessed - BOARDFACADE");
                 throw new Exception("column ID is ileagal");

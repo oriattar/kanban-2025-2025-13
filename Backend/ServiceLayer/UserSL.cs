@@ -1,18 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Schema;
 using IntroSE.Kanban.Backend.Buiesness_layer;
 
+[assembly: InternalsVisibleTo("UnitTests")]
 
 namespace IntroSE.Kanban.Backend.ServiceLayer
 {
     internal class UserSL
     {
-        private string email;
-        private List<BoardSL> boards;
+        internal string email;
+        internal List<BoardSL> boards;
 
         public string Email { get; set; }
 
