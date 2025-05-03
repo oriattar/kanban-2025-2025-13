@@ -114,21 +114,16 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
         /// </summary>
         /// <param name="name"></param>
         /// <param name="email"></param>
-        /// <param name="limit"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public BoardBL CreateBoard(string name, String email,int limit)
+        public void CreateBoard(string name, String email)
         {
             if (!this.aFacade.IsLoggedIn(email))
             {
-                Log.Warn("Cant create a board while not logged in. - BOARDFACADE");
+                Log.Warn("Cant create a board while not logged in. - USERFACADE");
                 throw new Exception("Cant create a board while not logged in.");
             }
-            if (limit < 0)
-            {
-                Log.Warn("Limit is invalid. - BOARDFACADE");
-                throw new Exception("Limit is invalid");
-            }
+           
 
             UserBL u = this.GetUserBL(email);
             List<BoardBL> userBoards = u.Boards;
@@ -141,12 +136,11 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
                     throw new Exception("Board already exist on User's BoardListBL");
                 }
             }
-            BoardBL b = new BoardBL(name, limit);
+            BoardBL b = new BoardBL(name);
 
             Log.Info("A new board:" + name +" to the user:" + email);
             u.Boards.Add(b);
             
-            return b;
         }
     }
 }

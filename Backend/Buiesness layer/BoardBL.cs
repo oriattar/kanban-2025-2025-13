@@ -9,10 +9,7 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
     public class BoardBL
     {
         private string name;
-        private int intpercol;
-        private List<TaskBL> backlog;
-        private List<TaskBL> ongoing;
-        private List<TaskBL> done;
+        private Dictionary<int, ColumnBL> columns;
         private long nextTaskId;
 
         /// <summary>
@@ -20,24 +17,39 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
         /// </summary>
         /// <param name="name"></param>
         /// <param name="intpercol"></param>
-        public BoardBL(string name, int intpercol)
+        public BoardBL(string name)
         {
             this.name = name;
-            this.intpercol = intpercol;
-            this.backlog = new List<TaskBL>();
-            this.ongoing = new List<TaskBL>();
-            this.done = new List<TaskBL>();
-            this.nextTaskId = 0;
+            
+            this.nextTaskId = 1;
+
+            this.columns = new Dictionary<int, ColumnBL>();
+
+            columns.Add(0, new ColumnBL("backlog"));
+            columns.Add(1, new ColumnBL("in progress"));
+            columns.Add(2, new ColumnBL("done"));
         }
 
+
         public string Name { get => name; set => name = value; }
-        public int Intpercol { get => intpercol; set => intpercol = value; }
-        internal List<TaskBL> Backlog { get => backlog; set => backlog = value; }
-        internal List<TaskBL> Ongoing { get => ongoing; set => ongoing = value; }
-        internal List<TaskBL> Done { get => done; set => done = value; }
         public long NextTaskId { get => nextTaskId; set => nextTaskId = value; }
+        public Dictionary<int, ColumnBL> Columns { get => columns; set => columns = value; }
 
+        /// <summary>
+        /// A method that gets collumn id and sets it limit to input limit, if possible.
+        /// </summary>
+        /// <param name="col"></param>
+        /// <param name="limit"></param>
+        public void setLimit(int col,int limit)
+        {
+            ColumnBL c = this.Columns[col];
+            if(c.Tasks.Count > limit && limit !=-1)
+            {
+                throw new Exception("Cant set the new limit, as there are more tasks than the new limit");
+            }
 
+            c.TaskLimit = limit;
+        }
         public TaskBL AdvanceTask(string taskID)
         {
             throw new NotImplementedException();
