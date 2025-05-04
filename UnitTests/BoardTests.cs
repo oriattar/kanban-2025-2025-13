@@ -23,11 +23,11 @@ namespace UnitTests
             _authFacade = new AuthenticationFacade();
             _boardFacade = new BoardFacade(_authFacade);
             _userFacade = new UserFacade(this._authFacade);
-            testUser = new UserBL("oriatta@post.bgu.ac.il", "abcd");
+            testUser = new UserBL("oriatta@post.bgu.ac.il", "Abcdefg123456");
 
-            _authFacade.Register(testUser.Email);
+            this._userFacade.users.Add(testUser.Email, testUser);
+            this._userFacade.aFacade.Register(testUser.Email);
             _boardFacade.RegisterInFacade(testUser);
-            _userFacade.Register(testUser.Email, "abcd");
         }
 
         [Test]
