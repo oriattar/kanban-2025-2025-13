@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Schema;
 using IntroSE.Kanban.Backend.Buiesness_layer;
+using log4net;
 
 [assembly: InternalsVisibleTo("UnitTests")]
 
@@ -13,8 +14,11 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 {
     internal class UserSL
     {
-        internal string email;
-        internal List<BoardSL> boards;
+
+        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
+        private string email;
+        private List<BoardSL> boards;
 
         public string Email { get; set; }
 
@@ -28,7 +32,12 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         public UserSL(UserBL u)
         {
             if (u == null)
+            {
+                Log.Error("Attempted to create UserSL with null UserBL. -USER_SL");
                 throw new ArgumentNullException(nameof(u), "UserBL cannot be null.");
+            }
+
+            Log.Info($"Creating UserSL for user with email: {u.Email} -USER_SL");
 
             this.Email = u.Email;
             this.Boards = new List<BoardSL>();
@@ -37,6 +46,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             {
                 this.Boards.Add(new BoardSL(board));
             }
+
+            Log.Info($"UserSL created with {Boards.Count} board(s). -USER_SL");
+
         }
     }
 }

@@ -30,11 +30,11 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
             }
             set
             {
-                Log.Info($"Attempting to set email: {value}");
+                Log.Info($"Attempting to set email: {value} -USER_BL");
 
                 if (string.IsNullOrWhiteSpace(value) ||!value.Contains('@') || !value.Contains('.') ||value.Contains(" "))
                 {
-                    Log.Warn("Invalid email format.");
+                    Log.Warn("Invalid email format.-USER_BL");
                     throw new ArgumentException("Email cannot be like that.");
                 }
 
@@ -44,56 +44,56 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
                 if (atIndex <= 0 || atIndex == value.Length - 1 ||
                     lastDotIndex < atIndex + 2 || lastDotIndex == value.Length - 1)
                 {
-                    Log.Warn("Email format failed domain check.");
+                    Log.Warn("Email format failed domain check. -USER_BL");
                     throw new ArgumentException("Email cannot be like that.");
                 }
 
                 email = value;
-                Log.Info($"Email set successfully: {email}");
+                Log.Info($"Email set successfully: {email} -USER_BL");
             }
         }
 
         public string Password { private get => password;
             set
             {
-                Log.Info("Attempting to set password.");
+                Log.Info("Attempting to set password. -USER_BL");
                 if (string.IsNullOrWhiteSpace(value))
                 {
-                    Log.Warn("Password validation failed: password is null, empty, or whitespace.");
+                    Log.Warn("Password validation failed: password is null, empty, or whitespace. -USER_BL");
                     throw new ArgumentException("Password cannot be empty.");
                 }
                 if (value.Length < 6)
                 {
-                    Log.Warn($"Password validation failed: password too short (length {value.Length}).");
+                    Log.Warn($"Password validation failed: password too short (length {value.Length}). -USER_BL");
                     throw new ArgumentException("Password must be between 6 and 20 characters.");
                 }
 
                 if (value.Length > 20)
                 {
-                    Log.Warn($"Password validation failed: password too long (length {value.Length}).");
+                    Log.Warn($"Password validation failed: password too long (length {value.Length}). -USER_BL");
                     throw new ArgumentException("Password must be between 6 and 20 characters.");
                 }
 
                 if (!value.Any(char.IsUpper))
                 {
-                    Log.Warn("Password validation failed: no uppercase letter found.");
+                    Log.Warn("Password validation failed: no uppercase letter found. -USER_BL");
                     throw new ArgumentException("Password must contain at least one uppercase letter.");
                 }
 
                 if (!value.Any(char.IsLower))
                 {
-                    Log.Warn("Password validation failed: no lowercase letter found.");
+                    Log.Warn("Password validation failed: no lowercase letter found. -USER_BL");
                     throw new ArgumentException("Password must contain at least one lowercase letter.");
                 }
 
                 if (!value.Any(char.IsDigit))
                 {
-                    Log.Warn("Password validation failed: no digit found.");
+                    Log.Warn("Password validation failed: no digit found. -USER_BL");
                     throw new ArgumentException("Password must contain at least one digit.");
                 }
 
                 password = value;
-                Log.Info("Password was successfully set.");
+                Log.Info("Password was successfully set. -USER_BL");
             }
         }
 
@@ -106,11 +106,11 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
         /// <param name="password"></param>
         public UserBL(string email, string password)
         {
-            Log.Info("Creating new UserBL object.");
+            Log.Info("Creating new UserBL object. -USER_BL");
             Email = email;
             Password = password;
             this.boards = new List<BoardBL>();
-            Log.Info($"User created successfully: {email}");
+            Log.Info($"User created successfully: {email} -USER_BL");
 
         }
 
@@ -125,9 +125,9 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
             bool success = this.password == password;
 
             if (success)
-                Log.Info($"Login successful for user '{email}'");
+                Log.Info($"Login successful for user '{email}' -USER_BL");
             else
-                Log.Warn("Login failed - incorrect password.");
+                Log.Warn("Login failed - incorrect password. -USER_BL");
 
             return success;
         }

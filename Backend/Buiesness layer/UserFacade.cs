@@ -31,11 +31,11 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
 
         public UserBL Register(string email, string password) 
         {
-            Log.Info($"Attempting to register user with email: {email}");
+            Log.Info($"Attempting to register user with email: {email} -USER_FACADE");
 
             if (this.users.ContainsKey(email))
             {
-                Log.Warn($"Registration failed: Email '{email}' already exists.");
+                Log.Warn($"Registration failed: Email '{email}' already exists. -USER_FACADE");
                 throw new ArgumentException("Email already exists");
             }
 
@@ -44,17 +44,17 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
             try
             {
                 user = new UserBL(email, password);
-                Log.Info($"User object created successfully for email: {email}");
+                Log.Info($"User object created successfully for email: {email} -USER_FACADE");
             }
             catch (Exception ex)
             {
-                Log.Error($"Failed to create UserBL object for email '{email}': {ex.Message}", ex);
+                Log.Error($"Failed to create UserBL object for email '{email}': {ex.Message} -USER_FACADE");
                 throw; 
             }
 
             this.users.Add(email, user);
             this.aFacade.Register(email);
-            Log.Info($"User with email '{email}' successfully registered and added to dictionary.");
+            Log.Info($"User with email '{email}' successfully registered and added to dictionary. -USER_FACADE");
 
             return user;
         }
@@ -69,21 +69,21 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
         /// <exception cref="ArgumentException">Thrown when the email doesn't exist or the password is incorrect.</exception>
         public UserBL Login(string email, string password)
         {
-            Log.Info($"Attempting login for email: {email}");
+            Log.Info($"Attempting login for email: {email} -USER_FACADE");
 
             if (!this.users.ContainsKey(email))
             {
-                Log.Warn($"Login failed: Email '{email}' not found.");
+                Log.Warn($"Login failed: Email '{email}' not found.-USER_FACADE");
                 throw new ArgumentException("Email or password incorrect.");
             }
 
             if (!users[email].Login(password))
             {
-                Log.Warn($"Login failed: Incorrect password for email '{email}'.");
+                Log.Warn($"Login failed: Incorrect password for email '{email}'. -USER_FACADE");
                 throw new ArgumentException("Email or password incorrect.");
             }
 
-            Log.Info($"Login successful for email: {email}");
+            Log.Info($"Login successful for email: {email}  -USER_FACADE");
             aFacade.Login(email);
             return users[email];
         }
@@ -95,6 +95,7 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
         /// <param name="email"></param>
         public void Logout(string email)
         {
+            Log.Info($"Attempting to log out user with email: {email} -USER_FACADE");
             this.aFacade.Logout(email);
         }
 
