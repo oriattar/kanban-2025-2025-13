@@ -8,7 +8,7 @@ using IntroSE.Kanban.Backend.Buiesness_layer;
 
 namespace IntroSE.Kanban.Backend.ServiceLayer
 {
-    public class TaskServices
+    internal class TaskServices
     {
         private UserFacade uFacade;
         private BoardFacade bFacade;
@@ -26,12 +26,12 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         }
 
 
-        public Response<TaskSL> CreateTask(DateTime deadline,string title,string description,string bName,string email)
+        public Response<TaskSL> CreateTask(DateTime deadline, string title, string description, string bName, string email)
         {
             throw new NotImplementedException();
         }
 
-        public Response<TaskSL> EditTask(DateTime newDeadline, string newTitle, string newDescription, long idtask, string bName,string email)
+        public Response<TaskSL> EditTask(DateTime newDeadline, string newTitle, string newDescription, long idtask, string bName, string email)
         {
             throw new NotImplementedException();
         }

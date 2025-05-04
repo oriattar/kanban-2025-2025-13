@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace IntroSE.Kanban.Backend.Buiesness_layer
 {
-    public class BoardBL
+    internal class BoardBL
     {
         private string name;
         private Dictionary<int, ColumnBL> columns;

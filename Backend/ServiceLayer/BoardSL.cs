@@ -7,7 +7,7 @@ using IntroSE.Kanban.Backend.Buiesness_layer;
 
 namespace IntroSE.Kanban.Backend.ServiceLayer
 {
-    public class BoardSL
+    internal class BoardSL
     {
         public string name;
 

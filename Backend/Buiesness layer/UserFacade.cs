@@ -1,16 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using log4net;
 
+[assembly: InternalsVisibleTo("UnitTests")]
+
+
 namespace IntroSE.Kanban.Backend.Buiesness_layer
 {
-    public class UserFacade
+    internal class UserFacade
     {
-        private Dictionary<string, UserBL> users;
-        private AuthenticationFacade aFacade;
+        internal Dictionary<string, UserBL> users;
+        internal AuthenticationFacade aFacade;
         
 
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
@@ -25,17 +29,78 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
             this.aFacade = aFacade;
         }
 
-        public UserBL Login(string email, string password)
+        public UserBL Register(string email, string password) 
         {
-            throw new NotImplementedException();
+            Log.Info($"Attempting to register user with email: {email} -USER_FACADE");
+
+            if (this.users.ContainsKey(email))
+            {
+                Log.Warn($"Registration failed: Email '{email}' already exists. -USER_FACADE");
+                throw new ArgumentException("Email already exists");
+            }
+
+            UserBL user;
+
+            try
+            {
+                user = new UserBL(email, password);
+                Log.Info($"User object created successfully for email: {email} -USER_FACADE");
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"Failed to create UserBL object for email '{email}': {ex.Message} -USER_FACADE");
+                throw; 
+            }
+
+            this.users.Add(email, user);
+            this.aFacade.Register(email);
+            Log.Info($"User with email '{email}' successfully registered and added to dictionary. -USER_FACADE");
+
+            return user;
         }
 
-        
-        public void Register(string email, UserBL user)/* NOT IMPLEMNETED FULLY, PARTLY FOR TESTS*/
+
+        /// <summary>
+        /// Attempts to log in a user with the given email and password.
+        /// </summary>
+        /// <param name="email">The user's email.</param>
+        /// <param name="password">The user's password.</param>
+        /// <returns>The logged-in UserBL object.</returns>
+        /// <exception cref="ArgumentException">Thrown when the email doesn't exist or the password is incorrect.</exception>
+        public UserBL Login(string email, string password)
         {
-            this.users[email] = user;
-     
+            Log.Info($"Attempting login for email: {email} -USER_FACADE");
+
+            if (!this.users.ContainsKey(email))
+            {
+                Log.Warn($"Login failed: Email '{email}' not found.-USER_FACADE");
+                throw new ArgumentException("Email or password incorrect.");
+            }
+
+            if (!users[email].Login(password))
+            {
+                Log.Warn($"Login failed: Incorrect password for email '{email}'. -USER_FACADE");
+                throw new ArgumentException("Email or password incorrect.");
+            }
+
+            Log.Info($"Login successful for email: {email}  -USER_FACADE");
+            aFacade.Login(email);
+            return users[email];
         }
+
+
+        /// <summary>
+        /// Logs out the user associated with the given email by delegating to the AuthenticationFacade.
+        /// </summary>
+        /// <param name="email"></param>
+        public void Logout(string email)
+        {
+            Log.Info($"Attempting to log out user with email: {email} -USER_FACADE");
+            this.aFacade.Logout(email);
+        }
+
+
+
         /// <summary>
         /// Returns user object from the dictionary, if one exist
         /// If not exception is thrown
