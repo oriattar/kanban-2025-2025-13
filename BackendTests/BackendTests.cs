@@ -362,7 +362,7 @@ public class Test
             Console.WriteLine(res.errorMsg);
         }
 
-        BoardSL b1 = null; //NOT IMPLIMENTED YET
+        
 
         res = JsonSerializer.Deserialize<Response<string>>(this.sf.bs.CreateBoard("oriatta@post.bgu.ac.il", "Test2"));
         if (res.errorMsg != null)
@@ -370,34 +370,33 @@ public class Test
             Console.WriteLine(res.errorMsg);
         }
 
-        BoardSL b2 = null;// NOT IMPLIMENTED YET
+        
 
         //creating temp boards
         DateTime deadline = DateTime.Parse("30/12/2025 10:00:00 AM"); // creating temp deadline
 
 
-        Response<TaskSL> res2 = this.sf.ts.CreateTask(deadline, "Test", "TestDescription", "oriatta@post.bgu.ac.il", "Test1");
+        Response<string> res2 = JsonSerializer.Deserialize<Response<string>>(this.sf.ts.CreateTask(deadline, "Test", "TestDescription", "Test1", "oriatta@post.bgu.ac.il"));
         if (res2.errorMsg != null)
         {
             Console.WriteLine(res2.errorMsg);
         }
-        TaskSL t1 = res2.returnValue;
+        
 
-        res2 = this.sf.ts.CreateTask(deadline, "Test2", "TestDescription2", "oriatta@post.bgu.ac.il", "Test2");
+        res2 = JsonSerializer.Deserialize<Response<string>>(this.sf.ts.CreateTask(deadline, "Test2", "TestDescription2", "Test2", "oriatta@post.bgu.ac.il"));
         if (res2.errorMsg != null)
         {
             Console.WriteLine(res2.errorMsg);
         }
-        TaskSL t2 = res2.returnValue;
         //creating test tasks
 
-        Response<string> res3 = this.sf.ts.AdvanceTask("oriatta@post.bgu.ac.il", "Test1", t1.Id);
+        Response<string> res3 = JsonSerializer.Deserialize <Response<string>>(this.sf.ts.AdvanceTask("oriatta@post.bgu.ac.il", "Test1",0, 0));
         if (res3.errorMsg != null)
         {
             Console.WriteLine(res3.errorMsg);
             return false;
         }
-        res3 = this.sf.ts.AdvanceTask("oriatta@post.bgu.ac.il", "Test2", t2.Id);
+        res3 = JsonSerializer.Deserialize<Response<string>>(this.sf.ts.AdvanceTask("oriatta@post.bgu.ac.il", "Test2",0, 1));
         if (res3.errorMsg != null)
         {
             Console.WriteLine(res3.errorMsg);
@@ -406,7 +405,7 @@ public class Test
         //advancing test tasks.
 
 
-        Response<List<TaskSL>> res4 = this.sf.bs.GetInProgressList("oriatta@post.bgu.ac.il"); //testing the operation
+        Response<List<TaskSL>> res4 = JsonSerializer.Deserialize <Response<List<TaskSL>>>( this.sf.bs.GetInProgressList("oriatta@post.bgu.ac.il")); //testing the operation
         if (res4.errorMsg != null)
         {
             Console.WriteLine(res4.errorMsg);
@@ -436,14 +435,14 @@ public class Test
     /// <returns></returns>
     public bool checkCreateTask()
     {
-        DateTime dateTime = DateTime.Now;
+        DateTime dateTime = DateTime.MaxValue;
         String description = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
         String title = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
         string bname = "test";
         string email = "oriatta@post.bgu.ac.il";
 
 
-        Response<TaskSL> res = this.sf.ts.CreateTask(dateTime, title, description, bname, email);
+        Response<string> res = JsonSerializer.Deserialize<Response<string>>(this.sf.ts.CreateTask(dateTime, title, description, bname, email));
         if (res.errorMsg != null)
         {
             Console.WriteLine("");
@@ -451,13 +450,13 @@ public class Test
         }
 
         //בדיקת עם שם לוח שלא קיים במערכת
-        dateTime = DateTime.Now;
+        dateTime = DateTime.MaxValue;
         description = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
         title = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
         bname = "A";
         email = "oriatta@post.bgu.ac.il";
 
-        res = this.sf.ts.CreateTask(dateTime, title, description, bname, email);
+        res = JsonSerializer.Deserialize<Response<string>>(this.sf.ts.CreateTask(dateTime, title, description, bname, email));
         if (res.errorMsg == null)
         {
             Console.WriteLine("");
@@ -466,12 +465,12 @@ public class Test
 
 
         //בדיקת הוספת משימה ללוח קיים עם מייל שונה
-        dateTime = DateTime.Now;
+        dateTime = DateTime.MaxValue;
         description = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
         title = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
         bname = "test";
         email = "aaaaaaaggg@gmail.com";
-        res = this.sf.ts.CreateTask(dateTime, title, description, bname, email);
+        res = JsonSerializer.Deserialize<Response<string>>(this.sf.ts.CreateTask(dateTime, title, description, bname, email));
         if (res.errorMsg == null)
         {
             Console.WriteLine("");
@@ -480,14 +479,14 @@ public class Test
 
 
         //בדיקה עם כותרת ריקה
-        dateTime = DateTime.Now;
+        dateTime = DateTime.MaxValue;
         description = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
         title = "";
         bname = "test";
         email = "oriatta@post.bgu.ac.il";
 
 
-        res = this.sf.ts.CreateTask(dateTime, title, description, bname, email);
+        res = JsonSerializer.Deserialize<Response<string>>(this.sf.ts.CreateTask(dateTime, title, description, bname, email));
         if (res.errorMsg == null)
         {
             Console.WriteLine("");
@@ -496,12 +495,12 @@ public class Test
 
 
         //בדיקה עם description ריק
-        dateTime = DateTime.Now;
+        dateTime = DateTime.MaxValue;
         description = "";
         title = "gggggggggg";
         bname = "test";
         email = "oriatta@post.bgu.ac.il";
-        res = this.sf.ts.CreateTask(dateTime, title, description, bname, email);
+        res = JsonSerializer.Deserialize<Response<string>>(this.sf.ts.CreateTask(dateTime, title, description, bname, email));
         if (res.errorMsg == null)
         {
             Console.WriteLine("");
@@ -509,40 +508,40 @@ public class Test
         }
 
         //בדיקה עם PastDatetime ריק
-        dateTime = DateTime.Now;
+        dateTime = DateTime.MaxValue;
         description = "vvvvvvvvvvvv";
         title = "gggggggggg";
         bname = "test";
         email = "oriatta@post.bgu.ac.il";
-        res = this.sf.ts.CreateTask(DateTime.Parse("30/12/2020 10:00:00 AM"), title, description, bname, email);
+        res = JsonSerializer.Deserialize<Response<string>>(this.sf.ts.CreateTask(DateTime.MinValue, title, description, bname, email));
         if (res.errorMsg == null)
         {
             Console.WriteLine("A null value was successfully assigned");
             return false;
         }
 
-        res = this.sf.ts.CreateTask(dateTime, null, description, bname, email);
+        res = JsonSerializer.Deserialize<Response<string>>(this.sf.ts.CreateTask(dateTime, null, description, bname, email));
         if (res.errorMsg == null)
         {
             Console.WriteLine("A null value was successfully assigned");
             return false;
         }
 
-        res = this.sf.ts.CreateTask(dateTime, title, null, bname, email);
+        res = JsonSerializer.Deserialize<Response<string>>(this.sf.ts.CreateTask(dateTime, title, null, bname, email));
         if (res.errorMsg == null)
         {
             Console.WriteLine("A null value was successfully assigned");
             return false;
         }
 
-        res = this.sf.ts.CreateTask(dateTime, title, description, null, email);
+        res = JsonSerializer.Deserialize<Response<string>>(this.sf.ts.CreateTask(dateTime, title, description, null, email));
         if (res.errorMsg == null)
         {
             Console.WriteLine("A null value was successfully assigned");
             return false;
         }
 
-        res = this.sf.ts.CreateTask(dateTime, title, description, bname, null);
+        res = JsonSerializer.Deserialize<Response<string>>(this.sf.ts.CreateTask(dateTime, title, description, bname, null));
         if (res.errorMsg == null)
         {
             Console.WriteLine("A null value was successfully assigned");
@@ -564,39 +563,57 @@ public class Test
     /// <returns></returns>
     public bool editTaskTest()
     {
-        Response<TaskSL> res = this.sf.ts.CreateTask(DateTime.Now, "TestTask", "Test for editing", "test", "oriatta@post.bgu.ac.il"); //creating temp task
+        Response<string> res = JsonSerializer.Deserialize<Response<string>>(this.sf.ts.CreateTask(DateTime.MaxValue, "TestTask", "Test for editing", "test", "oriatta@post.bgu.ac.il")); //creating temp task
         if (res.errorMsg != null) 
         {
             Console.WriteLine(res.errorMsg);
             return false;
         }
 
-        TaskSL ta = res.returnValue;
 
-        res = this.sf.ts.EditTask(DateTime.Now, "NewTitle", "NewDescription", ta.Id, "test", "oriatta@post.bgu.ac.il"); // expecting success
+        res = JsonSerializer.Deserialize<Response<string>>(this.sf.ts.UpdateTaskDeadline("oriatta@post.bgu.ac.il", "test",0,0,DateTime.MaxValue)); // expecting success
         if (res.errorMsg != null)
         {
             Console.WriteLine(res.errorMsg);
             return false;
         }
 
-        res = this.sf.ts.EditTask(DateTime.Parse("30/12/2020 10:00:00 AM"), "NewTitle", "NewDescription", ta.Id, "test", "oriatta@post.bgu.ac.il"); //editing task with past deadline - failure
+        res = JsonSerializer.Deserialize<Response<string>>(this.sf.ts.UpdateTaskDeadline("oriatta@post.bgu.ac.il", "test", 0, 0, DateTime.MinValue)); // expecting failure
         if (res.errorMsg == null)
         {
-            Console.WriteLine("A past deadline was successfully assigned");
+            Console.WriteLine("invalid deadline was set");
             return false;
         }
 
-        res = this.sf.ts.EditTask(DateTime.Now, null, "NewDescription", ta.Id, "test", "oriatta@post.bgu.ac.il"); //editing task with null title - failure
-        if (res.errorMsg == null)
+        res = JsonSerializer.Deserialize<Response<string>>(this.sf.ts.UpdateTaskTitle("oriatta@post.bgu.ac.il", "test", 0, 0, "NewT")); // expecting success
+        if (res.errorMsg != null)
         {
-            Console.WriteLine("A null title was assigned");
+            Console.WriteLine(res.errorMsg);
             return false;
         }
-        res = this.sf.ts.EditTask(DateTime.Now, "NewTitle", null, ta.Id, "test", "oriatta@post.bgu.ac.il"); //editing task with null description - failure
+        res = JsonSerializer.Deserialize<Response<string>>(this.sf.ts.UpdateTaskTitle("oriatta@post.bgu.ac.il", "test", 0, 0, "")); // expecting failure
         if (res.errorMsg == null)
         {
-            Console.WriteLine("a null deadline was successfully assigned");
+            Console.WriteLine("Imvalid title was set");
+            return false;
+        }
+        res = JsonSerializer.Deserialize<Response<string>>(this.sf.ts.UpdateTaskTitle("oriatta@post.bgu.ac.il", "test", 0, 0, null)); // expecting failure
+        if (res.errorMsg == null)
+        {
+            Console.WriteLine("Imvalid title was set");
+            return false;
+        }
+
+        res = JsonSerializer.Deserialize<Response<string>>(this.sf.ts.UpdateTaskDescription("oriatta@post.bgu.ac.il", "test", 0, 0, "")); // expecting success
+        if (res.errorMsg != null)
+        {
+            Console.WriteLine(res.errorMsg);
+            return false;
+        }
+        res = JsonSerializer.Deserialize<Response<string>>(this.sf.ts.UpdateTaskDescription("oriatta@post.bgu.ac.il", "test", 0, 0,"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabcdefffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff")); // expecting failure
+        if (res.errorMsg == null)
+        {
+            Console.WriteLine("Imvalid desc was set");
             return false;
         }
 
@@ -609,37 +626,42 @@ public class Test
     /// <returns></returns>
     public bool testTaskAdvancing()
     {
-        Response<TaskSL> res = this.sf.ts.CreateTask(DateTime.Now, "TestTask", "Test for editing", "test", "oriatta@post.bgu.ac.il"); //creating temp task
+        Response<string> res = JsonSerializer.Deserialize<Response<string>>(this.sf.ts.CreateTask(DateTime.MaxValue, "TestTask", "Test for editing", "test", "oriatta@post.bgu.ac.il")); //creating temp task
         if (res.errorMsg != null)
         {
             Console.WriteLine(res.errorMsg);
             return false;
         }
 
-        TaskSL t = res.returnValue;
-
-        Response<string> res2 = this.sf.ts.AdvanceTask("oriatta@post.bgu.ac.il", "test", t.Id);//Advancing to on going
+        Response<string> res2 = JsonSerializer.Deserialize<Response<string>>(this.sf.ts.AdvanceTask("oriatta@post.bgu.ac.il", "test", 0,0));//Advancing to on going
         if (res2.errorMsg != null)
         {
             Console.WriteLine(res2.errorMsg);
             return false;
         }
 
-        res2 = this.sf.ts.AdvanceTask("oriatta@post.bgu.ac.il", "test", t.Id); //Advancing to done
+        res2 = JsonSerializer.Deserialize<Response<string>>(this.sf.ts.AdvanceTask("oriatta@post.bgu.ac.il", "test", 1, 0)); //Advancing to done
         if (res2.errorMsg != null)
         {
             Console.WriteLine(res2.errorMsg);
             return false;
         }
 
-        res2 = this.sf.ts.AdvanceTask("oriatta@post.bgu.ac.il", "test", t.Id); // expected failure - no where to advance.
+        res2 = JsonSerializer.Deserialize<Response<string>>(this.sf.ts.AdvanceTask("oriatta@post.bgu.ac.il", "test", 2, 0)); ; // expected failure - no where to advance.
         if (res2.errorMsg == null)
         {
             Console.WriteLine("A task was advanced beyond 'Done'.");
             return false;
         }
 
-        res2 = this.sf.ts.AdvanceTask("oriatta@post.bgu.ac.il", "test", -1); //trying to advance non existant task
+        res = JsonSerializer.Deserialize<Response<string>>(this.sf.ts.CreateTask(DateTime.MaxValue, "TestTask", "Test for editing", "test", "oriatta@post.bgu.ac.il")); //creating temp task
+        if (res.errorMsg != null)
+        {
+            Console.WriteLine(res.errorMsg);
+            return false;
+        }
+
+        res2 = JsonSerializer.Deserialize<Response<string>>(this.sf.ts.AdvanceTask("oriatta@post.bgu.ac.il", "test",0, -1)); //trying to advance non existant task
         if (res2.errorMsg == null)
         {
             Console.WriteLine(res2.errorMsg);

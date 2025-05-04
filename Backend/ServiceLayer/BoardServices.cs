@@ -148,7 +148,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 ColumnBL c = this.bFacade.GetColByID(email, bName, col);
-                res = new Response<List<TaskSL>>(null,(BoardFacade.ConvertTaskList(c.Tasks))); //converts the collumn taskList to list of TaskListSL
+                res = new Response<List<TaskSL>>(null,ConvertTaskList(c.Tasks)); //converts the collumn taskList to list of TaskListSL
             }
             catch (Exception ex)
             {
@@ -157,15 +157,38 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
             return JsonSerializer.Serialize(res);
         }
-        public Response<List<TaskSL>> GetInProgressList(string email)
+        public string GetInProgressList(string email)
         {
-            throw new NotImplementedException();
+            Response<List<TaskSL>> res = null;
+            try
+            {
+                res = new Response<List<TaskSL>>(null,ConvertTaskList(this.bFacade.GetInProgressList(email)));
+            }
+            catch (Exception ex)
+            {
+                res = new Response<List<TaskSL>>(ex.Message, null);
+                Log.Error("Error in finding inProgress tasks - BOARDSERVICES:" + ex.Message);
+            }
+            return JsonSerializer.Serialize(res);
         }
 
         /// <summary>
-        /// A method that returns a taskListSL list from this column
+        /// A method that returns a taskSL list from taskBL list
         /// </summary>
         /// <returns></returns>
-        
+        public static List<TaskSL> ConvertTaskList(List<TaskBL> t)
+        {
+            if (t == null)
+                return null;
+
+            List<TaskSL> result = new List<TaskSL>();
+            foreach (TaskBL b in t)
+            {
+                result.Add(new TaskSL(b));
+            }
+
+            return result;
+        }
+
     }
 }

@@ -9,19 +9,19 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 {
     public class TaskSL
     {
-        private long id;
+        private int id;
         private DateTime creationtime;
         private DateTime deadline;
         private string title;
         private string description;
 
-        public long Id { get => id; set => id = value; }
+        public int Id { get => id; set => id = value; }
         public DateTime Creationtime { get => creationtime; set => creationtime = value; }
         public DateTime Deadline { get => deadline; set => deadline = value; }
         public string Title { get => title; set => title = value; }
         public string Description { get => description; set => description = value; }
 
-        public TaskSL(long id, DateTime creationtime, DateTime deadline, string title, string description)
+        public TaskSL(int id, DateTime creationtime, DateTime deadline, string title, string description)
         {
             Id = id;
             this.Creationtime = creationtime;
