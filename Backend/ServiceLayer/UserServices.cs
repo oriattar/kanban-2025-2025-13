@@ -27,7 +27,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             this.uFacade = uFacade;
         }
 
-        public UserFacade UFacade { get => uFacade; set => uFacade = value; }
         /// <summary>
         /// Logs in a user with the provided email and password.
         /// </summary>
@@ -41,12 +40,12 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 Log.Info($"Attempting to log in user with email: {email} -USER_SERVICE");
                 UserBL user = uFacade.Login(email, password);
                 Log.Info($"User with email {email} logged in successfully. -USER_SERVICE");
-                return JsonSerializer.Serialize(new Response<UserSL>(null, new UserSL(user)));
+                return JsonSerializer.Serialize(new Response<string>(null, user.Email));
             }
             catch (Exception ex)
             {
                 Log.Error($"Login failed for user {email}: {ex.Message} -USER_SERVICE");
-                return JsonSerializer.Serialize(new Response<UserSL>(ex.Message, null));
+                return JsonSerializer.Serialize(new Response<string>(ex.Message, null));
             }
         }
 
@@ -63,7 +62,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 Log.Info($"Attempting to log out user with email: {email} -USER_SERVICE");
                 uFacade.Logout(email);
                 Log.Info($"User with email {email} logged out successfully. -USER_SERVICE");
-                return JsonSerializer.Serialize(new Response<string>(null, "Logged out successfully"));
+                return JsonSerializer.Serialize(new Response<string>(null,null));
             }
             catch (Exception ex)
             {
@@ -83,14 +82,14 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 Log.Info($"Attempting to register user with email: {email}  -USER_SERVICE");
-                UserBL user = uFacade.Register(email, password);
+                uFacade.Register(email, password);
                 Log.Info($"User with email {email} registered successfully. -USER_SERVICE");
-                return JsonSerializer.Serialize(new Response<UserSL>(null, new UserSL(user)));
+                return JsonSerializer.Serialize(new Response<string>(null,null));
             }
             catch (Exception ex)
             {
                 Log.Error($"Registration failed for user {email}: {ex.Message} -USER_SERVICE");
-                return JsonSerializer.Serialize(new Response<UserSL>(ex.Message, null));
+                return JsonSerializer.Serialize(new Response<string>(ex.Message, null));
             }
         }
     }

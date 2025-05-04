@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 [assembly: InternalsVisibleTo("UnitTests")]
+[assembly: InternalsVisibleTo("BackendTests")]
 
 
 namespace IntroSE.Kanban.Backend.ServiceLayer

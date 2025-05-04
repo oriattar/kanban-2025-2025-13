@@ -14,7 +14,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         public List<TaskSL> backlog;
         public List<TaskSL> inprogress;
         public List<TaskSL> done;
-        public long nextID;
 
         /// <summary>
         /// A consturctor for the boardSL
@@ -26,10 +25,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
             Dictionary<int, ColumnBL> d = b.Columns;
 
-            this.backlog = BoardFacade.ConvertTaskList(d[0].Tasks);
-            this.inprogress = BoardFacade.ConvertTaskList(d[1].Tasks);
-            this.done = BoardFacade.ConvertTaskList(d[2].Tasks); //building the collumns to collumns SL
-            this.nextID = b.NextTaskId;
+            this.backlog = BoardServices.ConvertTaskList(d[0].Tasks);
+            this.inprogress = BoardServices.ConvertTaskList(d[1].Tasks);
+            this.done = BoardServices.ConvertTaskList(d[2].Tasks); //building the collumns to collumns SL
         }   
     }
 }

@@ -25,23 +25,29 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
         }
 
-
-        public Response<TaskSL> CreateTask(DateTime deadline, string title, string description, string bName, string email)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Response<TaskSL> EditTask(DateTime newDeadline, string newTitle, string newDescription, long idtask, string bName, string email)
+        public string CreateTask(DateTime deadline,string title,string description,string bName,string email)
         {
             throw new NotImplementedException();
         }
 
 
-        public Response<string> AdvanceTask(string email, string boardName, long idtask)
+        public string AdvanceTask(string email, string boardName, int columnOrdinal, int taskId)
         {
             throw new NotImplementedException();
         }
 
+        public string UpdateTaskTitle(string email, string boardName, int columnOrdinal, int taskId, string title)
+        {
+            throw new NotImplementedException();
+        }
+        public string UpdateTaskDescription(string email, string boardName, int columnOrdinal, int taskId, string desc)
+        {
+            throw new NotImplementedException();
+        }
+        public string UpdateTaskDeadline(string email, string boardName, int columnOrdinal, int taskId, DateTime deadline)
+        {
+            throw new NotImplementedException();
+        }
 
 
     }

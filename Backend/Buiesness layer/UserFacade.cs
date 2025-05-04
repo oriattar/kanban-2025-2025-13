@@ -29,7 +29,7 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
             this.aFacade = aFacade;
         }
 
-        public UserBL Register(string email, string password) 
+        public void Register(string email, string password) 
         {
             Log.Info($"Attempting to register user with email: {email} -USER_FACADE");
 
@@ -39,7 +39,7 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
                 throw new ArgumentException("Email already exists");
             }
 
-            UserBL user;
+            UserBL user = null;
 
             try
             {
@@ -55,8 +55,6 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
             this.users.Add(email, user);
             this.aFacade.Register(email);
             Log.Info($"User with email '{email}' successfully registered and added to dictionary. -USER_FACADE");
-
-            return user;
         }
 
 

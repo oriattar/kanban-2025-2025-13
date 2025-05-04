@@ -1,5 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Text;
+using System.Threading.Tasks;
+using System.Xml.Linq;
 using IntroSE.Kanban.Backend.ServiceLayer;
 using log4net;
 
@@ -9,8 +14,11 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
     {
         private Dictionary<string, List<BoardBL>> boards;
         private AuthenticationFacade aFacade;
+        private int taskIdGenerator;
 
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
+        
 
         /// <summary>
         /// A constructor to the boardFacade, inits the dict
@@ -20,6 +28,7 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
         {
             this.boards = new Dictionary<string, List<BoardBL>>();
             this.aFacade = aFacade;
+            this.taskIdGenerator = 0;
         }
 
         /// <summary>
@@ -56,16 +65,45 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
             }
         }
 
-
-
-        public void advanceTasK(string idtask, string boardname)
+        /// <summary>
+        /// A method that finds the board and operates its advance task method.
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="bName"></param>
+        /// <param name="col"></param>
+        /// <param name="taskId"></param>
+        /// <exception cref="Exception"></exception>
+        public void advanceTasK(string email, string bName, int col, int taskId)
         {
-            throw new NotImplementedException();
+            if (!this.aFacade.IsLoggedIn(email))
+            {
+                Log.Warn("Trying to advance a task while not logged in. - BOARDFACADE");
+                throw new Exception("Trying to advance a task while not logged in.");
+            }
+
+            this.GetBoard(email, bName).AdvanceTask(col, taskId);
         }
 
-        public TaskBL CreateTask(DateTime deadlinem, string title, string description, string bname)
+        /// <summary>
+        /// A method that finds the board and creating a new task in it, if all the parameters are valid.
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="boardName"></param>
+        /// <param name="title"></param>
+        /// <param name="description"></param>
+        /// <param name="dueDate"></param>
+        /// <exception cref="Exception"></exception>
+        public void CreateTask(string email, string boardName, string title, string description, DateTime dueDate)
         {
-            throw new NotImplementedException();
+            if(!this.aFacade.IsLoggedIn(email))
+            {
+                Log.Warn("Trying to add a task while not logged in. - BOARDFACADE");
+                throw new Exception("Trying to add a task while not logged in.");
+            }
+
+            this.GetBoard(email, boardName).CreateTask(title,description,dueDate,this.taskIdGenerator);
+            this.taskIdGenerator++; //advances the id generator
+            Log.Info("A task was added to the board" + boardName + " in BOARDFACADE");
         }
 
         /// <summary>
@@ -79,19 +117,40 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
         /// <exception cref="Exception"></exception>
         public void Setlimit(string email, string bName, int col, int limit)
         {
-            BoardBL board = this.GetBoard(email, bName);
-            if (limit < -1 || col < 0 || col > 2) //allows removing the limit aswell
+            if (!this.aFacade.IsLoggedIn(email))
             {
-                Log.Warn("Can access collumn or ileagal limit - BOARDFACADE");
-                throw new Exception("Ileagal collumn number or limit");
+                Log.Warn("Cant set limit while not logged in. - BOARDFACADE");
+                throw new Exception("Cant set limit while not logged in.");
             }
 
-            board.setLimit(col, limit);
+            BoardBL board = this.GetBoard(email,bName);
+
+            board.setLimit(col,limit);
+            Log.Info("A Limit was set to the col:" + col+ " for the board: " + bName + " in BOARDFACADE");
+
         }
 
-        public TaskSL EditTask(DateTime deadline, string title, string description, string nboard, string idtask)
+        /// <summary>
+        /// A method that operates the task edition operation
+        
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="boardName"></param>
+        /// <param name="col"></param>
+        /// <param name="taskId"></param>
+        /// <param name="dueDate"></param>
+        /// <param name="title"></param>
+        /// <param name="desc"></param>
+        /// <exception cref="Exception"></exception>
+        public void EditTask(string email, string boardName, int col, int taskId, DateTime dueDate, string title,string desc) // needs to be tested when tasks are implemented
         {
-            throw new NotImplementedException();
+            if (!this.aFacade.IsLoggedIn(email))
+            {
+                Log.Warn("Cant edit a task while not logged in. - BOARDFACADE");
+                throw new Exception("Cant edit a task while not logged in.");
+            }
+
+            this.GetBoard(email,boardName).EditTask(dueDate,title,desc,col,taskId); // finds the board and calls the edit task operation
         }
 
         /// <summary>
@@ -135,8 +194,13 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
         /// <exception cref="Exception"></exception>
         public ColumnBL GetColByID(string email, string bName, int col)
         {
-            BoardBL b = this.GetBoard(email, bName);
-            if (col < 0 || col > 2)
+            if (!this.aFacade.IsLoggedIn(email))
+            {
+                Log.Warn("Cant get the column while not logged in. - BOARDFACADE");
+                throw new Exception("Cant get the column while not logged in.");
+            }
+            BoardBL b = this.GetBoard(email,bName);
+            if(col<0 || col>2)
             {
                 Log.Warn("Ileagal column Id accessed - BOARDFACADE");
                 throw new Exception("column ID is ileagal");
@@ -145,27 +209,36 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
             return b.Columns[col];
         }
 
-        public List<TaskBL> GetInProgressList()
-        {
-            throw new NotImplementedException();
-        }
-
         /// <summary>
-        /// A method that returns a taskListSL from taskListBL list
+        /// A method that builds the inProgress list of TaskBL objects.
+        /// going over all of the boards of the input users, and adding the in progress column of each board to the result.
         /// </summary>
+        /// <param name="email"></param>
         /// <returns></returns>
-        public static List<TaskSL> ConvertTaskList(List<TaskBL> t)
+        /// <exception cref="Exception"></exception>
+        public List<TaskBL> GetInProgressList(string email)
         {
-            if (t == null)
-                return null;
-
-            List<TaskSL> result = new List<TaskSL>();
-            foreach (TaskBL b in t)
+            if (!this.aFacade.IsLoggedIn(email))
             {
-                result.Add(new TaskSL(b));
+                Log.Warn("Cant get the inProgress list while not logged in. - BOARDFACADE");
+                throw new Exception("Cant get the inProgress list while not logged in.");
+            }
+            if (!this.boards.ContainsKey(email))
+            {
+                Log.Warn("Cant get inProgress list, user isnt registerd in facade. - BOARDFACADE");
+                throw new Exception("Cant get inProgress list, user isnt registerd in facade");
             }
 
-            return result;
+
+            List<TaskBL> res = new List<TaskBL>();
+            List<BoardBL> uBoards = this.boards[email];
+
+
+            foreach (BoardBL b in uBoards) //going over all of the users boards
+            {
+                res.AddRange(b.GetInProgress()); // building the result list
+            }
+            return res;
         }
     }
 }

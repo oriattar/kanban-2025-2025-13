@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using log4net;
 
 [assembly: InternalsVisibleTo("UnitTests")]
+[assembly: InternalsVisibleTo("BackendTests")]
 
 
 namespace IntroSE.Kanban.Backend.Buiesness_layer

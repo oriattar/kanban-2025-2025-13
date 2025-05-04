@@ -41,7 +41,7 @@ namespace UnitTests
 
             string result = us.Register(email, password);
 
-            string a = JsonSerializer.Serialize(new Response<UserSL>(null, userSL));
+            string a = JsonSerializer.Serialize(new Response<string>(null, null));
 
             Assert.AreEqual(a, result);
         }
@@ -67,7 +67,7 @@ namespace UnitTests
             us.Register(email, password);
             string result = us.Logout(email);
 
-            string a = JsonSerializer.Serialize(new Response<string>(null, "Logged out successfully"));
+            string a = JsonSerializer.Serialize(new Response<string>(null, null));
 
             Assert.AreEqual(a, result);
         }
@@ -88,7 +88,7 @@ namespace UnitTests
             us.Register(email, password);
             string result = us.Login(email, password);
 
-            string expected = JsonSerializer.Serialize(new Response<UserSL>(null, new UserSL(new UserBL(email, password))));
+            string expected = JsonSerializer.Serialize(new Response<string>(null,email));
             Assert.AreEqual(expected, result);
         }
 
@@ -97,7 +97,7 @@ namespace UnitTests
         {
             string result = us.Login("not@registered.com", "AnyPass123");
 
-            string expected = JsonSerializer.Serialize(new Response<UserSL>("Email or password incorrect.", null));
+            string expected = JsonSerializer.Serialize(new Response<string>("Email or password incorrect.", null));
             Assert.AreEqual(expected, result);
         }
 
