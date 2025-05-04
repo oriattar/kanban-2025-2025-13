@@ -1,13 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using log4net;
 
+[assembly: InternalsVisibleTo("UnitTests")]
+[assembly: InternalsVisibleTo("BackendTests")]
+
+
 namespace IntroSE.Kanban.Backend.Buiesness_layer
 {
-    public class AuthenticationFacade
+    internal class AuthenticationFacade
     {
         private Dictionary<string, bool> uStatus;
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
@@ -31,12 +36,14 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
             if (!this.uStatus.ContainsKey(un))
             {
                 Log.Warn("Checking log in for unregisted user -AUTH_FACADE");
-                throw new Exception("User is not registerd in authenticationFacade");
+                throw new Exception("User is not registerd in authenticationFacade -AUTH_FACADE");
             }
                 
 
             return this.uStatus[un];
         }
+
+
 
         /// <summary>
         /// Logging in a registerd user by updating its value in the dict, if user isnt registerd throws exception
@@ -48,7 +55,7 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
             if (!this.uStatus.ContainsKey(un))
             {
                 Log.Warn("Trying to log in an unregisterd user -AUTH_FACADE");
-                throw new Exception("Trying to log in an unregisterd user in authentication facade");
+                throw new Exception("Trying to log in an unregisterd user in authentication facade -AUTH_FACADE");
             }
 
             this.uStatus[un] = true;

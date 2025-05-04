@@ -7,7 +7,7 @@ using IntroSE.Kanban.Backend.Buiesness_layer;
 
 namespace IntroSE.Kanban.Backend.ServiceLayer
 {
-    public class ServiceFactory
+    internal class ServiceFactory
     {
         public TaskServices ts;
         public BoardServices bs;
@@ -25,9 +25,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
             this.us = new UserServices(uf);
             this.bs = new BoardServices(uf, bf);
-            this.ts = new TaskServices(uf,bf); //creates the services
+            this.ts = new TaskServices(uf, bf); //creates the services
         }
 
-        
+
     }
 }

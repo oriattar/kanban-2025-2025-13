@@ -13,7 +13,7 @@ using System.Text.Json;
 
 public class Test
 {
-    private ServiceFactory sf;
+   private ServiceFactory sf;
 
     public Test()
     {
@@ -38,35 +38,35 @@ public class Test
     /// </summary>
     public bool TestSuccessfullRegister()
     {
-        Response<UserSL> res = this.sf.us.Register(null, null);
+        Response<string> res = JsonSerializer.Deserialize<Response<string>>(this.sf.us.Register(null, null));
         if (res.ErrorMsg == null)
         {
             return false;
             Console.WriteLine("❌ Test 1 Failed: Email and password cannot be null.");
         }
 
-        res = this.sf.us.Register("aaa@gmail.com", null);
+        res = JsonSerializer.Deserialize<Response<string>>(this.sf.us.Register("aaa@gmail.com", null));
         if (res.ErrorMsg == null)
         {
             Console.WriteLine("❌ Test 2 Failed: Password cannot be null.");
             return false;
         }
 
-        res = this.sf.us.Register("bbb@gmail.com", "Aa7");
+        res = JsonSerializer.Deserialize<Response<string>>(this.sf.us.Register("bbb@gmail.com", "Aa7"));
         if (res.ErrorMsg == null)
         {
             Console.WriteLine("❌ Test 3 Failed: Password too short.");
             return false;
         }
 
-        res = this.sf.us.Register("ccc@gmail.com", "aaaaaaaAAAAAAAAAAAAAAA77");
+        res = JsonSerializer.Deserialize<Response<string>>(this.sf.us.Register("ccc@gmail.com", "aaaaaaaAAAAAAAAAAAAAAA77"));
         if (res.ErrorMsg == null)
         {
             Console.WriteLine("❌ Test 4 Failed: Password too long or violates max length.");
             return false;
         }
 
-        res = this.sf.us.Register("ddd@gmail.com", "aaaaaaaaaa7");
+        res = JsonSerializer.Deserialize<Response<string>>(this.sf.us.Register("ddd@gmail.com", "aaaaaaaaaa7"));
         if (res.ErrorMsg == null)
         {
             Console.WriteLine("❌ Test 5 Failed: Missing uppercase letters in password.");
@@ -74,7 +74,7 @@ public class Test
         }
 
 
-        res = this.sf.us.Register("eee@gmail.com", "AAAAAAAAAAA7");
+        res = JsonSerializer.Deserialize<Response<string>>(this.sf.us.Register("eee@gmail.com", "AAAAAAAAAAA7"));
         if (res.ErrorMsg == null)
         {
             Console.WriteLine("❌ Test 6 Failed: Missing lowercase letters in password.");
@@ -82,7 +82,7 @@ public class Test
         }
 
 
-        res = this.sf.us.Register("fff@gmail.com", "AAAAAAaaaaa");
+        res = JsonSerializer.Deserialize<Response<string>>(this.sf.us.Register("fff@gmail.com", "AAAAAAaaaaa"));
         if (res.ErrorMsg == null)
         {
             Console.WriteLine("❌ Test 7 Failed: Missing digit in password.");
@@ -90,21 +90,21 @@ public class Test
         }
 
 
-        res = this.sf.us.Register("ggg@gmail.com", "aScA78f");
+        res = JsonSerializer.Deserialize<Response<string>>(this.sf.us.Register("ggg@gmail.com", "aScA78f"));
         if (res.ErrorMsg != null)
         {
             Console.WriteLine("❌ Test 8 Failed: Valid password should have succeeded.");
             return false;
         }
 
-        res = this.sf.us.Register("ggg@gmail.com", "aScA78f");
+        res = JsonSerializer.Deserialize<Response<string>>(this.sf.us.Register("ggg@gmail.com", "aScA78f"));
         if (res.ErrorMsg != null)
         {
             Console.WriteLine("❌ Test 9 Failed: Valid password should have succeeded.");
             return false;
         }
 
-        res = this.sf.us.Register("rrr@gmail.com", "AAAA555aaaa");
+        res = JsonSerializer.Deserialize<Response<string>>(this.sf.us.Register("rrr@gmail.com", "AAAA555aaaa"));
         if (res.ErrorMsg == null)
         {
             Console.WriteLine("❌ Test 10 Failed: Duplicate email should have failed.");
@@ -112,7 +112,7 @@ public class Test
         }
 
 
-        res = this.sf.us.Register("rrrm", "AAAA555aaaa");
+        res = JsonSerializer.Deserialize<Response<string>>(this.sf.us.Register("rrrm", "AAAA555aaaa"));
         if (res.ErrorMsg == null)
         {
             Console.WriteLine("❌ Test 11 Failed: Invalid email format should have failed (missing '@' and domain).");
@@ -121,20 +121,10 @@ public class Test
 
 
 
-        res = this.sf.us.Register("abcs@gmail.com", "AAAA5aaaa");
-        if (res.returnValue == null)
+        res = JsonSerializer.Deserialize<Response<string>>(this.sf.us.Register("abcs@gmail.com", "AAAA5aaaa"));
+        if (res.ErrorMsg != null)
         {
-            Console.WriteLine("❌ Test 12 Failed: should have succeeded and return userSL");
-            return false;
-        }
-        if (!res.returnValue.Email.Equals("abcs@gmail.com"))
-        {
-            Console.WriteLine("❌ Test 13 Failed: return wrong userSL email");
-            return false;
-        }
-        if (res.returnValue.Boards.Count != 0)
-        {
-            Console.WriteLine("❌ Test 14 Failed: Did not set the board number to 0 ");
+            Console.WriteLine("❌ Test 12 Failed: should have succeeded");
             return false;
         }
 
@@ -150,33 +140,35 @@ public class Test
     public bool TestSuccessfulllogin()
     {
 
-        Response<UserSL> res = this.sf.us.Register("afffffbcs@gmail.com", "AAAAgd5aa");
-        res = this.sf.us.Login("afffffbcs@gmail.com", "AAAAgd5aa");
+        Response<string> res = JsonSerializer.Deserialize<Response<string>>(this.sf.us.Register("afffffbcs@gmail.com", "AAAAgd5aa"));
+        res = JsonSerializer.Deserialize<Response<string>>(this.sf.us.Login("afffffbcs@gmail.com", "AAAAgd5aa"));
 
         if (res.errorMsg != null)
         {
-            Console.WriteLine("❌ Test 15 Failed: should have succeeded and return userSL");
+            Console.WriteLine("❌ Test 15 Failed: should have succeeded");
             return false;
         }
-
-        res = this.sf.us.Login("afffffbcs@gmail.com", "AAAAgd5aa");
+        if (!res.returnValue.Equals("afffffbcs@gmail.com"))
+        {
+            Console.WriteLine("❌ Test 15 Failed: returned value should be:" + "afffffbcs@gmail.com");
+            return false;
+        }
+        res = JsonSerializer.Deserialize<Response<string>>(this.sf.us.Login("afffffbcs@gmail.com", "AAAAgd5aa"));
         if (res.errorMsg == null)
         {
             Console.WriteLine("❌ Test 16 Failed: should have failed, password not correct ");
             return false;
         }
 
-        res = this.sf.us.Login("afffffbcs@gmail.com", "AAAAgd5aa");
+        res = JsonSerializer.Deserialize<Response<string>>(this.sf.us.Login("afffffbcs@gmail.com", "AAAAgd5aa"));
         if (res.errorMsg == null)
         {
             Console.WriteLine("❌ Test 17 Failed: should have failed, email not correct ");
             return false;
         }
 
-
-
-        res = this.sf.us.Register("rrxxxr@gmail.com", "AAAA555aaaa");
-        res = this.sf.us.Register("rrxxxr@gmail.com", "AAAA555aaaa");
+        res = JsonSerializer.Deserialize<Response<string>>(this.sf.us.Register("rrxxxr@gmail.com", "AAAA555aaaa"));
+        res = JsonSerializer.Deserialize<Response<string>>(this.sf.us.Register("rrxxxr@gmail.com", "AAAA555aaaa"));
         if (res.ErrorMsg == null)
         {
             Console.WriteLine("❌ Test 18 Failed: already register");
@@ -193,24 +185,24 @@ public class Test
     public bool TestSuccessfulllogout()
     {
 
-        Response<UserSL> res = this.sf.us.Register("testLogout@gmail.com", "AAAAgd5aa");
+        Response<string> res = JsonSerializer.Deserialize<Response<string>>(this.sf.us.Register("testLogout@gmail.com", "AAAAgd5aa"));
 
-        res = this.sf.us.Login("testLogout@gmail.com", "AAAAgd5aa");
+        res = JsonSerializer.Deserialize<Response<string>>(this.sf.us.Login("testLogout@gmail.com", "AAAAgd5aa"));
 
-        Response<string> res2 = this.sf.us.Logout("testLogout@gmail.com");
+        Response<string> res2 = JsonSerializer.Deserialize<Response<string>>(this.sf.us.Logout("testLogout@gmail.com"));
         if (res2.errorMsg != null)
         {
             Console.WriteLine(res2.errorMsg);
             return false;
         }
 
-        res2 = this.sf.us.Logout("testLogout@gmail.com");
+        res2 = JsonSerializer.Deserialize<Response<string>>(this.sf.us.Logout("testLogout@gmail.com"));
         if (res2.errorMsg == null)
         {
             Console.WriteLine("Succefully logged out not logged in user.");
             return false;
         }
-        res2 = this.sf.us.Logout("o@gmail.com");
+        res2 = JsonSerializer.Deserialize<Response<string>>(this.sf.us.Logout("o@gmail.com"));
         if (res2.errorMsg == null)
         {
             Console.WriteLine("Succefully logged out non existant user.");
@@ -241,8 +233,8 @@ public class Test
      */
     public void runBeforeBoardTest()
     {
-        Response<UserSL> res = this.sf.us.Register("oriatta@post.bgu.ac.il", "Aa123456");
-        res = this.sf.us.Register("oriattar12@post.bgu.ac.il", "Aa123456");
+        Response<string> res = JsonSerializer.Deserialize<Response<string>>(this.sf.us.Register("oriatta@post.bgu.ac.il", "Aa123456"));
+        res = JsonSerializer.Deserialize<Response<string>>(this.sf.us.Register("oriattar12@post.bgu.ac.il", "Aa123456"));
     }
     public bool testBoardCreation()
     {
@@ -254,7 +246,7 @@ public class Test
         }
 
 
-        Response<string> res2 = JsonSerializer.Deserialize < Response<string>> ((this.sf.bs.CreateBoard("oriatta@post.bgu.ac.il", "Test1"))); //expected error due to duplication
+        Response<string> res2 = JsonSerializer.Deserialize < Response<string>> ((this.sf.bs.CreateBoard("oriatta@post.bgu.ac.il", "Test1")));// expected error due to duplication
         if (res2.errorMsg == null)
         {
             Console.WriteLine("Error - a duplicate board was created for the user.");
@@ -310,8 +302,8 @@ public class Test
         }
 
 
-        Response<string> res3 = JsonSerializer.Deserialize<Response<string>>(this.sf.bs.DeleteBoard("o@post.bgu.ac.il", "Test1"));//expectinf failiure
-        if (res3.errorMsg == null) // failure is expceted as email isnt registered
+        Response<string> res3 = JsonSerializer.Deserialize<Response<string>>(this.sf.bs.DeleteBoard("o@post.bgu.ac.il", "Test1"));//expecting failiure
+        if (res3.errorMsg == null)  //failure is expceted as email isnt registered
         {
             Console.WriteLine("Error - non existent user's board was successfuly deleted");
             return false;
@@ -402,10 +394,10 @@ public class Test
             Console.WriteLine(res3.errorMsg);
             return false;
         }
-        //advancing test tasks.
+       // advancing test tasks.
 
 
-        Response<List<TaskSL>> res4 = JsonSerializer.Deserialize <Response<List<TaskSL>>>( this.sf.bs.GetInProgressList("oriatta@post.bgu.ac.il")); //testing the operation
+        Response<List<TaskSL>> res4 = JsonSerializer.Deserialize <Response<List<TaskSL>>>( this.sf.bs.GetInProgressList("oriatta@post.bgu.ac.il"));// testing the operation
         if (res4.errorMsg != null)
         {
             Console.WriteLine(res4.errorMsg);
@@ -449,7 +441,7 @@ public class Test
             return false;
         }
 
-        //בדיקת עם שם לוח שלא קיים במערכת
+      //  בדיקת עם שם לוח שלא קיים במערכת
         dateTime = DateTime.MaxValue;
         description = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
         title = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
@@ -464,7 +456,7 @@ public class Test
         }
 
 
-        //בדיקת הוספת משימה ללוח קיים עם מייל שונה
+    //    בדיקת הוספת משימה ללוח קיים עם מייל שונה
         dateTime = DateTime.MaxValue;
         description = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
         title = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
@@ -478,7 +470,7 @@ public class Test
         }
 
 
-        //בדיקה עם כותרת ריקה
+    //    בדיקה עם כותרת ריקה
         dateTime = DateTime.MaxValue;
         description = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
         title = "";
@@ -494,7 +486,7 @@ public class Test
         }
 
 
-        //בדיקה עם description ריק
+    //    בדיקה עם description ריק
         dateTime = DateTime.MaxValue;
         description = "";
         title = "gggggggggg";
@@ -507,7 +499,7 @@ public class Test
             return false;
         }
 
-        //בדיקה עם PastDatetime ריק
+   //     בדיקה עם PastDatetime ריק
         dateTime = DateTime.MaxValue;
         description = "vvvvvvvvvvvv";
         title = "gggggggggg";
@@ -558,12 +550,12 @@ public class Test
 
 
     /// <summary>
-    /// Method that tests task editing
+    ///Method that tests task editing
     /// </summary>
     /// <returns></returns>
     public bool editTaskTest()
     {
-        Response<string> res = JsonSerializer.Deserialize<Response<string>>(this.sf.ts.CreateTask(DateTime.MaxValue, "TestTask", "Test for editing", "test", "oriatta@post.bgu.ac.il")); //creating temp task
+        Response<string> res = JsonSerializer.Deserialize<Response<string>>(this.sf.ts.CreateTask(DateTime.MaxValue, "TestTask", "Test for editing", "test", "oriatta@post.bgu.ac.il"));// creating temp task
         if (res.errorMsg != null) 
         {
             Console.WriteLine(res.errorMsg);
@@ -585,7 +577,7 @@ public class Test
             return false;
         }
 
-        res = JsonSerializer.Deserialize<Response<string>>(this.sf.ts.UpdateTaskTitle("oriatta@post.bgu.ac.il", "test", 0, 0, "NewT")); // expecting success
+        res = JsonSerializer.Deserialize<Response<string>>(this.sf.ts.UpdateTaskTitle("oriatta@post.bgu.ac.il", "test", 0, 0, "NewT"));  //expecting success
         if (res.errorMsg != null)
         {
             Console.WriteLine(res.errorMsg);
@@ -604,7 +596,7 @@ public class Test
             return false;
         }
 
-        res = JsonSerializer.Deserialize<Response<string>>(this.sf.ts.UpdateTaskDescription("oriatta@post.bgu.ac.il", "test", 0, 0, "")); // expecting success
+        res = JsonSerializer.Deserialize<Response<string>>(this.sf.ts.UpdateTaskDescription("oriatta@post.bgu.ac.il", "test", 0, 0, ""));  //expecting success
         if (res.errorMsg != null)
         {
             Console.WriteLine(res.errorMsg);
@@ -622,7 +614,7 @@ public class Test
 
     /// <summary>
     /// A method to test task advancing.
-    /// </summary>
+    ///</summary>
     /// <returns></returns>
     public bool testTaskAdvancing()
     {
@@ -647,7 +639,7 @@ public class Test
             return false;
         }
 
-        res2 = JsonSerializer.Deserialize<Response<string>>(this.sf.ts.AdvanceTask("oriatta@post.bgu.ac.il", "test", 2, 0)); ; // expected failure - no where to advance.
+        res2 = JsonSerializer.Deserialize<Response<string>>(this.sf.ts.AdvanceTask("oriatta@post.bgu.ac.il", "test", 2, 0)); ;  //expected failure - no where to advance.
         if (res2.errorMsg == null)
         {
             Console.WriteLine("A task was advanced beyond 'Done'.");

@@ -8,7 +8,7 @@ using IntroSE.Kanban.Backend.Buiesness_layer;
 
 namespace IntroSE.Kanban.Backend.ServiceLayer
 {
-    public class TaskServices
+    internal class TaskServices
     {
         private UserFacade uFacade;
         private BoardFacade bFacade;
@@ -24,7 +24,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             this.bFacade = boardFacade;
 
         }
-
 
         public string CreateTask(DateTime deadline,string title,string description,string bName,string email)
         {

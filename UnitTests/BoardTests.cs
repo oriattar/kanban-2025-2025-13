@@ -27,7 +27,7 @@ namespace UnitTests
 
             _authFacade.Register(testUser.Email);
             _boardFacade.RegisterInFacade(testUser);
-            _userFacade.Register(testUser.Email, testUser);
+            _userFacade.Register(testUser.Email, "abcd");
         }
 
         [Test]
@@ -185,17 +185,17 @@ namespace UnitTests
                 ColumnBL c = this._boardFacade.GetColByID(testUser.Email, "Test", 0);
                 Assert.AreEqual(c.Name, "backlog");
                 Assert.AreEqual(c.TaskLimit, 10);
-                //Assert.AreEqual(c.Tasks, null);
+               
 
                 c = this._boardFacade.GetColByID(testUser.Email, "Test", 1);
                 Assert.AreEqual(c.Name, "in progress");
                 Assert.AreEqual(c.TaskLimit, 10);
-                //Assert.AreEqual(c.Tasks, null);
+               
 
                 c = this._boardFacade.GetColByID(testUser.Email, "Test", 2);
                 Assert.AreEqual(c.Name, "done");
                 Assert.AreEqual(c.TaskLimit, 10);
-                //Assert.AreEqual(c.Tasks, null);
+                
             }
             catch (Exception ex)
             {

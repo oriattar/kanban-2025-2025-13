@@ -10,7 +10,7 @@ using log4net;
 
 namespace IntroSE.Kanban.Backend.Buiesness_layer
 {
-    public class BoardFacade
+    internal class BoardFacade
     {
         private Dictionary<string, List<BoardBL>> boards;
         private AuthenticationFacade aFacade;
@@ -26,7 +26,7 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
         /// <param name="aFacade"></param>
         public BoardFacade(AuthenticationFacade aFacade)
         {
-            this.boards  = new Dictionary<string, List<BoardBL>>();
+            this.boards = new Dictionary<string, List<BoardBL>>();
             this.aFacade = aFacade;
             this.taskIdGenerator = 0;
         }
@@ -40,7 +40,7 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
         /// <exception cref="Exception"></exception>
         public void DeleteBoard(string email, string bName)
         {
-            if(!this.aFacade.IsLoggedIn(email))
+            if (!this.aFacade.IsLoggedIn(email))
             {
                 Log.Warn("Cant delete a board while not logged in. - BOARDFACADE");
                 throw new Exception("Cant delete a board while not logged in.");
@@ -60,12 +60,11 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
         {
             if (!this.boards.ContainsKey(user.Email))
             {
-                this.boards.Add(user.Email,user.Boards);
+                this.boards.Add(user.Email, user.Boards);
                 Log.Info("A list was added to the user:" + user.Email + " in BOARDFACADE");
             }
         }
 
-        
         /// <summary>
         /// A method that finds the board and operates its advance task method.
         /// </summary>
@@ -128,6 +127,7 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
 
             board.setLimit(col,limit);
             Log.Info("A Limit was set to the col:" + col+ " for the board: " + bName + " in BOARDFACADE");
+
         }
 
         /// <summary>
@@ -159,9 +159,9 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
         /// <param name="name"></param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public BoardBL GetBoard(string email,string name)
+        public BoardBL GetBoard(string email, string name)
         {
-     
+
             if (!this.boards.ContainsKey(email)) // if user is not in the facade
             {
                 Log.Warn("Access to non existent user's board in BOARDFACADE");
@@ -174,13 +174,13 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
                 if (userBoards[i].Name.Equals(name))
                 {
                     return userBoards[i];
-                    
+
                 }
             }
 
-            
-           Log.Info("Cant locate Board:" + name + " in facade - BOARDFACADE");
-           throw new Exception("Cant locate Board:" + name + " in facade");
+
+            Log.Info("Cant locate Board:" + name + " in facade - BOARDFACADE");
+            throw new Exception("Cant locate Board:" + name + " in facade");
         }
         /// <summary>
         /// A method that gets a column details and returns it columnBL object.
@@ -192,7 +192,7 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
         /// The input column task limit, if column is leagal.
         /// </returns>
         /// <exception cref="Exception"></exception>
-        public ColumnBL GetColByID(string email,string bName, int col)
+        public ColumnBL GetColByID(string email, string bName, int col)
         {
             if (!this.aFacade.IsLoggedIn(email))
             {

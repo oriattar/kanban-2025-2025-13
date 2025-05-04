@@ -9,7 +9,7 @@ using log4net;
 
 namespace IntroSE.Kanban.Backend.ServiceLayer
 {
-    public class BoardServices
+    internal class BoardServices
     {
         private UserFacade uFacade;
         private BoardFacade bFacade;

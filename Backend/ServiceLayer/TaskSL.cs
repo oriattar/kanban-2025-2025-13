@@ -7,7 +7,7 @@ using IntroSE.Kanban.Backend.Buiesness_layer;
 
 namespace IntroSE.Kanban.Backend.ServiceLayer
 {
-    public class TaskSL
+    internal class TaskSL
     {
         private int id;
         private DateTime creationtime;
