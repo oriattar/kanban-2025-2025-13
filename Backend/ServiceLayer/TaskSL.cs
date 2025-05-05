@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace IntroSE.Kanban.Backend.ServiceLayer
 {
-    public class TaskSL     
-    // Triggering git update
+    public class TaskSL
     {
         private long id;
         private DateTime creationtime;
