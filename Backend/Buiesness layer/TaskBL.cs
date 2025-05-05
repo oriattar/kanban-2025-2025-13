@@ -7,15 +7,15 @@ using IntroSE.Kanban.Backend.ServiceLayer;
 
 namespace IntroSE.Kanban.Backend.Buiesness_layer
 {
-    public class TaskBL
+    internal class TaskBL
     {
-        private long id;
+        private int id;
         private DateTime creationtime;
         private DateTime deadline;
         private string title;
         private string description;
 
-        public TaskBL(long id, DateTime creationtime, DateTime deadline, string title, string description)
+        public TaskBL(int id, DateTime creationtime, DateTime deadline, string title, string description)
         {
             this.id = id;
             this.creationtime = creationtime;
@@ -24,11 +24,12 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
             this.description = description;
         }
 
-        public long Id { get => id; set => id = value; }
+        public int Id { get => id; set => id = value; }
         public DateTime Creationtime { get => creationtime; set => creationtime = value; }
         public DateTime Deadline { get => deadline; set => deadline = value; }
         public string Title { get => title; set => title = value; }
         public string Description { get => description; set => description = value; }
+
 
         public void EditTitle(string newTitle)
         {
@@ -48,14 +49,9 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
 
         public void EditDueDate(DateTime newDeadline)
         {
-            if (newDeadline < creationtime)
+            if (newDeadline <= creationtime)
                 throw new ArgumentException("Deadline cannot be before creation time.");
             deadline = newDeadline;
-        }
-
-        public void Advance()
-        {
-            
         }
     }
 }

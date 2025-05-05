@@ -1,67 +1,128 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using IntroSE.Kanban.Backend.Buiesness_layer;
+using log4net;
 
 namespace IntroSE.Kanban.Backend.ServiceLayer
 {
-    public class TaskServices
+
+   
     // Triggering git update
+
+    internal class TaskServices
     {
         private UserFacade uFacade;
+        private BoardFacade bFacade;
 
-        public TaskServices(UserFacade uFacade)
+        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        /// <summary>
+        /// Constructor to the TaskServices
+        /// </summary>
+        /// <param name="uFacade"></param>
+        /// <param name="boardFacade"></param>
+        public TaskServices(UserFacade uFacade, BoardFacade boardFacade)
         {
             this.uFacade = uFacade;
+            this.bFacade = boardFacade;
+
         }
 
-        public UserFacade UFacade { get => uFacade; set => uFacade = value; }
-
-        public Response<TaskSL> CreateTask(DateTime deadline, string title, string description, string bName, string email)
+        /// <summary>
+        /// Operates the task creation service
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="boardName"></param>
+        /// <param name="title"></param>
+        /// <param name="description"></param>
+        /// <param name="dueDate"></param>
+        /// <returns></returns>
+        public string CreateTask(string email, string boardName, string title, string description, DateTime dueDate)
         {
+            Response<string> response = null;
             try
             {
-                BoardBL board = uFacade.CreateBoard(bName, email);
-                TaskBL task = board.CreateTask(deadline, title, description);
-                TaskSL exposedTask = new TaskSL(task.Id, task.Creationtime, task.Deadline, task.Title, task.Description);
-                return new Response<TaskSL>(null, exposedTask);
+                this.bFacade.CreateTask(email, boardName.ToLower(), title, description, dueDate);
+                response = new Response<string>(null, null);
+                
             }
             catch (Exception ex)
             {
-                return new Response<TaskSL>(ex.Message, default(TaskSL));
+                response = new Response<string>(ex.Message,null);
+                Log.Error("Task creation faild due to - " + ex.Message);
             }
+
+            return JsonSerializer.Serialize(response);
         }
 
-        public Response<TaskSL> EditTask(DateTime newDeadline, string newTitle, string newDescription, long idtask, string bName, string email)
+ 
+
+        public string AdvanceTask(string email, string boardName, int col, int taskId)
         {
+            Response<string> response = null;
             try
             {
-                BoardBL board = uFacade.CreateBoard(bName, email);
-                TaskBL updatedTask = board.EditTask(newDeadline, newTitle, newDescription);
-                TaskSL result = new TaskSL(updatedTask.Id, updatedTask.Creationtime, updatedTask.Deadline, updatedTask.Title, updatedTask.Description);
-                return new Response<TaskSL>(null, result);
+                this.bFacade.advanceTasK(email, boardName.ToLower(), col, taskId);
+                response = new Response<string>(null,null);
             }
             catch (Exception ex)
             {
-                return new Response<TaskSL>(ex.Message, default(TaskSL));
+                response = new Response<string>(ex.Message,null);
+                Log.Error("Failed advancing task due to - " + ex.Message);
             }
+            return JsonSerializer.Serialize(response);
         }
 
-        public Response<string> AdvanceTask(string email, string boardName, long idtask)
+
+        public string UpdateTaskTitle(string email, string boardName, int col, int taskId, string title)
         {
+            Response<string> response = null;
             try
             {
-                BoardBL board = uFacade.CreateBoard(boardName, email);
-                board.AdvanceTask(idtask.ToString());
-                return new Response<string>(null, "Task advanced successfully.");
+                this.bFacade.EditTask(email, boardName.ToLower(), col, taskId, DateTime.MinValue, title, null);
+                response = new Response<string>(null, null);
             }
             catch (Exception ex)
             {
-                return new Response<string>(ex.Message, null);
+                response = new Response<string>(ex.Message, null);
+                Log.Error("Failed editing title due to - " + ex.Message);
             }
+            return JsonSerializer.Serialize(response);
+        }
+        public string UpdateTaskDescription(string email, string boardName, int col, int taskId, string desc)
+        {
+            Response<string> response = null;
+            try
+            {
+                this.bFacade.EditTask(email, boardName.ToLower(), col, taskId, DateTime.MinValue, null,desc);
+                response = new Response<string>(null, null);
+            }
+            catch (Exception ex)
+            {
+                response = new Response<string>(ex.Message, null);
+                Log.Error("Failed editing description due to - " + ex.Message);
+            }
+            return JsonSerializer.Serialize(response);
+        }
+        public string UpdateTaskDeadline(string email, string boardName, int col, int taskId, DateTime deadline)
+        {
+            Response<string> response = null;
+            try
+            {
+                this.bFacade.EditTask(email, boardName.ToLower(), col, taskId, deadline, null, null);
+                response = new Response<string>(null, null);
+            }
+            catch (Exception ex)
+            {
+                response = new Response<string>(ex.Message, null);
+                Log.Error("Failed editing duetime due to - " + ex.Message);
+            }
+            return JsonSerializer.Serialize(response);
         }
     }
 }

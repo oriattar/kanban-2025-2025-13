@@ -1,31 +1,90 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using log4net;
+
+[assembly: InternalsVisibleTo("UnitTests")]
+[assembly: InternalsVisibleTo("BackendTests")]
+
 
 namespace IntroSE.Kanban.Backend.Buiesness_layer
 {
-    public class AuthenticationFacade
+    internal class AuthenticationFacade
     {
         private Dictionary<string, bool> uStatus;
+        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        public AuthenticationFacade(Dictionary<string, bool> uStatus)
+        /// <summary>
+        /// A constructor for the facade, inits the dictionary
+        /// </summary>
+        public AuthenticationFacade()
         {
-            this.uStatus = uStatus;
+            this.uStatus = new Dictionary<string, bool>();
         }
 
-        
-        public Dictionary<string, bool> UStatus { get => uStatus; set => uStatus = value; }
-
+        /// <summary>
+        /// returns the status of the input user in the dictionary
+        /// true if logged in, else false.
+        /// </summary>
+        /// <param name="un"></param>
+        /// <returns></returns>
         public bool IsLoggedIn(string un)
         {
-            throw new NotImplementedException();
+            if (!this.uStatus.ContainsKey(un))
+            {
+                Log.Warn("Checking log in for unregisted user -AUTH_FACADE");
+                throw new Exception("User is not registerd in authenticationFacade -AUTH_FACADE");
+            }
+                
+
+            return this.uStatus[un];
         }
 
-        public bool Login(string un)
+
+
+        /// <summary>
+        /// Logging in a registerd user by updating its value in the dict, if user isnt registerd throws exception
+        /// </summary>
+        /// <param name="un"></param>
+        /// <exception cref="Exception"></exception>
+        public void Login(string un)
         {
-            throw new NotImplementedException();
+            if (!this.uStatus.ContainsKey(un))
+            {
+                Log.Warn("Trying to log in an unregisterd user -AUTH_FACADE");
+                throw new Exception("Trying to log in an unregisterd user in authentication facade -AUTH_FACADE");
+            }
+
+            this.uStatus[un] = true;
+                
         }
+        /// <summary>
+        /// Registers a user in the dictionary, and logs it in
+        /// </summary>
+        /// <param name="un"></param>
+        public void Register(string un)
+        {
+            this.uStatus.Add(un, true);  //automaticaly logs in
+        }
+        /// <summary>
+        /// Logging out a user by updating in the dictionary its value to false.
+        /// Throws exception if user isnt registerd in the dict.
+        /// </summary>
+        /// <param name="un"></param>
+        /// <exception cref="Exception"></exception>
+        public void Logout(string un)
+        {
+            if (!this.uStatus.ContainsKey(un))
+            {
+                Log.Warn("Trying to log in an unregisterd user -AUTH_FACADE");
+                throw new Exception("Cant log out unregisterd user from authentication facade");
+            }
+
+            this.uStatus[un] = false;
+        }
+
     }
 }

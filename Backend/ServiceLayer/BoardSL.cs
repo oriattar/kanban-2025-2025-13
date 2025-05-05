@@ -3,50 +3,31 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using IntroSE.Kanban.Backend.Buiesness_layer;
 
 namespace IntroSE.Kanban.Backend.ServiceLayer
 {
-    public class BoardSL
+    internal class BoardSL
     {
         public string name;
-        public int limit;
+
         public List<TaskSL> backlog;
-        public List<TaskSL> ongoing;
+        public List<TaskSL> inprogress;
         public List<TaskSL> done;
 
-        public BoardSL()
+        /// <summary>
+        /// A consturctor for the boardSL
+        /// </summary>
+        /// <param name="b"></param>
+        public BoardSL(BoardBL b)
         {
-        }
+            this.name = b.Name;
 
-        public string Name
-        {
-            get { return this.name; }
-            set { this.name = value; }
-        }
+            Dictionary<int, ColumnBL> d = b.Columns;
 
-        public int Limit
-        {
-            get { return this.limit; }
-            set { this.limit = value; }
-        }
-
-        public List<TaskSL> Backlog
-        {
-            get { return this.backlog; }
-            set { this.backlog = value; }
-        }
-
-        public List<TaskSL> Ongoing
-        {
-            get { return this.ongoing; }
-            set { this.ongoing = value; }
-        }
-
-        public List<TaskSL> Done
-        {
-            get { return this.done; }
-            set { this.done = value; }
-        }
-
+            this.backlog = BoardServices.ConvertTaskList(d[0].Tasks);
+            this.inprogress = BoardServices.ConvertTaskList(d[1].Tasks);
+            this.done = BoardServices.ConvertTaskList(d[2].Tasks); //building the collumns to collumns SL
+        }   
     }
 }
