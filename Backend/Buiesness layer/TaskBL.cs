@@ -30,11 +30,32 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
         public string Title { get => title; set => title = value; }
         public string Description { get => description; set => description = value; }
 
-        public TaskSL EditTask(DateTime deadline, string newDescription)
+        public void EditTitle(string newTitle)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrWhiteSpace(newTitle))
+                throw new ArgumentException("Title cannot be empty.");
+            if (newTitle.Length > 50)
+                throw new ArgumentException("Title too long.");
+            title = newTitle;
         }
 
+        public void EditDescription(string newDescription)
+        {
+            if (newDescription.Length > 300)
+                throw new ArgumentException("Description too long.");
+            description = newDescription;
+        }
 
+        public void EditDueDate(DateTime newDeadline)
+        {
+            if (newDeadline < creationtime)
+                throw new ArgumentException("Deadline cannot be before creation time.");
+            deadline = newDeadline;
+        }
+
+        public void Advance()
+        {
+            
+        }
     }
 }
