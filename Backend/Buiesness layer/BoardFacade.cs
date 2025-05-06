@@ -149,6 +149,11 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
                 Log.Warn("Cant edit a task while not logged in. - BOARDFACADE");
                 throw new Exception("Cant edit a task while not logged in.");
             }
+            if(col<0 || col >=2)
+            {
+                Log.Warn("Cant edit a with the given column." + col + " - BOARDFACADE");
+                throw new Exception("Cant edit a with the given column." + col);
+            }
 
             this.GetBoard(email,boardName).EditTask(dueDate,title,desc,col,taskId); // finds the board and calls the edit task operation
         }

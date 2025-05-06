@@ -18,7 +18,7 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
 
         private string email;
         private string password;
-        internal List<BoardBL> boards;
+        private List<BoardBL> boards;
 
 
 

@@ -142,7 +142,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>An empty response, unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string AddTask(string email, string boardName, string title, string description, DateTime dueDate)
         {
-            return this.sf.ts.CreateTask(dueDate,title,description,boardName,email);
+            return this.sf.ts.CreateTask(email,boardName,title,description,dueDate);
         }
 
 

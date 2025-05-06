@@ -32,7 +32,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             Response<string> res = null;
             try
             {
-                this.uFacade.CreateBoard(boardName, email); // creates the board
+                this.uFacade.CreateBoard(boardName.ToLower(), email); // creates the board
                 bFacade.RegisterInFacade(uFacade.GetUserBL(email)); // adds the list in the board facade if user isnt registerd
                 res = new Response<string>(null, null);
             }
@@ -56,7 +56,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             Response<string> res = null;
             try
             {
-                this.bFacade.DeleteBoard(email, boardName);
+                this.bFacade.DeleteBoard(email, boardName.ToLower());
                 res = new Response<string>(null,null);
             }
             catch (Exception ex)
@@ -79,7 +79,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             Response<string> res = null;
             try
             {
-                this.bFacade.Setlimit(email, boardName, col, limit);
+                this.bFacade.Setlimit(email, boardName.ToLower(), col, limit);
                 res = new Response<string>(null, null);
             }
             catch (Exception ex)
@@ -98,18 +98,19 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns></returns>
         public string GetColLimit(string email, string bName, int col)
         {
-            Response<int> res = null;
             try
             {
-                ColumnBL c = this.bFacade.GetColByID(email, bName, col);
-                res = new Response<int>(null, c.TaskLimit);
+                ColumnBL c = this.bFacade.GetColByID(email, bName.ToLower(), col);
+                Response<int> res = new Response<int>(null, c.TaskLimit);
+                return JsonSerializer.Serialize(res);
             }
             catch (Exception ex)
             {
-                res = new Response<int>(ex.Message);
+                Response<string> res = new Response<string>(ex.Message, null);
                 Log.Error("Error in finding column limit - BOARDSERVICES:" + ex.Message);
+                return JsonSerializer.Serialize(res);
             }
-            return JsonSerializer.Serialize(res);
+            
         }
 
         /// <summary>
@@ -124,7 +125,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             Response<string> res = null;
             try
             {
-                ColumnBL c = this.bFacade.GetColByID(email, bName, col);
+                ColumnBL c = this.bFacade.GetColByID(email, bName.ToLower(), col);
                 res = new Response<string>(null, c.Name);
             }
             catch (Exception ex)
@@ -147,7 +148,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             Response<List<TaskSL>> res = null;
             try
             {
-                ColumnBL c = this.bFacade.GetColByID(email, bName, col);
+                ColumnBL c = this.bFacade.GetColByID(email, bName.ToLower(), col);
                 res = new Response<List<TaskSL>>(null,ConvertTaskList(c.Tasks)); //converts the collumn taskList to list of TaskListSL
             }
             catch (Exception ex)

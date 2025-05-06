@@ -13,8 +13,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 {
     internal class Response<T>
     {
-        public string? errorMsg;
-        public T? returnValue;
+        public string ErrorMessage { get; set; }
+        public T? ReturnValue { get; set; }
 
 
         public Response() { }
@@ -25,7 +25,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <param name="errorMsg"></param>
         public Response(string errorMsg)
         {
-            this.errorMsg = errorMsg;
+            this.ErrorMessage = errorMsg;
         }
 
         /// <summary>
@@ -35,23 +35,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <param name="returnValue">The return value.</param>
         public Response(string errorMsg, T returnValue)
         {
-            this.errorMsg = errorMsg;
-            this.returnValue = returnValue;
+            this.ErrorMessage = errorMsg;
+            this.ReturnValue = returnValue;
         }
 
-       
-
-        public string ErrorMsg
-        {
-            get { return this.errorMsg; }
-            set { this.errorMsg = value; }
-        }
-
-        public T ReturnValue
-        {
-            get { return this.returnValue; }
-            set { this.returnValue = value; }
-        }
     }
 }
 

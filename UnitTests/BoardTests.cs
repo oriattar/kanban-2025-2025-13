@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using IntroSE.Kanban.Backend.Buiesness_layer;
 using IntroSE.Kanban.Backend.ServiceLayer;
@@ -25,8 +26,9 @@ namespace UnitTests
             _userFacade = new UserFacade(this._authFacade);
             testUser = new UserBL("oriatta@post.bgu.ac.il", "Abcdefg123456");
 
-            this._userFacade.users.Add(testUser.Email, testUser);
-            this._userFacade.aFacade.Register(testUser.Email);
+            
+            this._userFacade.Register(testUser.Email, "Abcdefg123456");
+            testUser = this._userFacade.GetUserBL(testUser.Email);
             _boardFacade.RegisterInFacade(testUser);
         }
 
@@ -185,6 +187,8 @@ namespace UnitTests
                 ColumnBL c = this._boardFacade.GetColByID(testUser.Email, "Test", 0);
                 Assert.AreEqual(c.Name, "backlog");
                 Assert.AreEqual(c.TaskLimit, 10);
+
+               
                
 
                 c = this._boardFacade.GetColByID(testUser.Email, "Test", 1);

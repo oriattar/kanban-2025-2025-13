@@ -24,19 +24,6 @@ namespace UnitTests
         }
 
         [Test]
-        public void constructera_Test()
-        {
-            Assert.AreEqual(aFacade, ufacade.aFacade, "fail - not same a facade");
-        }
-
-        [Test]
-        public void Constructeru_Test()
-        {
-            
-            Assert.AreEqual(dic, ufacade.users, "fail - not same a facade");
-        }
-
-        [Test]
         public void RegisterSameEmail_Test()
         {
             string email = "avdf@gmail.com";

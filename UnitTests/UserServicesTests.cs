@@ -6,6 +6,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using IntroSE.Kanban.Backend.Buiesness_layer;
 using IntroSE.Kanban.Backend.ServiceLayer;
+using Microsoft.Win32;
 
 namespace UnitTests
 {
@@ -55,7 +56,7 @@ namespace UnitTests
 
             Response<UserSL> response = JsonSerializer.Deserialize<Response<UserSL>>(result);
 
-            Assert.AreEqual(response.errorMsg, "Email already exists");
+            Assert.AreEqual(response.ErrorMessage, "Email already exists");
             Assert.IsNull(response.ReturnValue);
         }
 
@@ -78,7 +79,7 @@ namespace UnitTests
 
             string result = us.Logout(email);
 
-            string a = JsonSerializer.Serialize(new Response<string>("Cant log out unregisterd user from authentication facade",null ));
+            string a = JsonSerializer.Serialize(new Response<string>("User is not registerd in authenticationFacade -AUTH_FACADE", null ));
             Assert.AreEqual(a, result);
         }
 

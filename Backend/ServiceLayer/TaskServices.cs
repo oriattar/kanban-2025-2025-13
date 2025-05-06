@@ -1,18 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using IntroSE.Kanban.Backend.Buiesness_layer;
+using log4net;
 
 namespace IntroSE.Kanban.Backend.ServiceLayer
 {
+
+   
+    // Triggering git update
+
     internal class TaskServices
     {
         private UserFacade uFacade;
         private BoardFacade bFacade;
 
+        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         /// <summary>
         /// Constructor to the TaskServices
         /// </summary>
@@ -25,30 +33,97 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
         }
 
-        public string CreateTask(DateTime deadline,string title,string description,string bName,string email)
+        /// <summary>
+        /// Operates the task creation service
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="boardName"></param>
+        /// <param name="title"></param>
+        /// <param name="description"></param>
+        /// <param name="dueDate"></param>
+        /// <returns></returns>
+        public string CreateTask(string email, string boardName, string title, string description, DateTime dueDate)
         {
-            throw new NotImplementedException();
+            Response<string> response = null;
+            try
+            {
+                this.bFacade.CreateTask(email, boardName.ToLower(), title, description, dueDate);
+                response = new Response<string>(null, null);
+                
+            }
+            catch (Exception ex)
+            {
+                response = new Response<string>(ex.Message,null);
+                Log.Error("Task creation faild due to - " + ex.Message);
+            }
+
+            return JsonSerializer.Serialize(response);
+        }
+
+ 
+
+        public string AdvanceTask(string email, string boardName, int col, int taskId)
+        {
+            Response<string> response = null;
+            try
+            {
+                this.bFacade.advanceTasK(email, boardName.ToLower(), col, taskId);
+                response = new Response<string>(null,null);
+            }
+            catch (Exception ex)
+            {
+                response = new Response<string>(ex.Message,null);
+                Log.Error("Failed advancing task due to - " + ex.Message);
+            }
+            return JsonSerializer.Serialize(response);
         }
 
 
-        public string AdvanceTask(string email, string boardName, int columnOrdinal, int taskId)
+        public string UpdateTaskTitle(string email, string boardName, int col, int taskId, string title)
         {
-            throw new NotImplementedException();
+            Response<string> response = null;
+            try
+            {
+                this.bFacade.EditTask(email, boardName.ToLower(), col, taskId, DateTime.MinValue, title, null);
+                response = new Response<string>(null, null);
+            }
+            catch (Exception ex)
+            {
+                response = new Response<string>(ex.Message, null);
+                Log.Error("Failed editing title due to - " + ex.Message);
+            }
+            return JsonSerializer.Serialize(response);
         }
-
-        public string UpdateTaskTitle(string email, string boardName, int columnOrdinal, int taskId, string title)
+        public string UpdateTaskDescription(string email, string boardName, int col, int taskId, string desc)
         {
-            throw new NotImplementedException();
+            Response<string> response = null;
+            try
+            {
+                this.bFacade.EditTask(email, boardName.ToLower(), col, taskId, DateTime.MinValue, null,desc);
+                response = new Response<string>(null, null);
+            }
+            catch (Exception ex)
+            {
+                response = new Response<string>(ex.Message, null);
+                Log.Error("Failed editing description due to - " + ex.Message);
+            }
+            return JsonSerializer.Serialize(response);
         }
-        public string UpdateTaskDescription(string email, string boardName, int columnOrdinal, int taskId, string desc)
+        public string UpdateTaskDeadline(string email, string boardName, int col, int taskId, DateTime deadline)
         {
-            throw new NotImplementedException();
+            Response<string> response = null;
+            try
+            {
+                this.bFacade.EditTask(email, boardName.ToLower(), col, taskId, deadline, null, null);
+                response = new Response<string>(null, null);
+            }
+            catch (Exception ex)
+            {
+                response = new Response<string>(ex.Message, null);
+                Log.Error("Failed editing duetime due to - " + ex.Message);
+            }
+            return JsonSerializer.Serialize(response);
         }
-        public string UpdateTaskDeadline(string email, string boardName, int columnOrdinal, int taskId, DateTime deadline)
-        {
-            throw new NotImplementedException();
-        }
-
-
     }
 }
+

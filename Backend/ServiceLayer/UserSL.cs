@@ -17,9 +17,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        private string email;
-        private List<BoardSL> boards;
-
         public string Email { get; set; }
 
         public List<BoardSL> Boards { get; set; }

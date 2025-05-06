@@ -13,8 +13,8 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
 {
     internal class UserFacade
     {
-        internal Dictionary<string, UserBL> users;
-        internal AuthenticationFacade aFacade;
+        private Dictionary<string, UserBL> users;
+        private AuthenticationFacade aFacade;
         
 
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
@@ -93,6 +93,11 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
         /// <param name="email"></param>
         public void Logout(string email)
         {
+            if (!this.aFacade.IsLoggedIn(email))
+            {
+                Log.Warn("Cant log out while not logged in. - USERFACADE");
+                throw new Exception("Cant log out while not logged in");
+            }
             Log.Info($"Attempting to log out user with email: {email} -USER_FACADE");
             this.aFacade.Logout(email);
         }
@@ -131,7 +136,11 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
                 Log.Warn("Cant create a board while not logged in. - USERFACADE");
                 throw new Exception("Cant create a board while not logged in.");
             }
-           
+            if(string.IsNullOrEmpty(name))
+            {
+                Log.Warn("Cant create a board with no name - BOARDFACADE");
+                throw new Exception("Cant create a board with no name");
+            }
 
             UserBL u = this.GetUserBL(email);
             List<BoardBL> userBoards = u.Boards;

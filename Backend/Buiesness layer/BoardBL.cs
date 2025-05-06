@@ -102,11 +102,11 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
         {
             TaskBL toEdit = this.columns[col].FindTask(taskId);
             if (title != null)
-                toEdit.UpdateTitle(title); // to be implemented
-            else if (descripition != null)
-                toEdit.UpdateDescription(descripition);
+                toEdit.EditTitle(title); // to be implemented
             else if(deadline != DateTime.MinValue)
-                toEdit.UpdateDeadline(deadline);
+                toEdit.EditDueDate(deadline);
+            else
+                toEdit.EditDescription(descripition);
         }
 
         /// <summary>
