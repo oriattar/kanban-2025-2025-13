@@ -11,10 +11,6 @@ using log4net;
 
 namespace IntroSE.Kanban.Backend.ServiceLayer
 {
-
-   
-    // Triggering git update
-
     internal class TaskServices
     {
         private UserFacade uFacade;
@@ -32,6 +28,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             this.bFacade = boardFacade;
 
         }
+
 
         /// <summary>
         /// Operates the task creation service
@@ -123,7 +120,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 Log.Error("Failed editing duetime due to - " + ex.Message);
             }
             return JsonSerializer.Serialize(response);
+
         }
     }
 }
-
