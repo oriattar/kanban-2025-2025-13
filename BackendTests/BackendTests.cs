@@ -281,6 +281,7 @@ public class Test
      */
     public bool testBoardDeletion()
     {
+        this.runBeforeBoardTest();
         Response<string> res = JsonSerializer.Deserialize<Response<string>>(this.sf.bs.CreateBoard("oriatta@post.bgu.ac.il", "Test1")); // creating a board to test
         if (res.ErrorMessage != null)
         {
@@ -310,6 +311,22 @@ public class Test
             Console.WriteLine("Error - non existent user's board was successfuly deleted");
             return false;
         }
+
+        res = JsonSerializer.Deserialize<Response<string>>(this.sf.bs.CreateBoard("oriatta@post.bgu.ac.il", "Test1")); // creating a board to test
+        if (res.ErrorMessage != null)
+        {
+            Console.WriteLine(res.ErrorMessage);
+        }
+
+        this.sf.bs.JoinBoard("oriatta@post.bgu.ac.il", "Test1", "oriattar12@gmail.com");
+
+        res3 = JsonSerializer.Deserialize<Response<string>>(this.sf.bs.DeleteBoard("oriattar12@post.bgu.ac.il", "Test1"));
+        if (res3.ErrorMessage == null)  //failure is expceted as email isnt registered
+        {
+            Console.WriteLine("Error - board was deleted by a normal user, not the owner");
+            return false;
+        }
+
 
         return true;
     }
@@ -546,6 +563,138 @@ public class Test
         return true;
 
 
+    }
+
+    public bool checkBoardJoin()
+    {
+        this.runBeforeBoardTest();
+        Response<string> res = JsonSerializer.Deserialize<Response<string>>(this.sf.bs.CreateBoard("oriatta@post.bgu.ac.il", "Test1")); // creating a board to test
+        if (res.ErrorMessage != null)
+        {
+            Console.WriteLine(res.ErrorMessage);
+            return false;
+        }
+
+        res = JsonSerializer.Deserialize<Response<string>>(this.sf.bs.JoinBoard("oriatta@post.bgu.ac.il", "Test1","oriattar12@gmail.com"));
+        if (res.ErrorMessage != null)
+        {
+            Console.WriteLine(res.ErrorMessage);
+            return false;
+        }
+
+        res = JsonSerializer.Deserialize<Response<string>>(this.sf.bs.JoinBoard("oriatta@post.bgu.ac.il", "Test1", "a"));
+        if (res.ErrorMessage == null)
+        {
+            Console.WriteLine("An unregistered user was assigned to a board");
+            return false;
+        }
+
+        res = JsonSerializer.Deserialize<Response<string>>(this.sf.bs.JoinBoard("oriatta@post.bgu.ac.il", "Test2", "oriattar12@gmail.com"));
+        if (res.ErrorMessage == null)
+        {
+            Console.WriteLine("User joined non existent board");
+            return false;
+        }
+        res = JsonSerializer.Deserialize<Response<string>>(this.sf.bs.JoinBoard("oriatta@post.bgu.ac.il", "Test1", "oriattar12@gmail.com"));
+        if (res.ErrorMessage == null)
+        {
+            Console.WriteLine("User already in board and successfuly joined");
+            return false;
+        }
+
+
+        return true;
+    }
+
+    public bool checkBoardLeave()
+    {
+
+        this.runBeforeBoardTest();
+        Response<string> res = JsonSerializer.Deserialize<Response<string>>(this.sf.bs.CreateBoard("oriatta@post.bgu.ac.il", "Test1")); // creating a board to test
+        if (res.ErrorMessage != null)
+        {
+            Console.WriteLine(res.ErrorMessage);
+            return false;
+        }
+
+        res = JsonSerializer.Deserialize<Response<string>>(this.sf.bs.JoinBoard("oriatta@post.bgu.ac.il", "Test1", "oriattar12@gmail.com"));
+        if (res.ErrorMessage != null)
+        {
+            Console.WriteLine(res.ErrorMessage);
+            return false;
+        }
+
+        res = JsonSerializer.Deserialize<Response<string>>(this.sf.bs.LeaveBoard("oriatta@post.bgu.ac.il", "Test1", "oriattar12@gmail.com"));
+        if (res.ErrorMessage != null)
+        {
+            Console.WriteLine(res.ErrorMessage);
+            return false;
+        }
+
+        res = JsonSerializer.Deserialize<Response<string>>(this.sf.bs.LeaveBoard("oriatta@post.bgu.ac.il", "Test1", "oriattar12@gmail.com"));
+        if (res.ErrorMessage == null)
+        {
+            Console.WriteLine("Unassigned user left successfuly");
+            return false;
+        }
+        res = JsonSerializer.Deserialize<Response<string>>(this.sf.bs.LeaveBoard("oriatta@post.bgu.ac.il", "Test2", "oriattar12@gmail.com"));
+        if (res.ErrorMessage == null)
+        {
+            Console.WriteLine("non existent board - user left successfuly");
+            return false;
+        }
+        res = JsonSerializer.Deserialize<Response<string>>(this.sf.bs.LeaveBoard("oriatta@post.bgu.ac.il", "Test1", "oriatta@post.bgu.ac.il"));
+        if (res.ErrorMessage == null)
+        {
+            Console.WriteLine("Owner left successfuly");
+            return false;
+        }
+
+        return true;
+    }
+
+    public bool checkOwnerChange()
+    {
+        this.runBeforeBoardTest();
+        Response<string> res = JsonSerializer.Deserialize<Response<string>>(this.sf.bs.CreateBoard("oriatta@post.bgu.ac.il", "Test1")); // creating a board to test
+        if (res.ErrorMessage != null)
+        {
+            Console.WriteLine(res.ErrorMessage);
+            return false;
+        }
+
+        res = JsonSerializer.Deserialize<Response<string>>(this.sf.bs.JoinBoard("oriatta@post.bgu.ac.il", "Test1", "oriattar12@gmail.com"));
+        if (res.ErrorMessage != null)
+        {
+            Console.WriteLine(res.ErrorMessage);
+            return false;
+        }
+
+        res = JsonSerializer.Deserialize<Response<string>>(this.sf.bs.ChangeOwner("oriatta@post.bgu.ac.il", "Test1", "oriattar12@gmail.com"));
+        if (res.ErrorMessage != null)
+        {
+            Console.WriteLine(res.ErrorMessage);
+            return false;
+        }
+        res = JsonSerializer.Deserialize<Response<string>>(this.sf.bs.ChangeOwner("oriatta@post.bgu.ac.il", "Test1", "a"));
+        if (res.ErrorMessage == null)
+        {
+            Console.WriteLine("Unassinged user was promoted");
+            return false;
+        }
+        res = JsonSerializer.Deserialize<Response<string>>(this.sf.bs.ChangeOwner("oriatta@post.bgu.ac.il", "Test2", "oriattar12@gmail.com"));
+        if (res.ErrorMessage == null)
+        {
+            Console.WriteLine("Unassinged board - user was promoted");
+            return false;
+        }
+        res = JsonSerializer.Deserialize<Response<string>>(this.sf.bs.ChangeOwner("oriattar12@gmail.com", "Test1", "oriattar12@gmail.com"));
+        if (res.ErrorMessage == null)
+        {
+            Console.WriteLine("Already Assigned owner was assigned");
+            return false;
+        }
+        return true;
     }
 
 

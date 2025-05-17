@@ -173,6 +173,21 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             return JsonSerializer.Serialize(res);
         }
 
+        public string JoinBoard(string email,string bName,string newUser)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string LeaveBoard(string email, string bName, string newUser)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string ChangeOwner(string email, string bName, string newUser)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// A method that returns a taskSL list from taskBL list
         /// </summary>
@@ -190,6 +205,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
             return result;
         }
+
+
 
     }
 }
