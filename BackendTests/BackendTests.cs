@@ -279,6 +279,10 @@ public class Test
      * Method for testing board deletion, accounting for all the scenarios.
      * 
      */
+    /// <summary>
+    /// Added a test for the scenario where the owener is not the one trying to delete.
+    /// </summary>
+    /// <returns></returns>
     public bool testBoardDeletion()
     {
         this.runBeforeBoardTest();
@@ -444,6 +448,10 @@ public class Test
     /// A method for task creation testing
     /// </summary>
     /// <returns></returns>
+    /// 
+
+
+    
     public bool checkCreateTask()
     {
         DateTime dateTime = DateTime.MaxValue;
@@ -565,6 +573,15 @@ public class Test
 
     }
 
+
+    /*
+     * 
+     * From here new tests were added to test new board functionalities,
+     * more be added after implemintation to avoid compilation errors throughout the implementation.
+     * 
+     * 
+     * 
+     */
     public bool checkBoardJoin()
     {
         this.runBeforeBoardTest();
