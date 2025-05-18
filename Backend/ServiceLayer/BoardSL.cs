@@ -9,8 +9,15 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 {
     internal class BoardSL
     {
-        public string name;
+        public static readonly int BACKLOG = 0;
+        public static readonly int IN_PROGRESS = 1;
+        public static readonly int DONE = 2;
 
+
+        public string name;
+        public string owner;
+        public List<string> activeUsers;
+        public int ID;
         public List<TaskSL> backlog;
         public List<TaskSL> inprogress;
         public List<TaskSL> done;
@@ -25,9 +32,13 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
             Dictionary<int, ColumnBL> d = b.Columns;
 
-            this.backlog = BoardServices.ConvertTaskList(d[0].Tasks);
-            this.inprogress = BoardServices.ConvertTaskList(d[1].Tasks);
-            this.done = BoardServices.ConvertTaskList(d[2].Tasks); //building the collumns to collumns SL
+            this.backlog = BoardServices.ConvertTaskList(d[BACKLOG].Tasks);
+            this.inprogress = BoardServices.ConvertTaskList(d[IN_PROGRESS].Tasks);
+            this.done = BoardServices.ConvertTaskList(d[DONE].Tasks); //building the collumns to collumns SL
+
+            this.ID = b.BoardID;
+            this.owner = b.Owner;
+            this.activeUsers = b.ActiveUsers;
         }   
     }
 }

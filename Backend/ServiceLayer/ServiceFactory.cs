@@ -32,8 +32,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
 
             this.us = new UserServices(uf);
-            this.bs = new BoardServices(uf, bf);
-            this.ts = new TaskServices(uf, bf); //creates the services
+            this.bs = new BoardServices(bf);
+            this.ts = new TaskServices(bf); //creates the services
 
             
         }

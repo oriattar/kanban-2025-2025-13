@@ -19,6 +19,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         public string Title{ get; set; }
         public string Description { get; set; }
 
+        public string Asignee { get;set; }
+
 
         
 
@@ -38,6 +40,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             this.DueDate = t.Deadline;
             this.Title = t.Title;
             this.Description = t.Description;
+            this.Asignee = t.Asignee;
         }
     }
 }

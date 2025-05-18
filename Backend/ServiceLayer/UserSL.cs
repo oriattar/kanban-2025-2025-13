@@ -19,8 +19,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
         public string Email { get; set; }
 
-        public List<BoardSL> Boards { get; set; }
-
         /// <summary>
         /// Constructs a service-layer User object based on a business-layer UserBL.
         /// </summary>
@@ -37,15 +35,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             Log.Info($"Creating UserSL for user with email: {u.Email} -USER_SL");
 
             this.Email = u.Email;
-            this.Boards = new List<BoardSL>();
-
-            foreach (var board in u.Boards)
-            {
-                this.Boards.Add(new BoardSL(board));
-            }
-
-            Log.Info($"UserSL created with {Boards.Count} board(s). -USER_SL");
-
         }
     }
 }

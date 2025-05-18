@@ -1,16 +1,31 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using log4net;
 
+
+
+
 namespace IntroSE.Kanban.Backend.Buiesness_layer
 {
     internal class BoardBL
     {
+        public static readonly int BACKLOG = 0;
+        public static readonly int IN_PROGRESS = 1;
+        public static readonly int DONE = 2;
+        public static readonly int NO_LIMIT = -1;
+        private static readonly int DESCRIPTION_LIMIT = 300;
+
+
+
         private string name;
         private Dictionary<int, ColumnBL> columns;
+        private int boardID;
+        private string owner;
+        private List<string> activeUsers;
   
 
         /// <summary>
@@ -18,21 +33,29 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
         /// </summary>
         /// <param name="name"></param>
         /// <param name="intpercol"></param>
-        public BoardBL(string name)
+        public BoardBL(string name , int ID,string owner)
         {
             this.name = name;
             
 
             this.columns = new Dictionary<int, ColumnBL>();
 
-            columns.Add(0, new ColumnBL("backlog"));
-            columns.Add(1, new ColumnBL("in progress"));
-            columns.Add(2, new ColumnBL("done"));
+            columns.Add(BACKLOG, new ColumnBL("backlog"));
+            columns.Add(IN_PROGRESS, new ColumnBL("in progress"));
+            columns.Add(DONE, new ColumnBL("done"));
+
+            this.boardID = ID;
+            this.owner = owner;
+            this.activeUsers = new List<string>();
+            activeUsers.Add(owner);
         }
 
 
         public string Name { get => name; set => name = value; }
         public Dictionary<int, ColumnBL> Columns { get => columns; set => columns = value; }
+        public int BoardID { get => boardID; set => boardID = value; }
+        public List<string> ActiveUsers { get => activeUsers; }
+        public string Owner { get => owner; set => owner = value; }
 
         /// <summary>
         /// A method that gets collumn id and sets it limit to input limit, if possible.
@@ -42,12 +65,12 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
         public void setLimit(int col,int limit)
         {
             
-            if (limit < -1 || col < 0 || col > 2) //allows removing the limit aswell
+            if (limit < NO_LIMIT || col < BACKLOG || col > DONE) //allows removing the limit aswell
                 throw new Exception("Ileagal collumn number or limit");
 
             ColumnBL c = this.Columns[col];
 
-            if (c.Tasks.Count > limit && limit !=-1)
+            if (c.Tasks.Count > limit && limit !=NO_LIMIT)
                 throw new Exception("Cant set the new limit, as there are more tasks than the new limit");
            
 
@@ -64,7 +87,7 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
         /// <exception cref="Exception"></exception>
         public void AdvanceTask(int sourceCol ,int taskID)
         {
-            if (sourceCol < 0 || sourceCol > 1)
+            if (sourceCol < BACKLOG || sourceCol > IN_PROGRESS)
                 throw new Exception("Invalid column ID, or trying to advance past the column limit (past done)");
 
             TaskBL t = this.columns[sourceCol].FindTask(taskID); // if not found throws an exception
@@ -74,9 +97,9 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
 
         public void CreateTask(string title, string description, DateTime dueDate, int taskID)
         {
-            if(title == null || title.Length == 0)
+            if(string.IsNullOrEmpty(title))
                 throw new Exception("Trying to create a task with empty title");
-            if(description == null || description.Length > 300)
+            if(description == null || description.Length > DESCRIPTION_LIMIT)
                 throw new Exception("Trying to create a task with description that is null or past 300 characters");
             if (dueDate < DateTime.Now)
                 throw new Exception("Creating a task with invalid due date");
@@ -100,6 +123,11 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
         /// <exception cref="NotImplementedException"></exception>
         public void EditTask(DateTime deadline, string title, string descripition,int col ,int taskId)
         {
+            if (col < BACKLOG || col >= DONE)
+            {
+                throw new Exception("Cant edit a with the given column." + col);
+            }
+
             TaskBL toEdit = this.columns[col].FindTask(taskId);
             if (title != null)
                 toEdit.EditTitle(title); // to be implemented
@@ -116,7 +144,7 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
         /// <exception cref="NotImplementedException"></exception>
         public List<TaskBL> GetInProgress()
         {
-            return this.columns[1].Tasks;
+            return this.columns[IN_PROGRESS].Tasks;
         }
 
 
