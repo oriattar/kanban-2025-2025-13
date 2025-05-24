@@ -156,7 +156,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
         }
 
-        public string UpdateTaskAsignee(string email, string boardName, int col, int taskId, string asignee)
+        public string AssignTask(string email, string boardName, int columnOrdinal, int taskID, string emailAssignee)
         {
             throw new NotImplementedException();
         }

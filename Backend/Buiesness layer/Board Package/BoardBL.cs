@@ -45,7 +45,7 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
             columns.Add(DONE, new ColumnBL("done"));
 
             this.boardID = ID;
-            this.owner = owner;
+            this.owner = owner; // sets the creating user to be the owner by default
             this.activeUsers = new List<string>();
             activeUsers.Add(owner);
         }
@@ -147,6 +147,66 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
             return this.columns[IN_PROGRESS].Tasks;
         }
 
+        /// <summary>
+        /// Adds a user email to the active memeber list, if he isnt one.
+        /// </summary>
+        /// <param name="email"></param>
+        public void AddUserAsMemeber(string email)
+        {
+            if (this.isActiveMember(email)) // checks wether the input user is already an active user
+            {
+                throw new Exception("Input user is already an active member.");
+            }
+            this.activeUsers.Add(email);
+        }
+        /// <summary>
+        /// Removes a user's email from active user list, if he is one
+        /// </summary>
+        /// <param name="email"></param>
+        /// <exception cref="Exception"></exception>
+        public void RemoveUserAsMemeber(string email)
+        {
+            if (!this.isActiveMember(email))
+            {
+                throw new Exception("Input user is not an active member.");
+            }
+            this.activeUsers.Remove(email);
+        }
+            
 
+        /// <summary>
+        /// Returns true if the input user is an active user of the board
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns></returns>
+        public bool isActiveMember(string email)
+        {
+            return this.activeUsers.Contains(email);
+        }
+
+        /// <summary>
+        /// Going over the collumns and replace the input asignee in each task
+        /// </summary>
+        /// <param name="asigneeToRemove"></param>
+        public void UnassingTasks(string assigneeToRemove)
+        {
+            this.Columns[BACKLOG].UnassignTasks(assigneeToRemove);
+            this.Columns[DONE].UnassignTasks(assigneeToRemove);
+        }
+
+        /// <summary>
+        /// A method to promote a new user as the owner
+        /// </summary>
+        /// <param name="newOwner"></param>
+        /// <exception cref="Exception"></exception>
+        public void TransferOwnership(string newOwner)
+        {
+            if (!this.isActiveMember(newOwner))
+            {
+                throw new Exception("Cannot promote a user that is not an active memeber");
+                
+            }
+            this.Owner = newOwner;
+        }
     }
 }

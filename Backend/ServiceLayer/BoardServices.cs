@@ -156,6 +156,11 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
             return JsonSerializer.Serialize(res);
         }
+        /// <summary>
+        /// Operates the get in progress tasks service - using the board facade
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns></returns>
         public string GetInProgressList(string email)
         {
             Response<List<TaskSL>> res = null;
@@ -170,22 +175,115 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
             return JsonSerializer.Serialize(res);
         }
-
-        public string JoinBoard(string email,string bName,string newUser)
+        /// <summary>
+        /// Operates the get user board id list operation - serivce
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns></returns>
+        public string GetUserBoardIds(string email)
         {
-            throw new NotImplementedException();
+            Response<List<int>> res = null;
+            try
+            {
+                res = new Response<List<int>>(null, this.bFacade.CollectBoardIds(email));
+            }
+            catch (Exception ex)
+            {
+                res = new Response<List<int>>(ex.Message, null);
+                Log.Error("Error in locating board IDs - BOARDSERVICES:" + ex.Message);
+            }
+            return JsonSerializer.Serialize(res);
         }
 
-        public string LeaveBoard(string email, string bName, string newUser)
+        /// <summary>
+        /// Operates the join board operation
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="bName"></param>
+        /// <param name="newUser"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public string JoinBoard(string email, int boardID)
         {
-            throw new NotImplementedException();
+            Response<string> res = null;
+            try
+            {
+                this.bFacade.RegisterInFacade(email); // ensuring an entry exist in facade
+                this.bFacade.AddUserAsMemeber(email, boardID);
+                res = new Response<string>(null, null);
+            }
+            catch (Exception ex)
+            {
+                res = new Response<string>(ex.Message, null);
+                Log.Error("Error in adding a memeber user to a board - BOARDSERVICES:" + ex.Message);
+            }
+            return JsonSerializer.Serialize(res);
         }
 
-        public string ChangeOwner(string email, string bName, string newUser)
+        /// <summary>
+        /// A method that operates the board leave operation
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="boardID"></param>
+        /// <returns></returns>
+        public string LeaveBoard(string email, int boardID)
         {
-            throw new NotImplementedException();
+            Response<string> res = null;
+            try
+            {
+                this.bFacade.RemoveUserAsMemeber(email,boardID);
+                res = new Response<string>(null, null);
+            }
+            catch (Exception ex)
+            {
+                res = new Response<string>(ex.Message, null);
+                Log.Error("Error in removing a memeber user from a board - BOARDSERVICES:" + ex.Message);
+            }
+            return JsonSerializer.Serialize(res);
+        }
+        /// <summary>
+        /// Operates the ownership transfer operation
+        /// </summary>
+        /// <param name="currentOwnerEmail"></param>
+        /// <param name="newOwnerEmail"></param>
+        /// <param name="boardName"></param>
+        /// <returns></returns>
+        public string ChangeOwner(string currentOwnerEmail, string newOwnerEmail, string boardName)
+        {
+            Response<string> res = null;
+            try
+            {
+                this.bFacade.TransferOwnership(currentOwnerEmail, newOwnerEmail, boardName);
+                res = new Response<string>(null, null);
+            }
+            catch (Exception ex)
+            {
+                res = new Response<string>(ex.Message, null);
+                Log.Error("Error in transfering ownership of a board - BOARDSERVICES:" + ex.Message);
+            }
+            return JsonSerializer.Serialize(res);
         }
 
+        /// <summary>
+        /// Operates the get board name by id service.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public string GetBoardName(int id)
+        {
+            Response<string> res = null;
+            try
+            {
+                res = new Response<string>(null, this.bFacade.GetBoardNameById(id));
+            }
+            catch (Exception ex)
+            {
+                res = new Response<string>(ex.Message, null);
+                Log.Error("Error in locating a board name by ID - BOARDSERVICES:" + ex.Message);
+
+            }
+            return JsonSerializer.Serialize(res);
+        }
         /// <summary>
         /// A method that returns a taskSL list from taskBL list
         /// </summary>

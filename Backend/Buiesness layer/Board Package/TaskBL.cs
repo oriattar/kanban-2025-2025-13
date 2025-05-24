@@ -27,6 +27,7 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
             this.deadline = deadline;
             this.title = title;
             this.description = description;
+            this.asignee = "unassigned";
         }
 
         public int Id { get => id; set => id = value; }
@@ -57,6 +58,13 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
             if (newDeadline <= creationtime)
                 throw new ArgumentException("Deadline cannot be before creation time.");
             deadline = newDeadline;
+        }
+        /// <summary>
+        /// See full implemintation instructions
+        /// </summary>
+        public void setAsUnassigned()
+        {
+            this.Asignee = "unassigned";
         }
     }
 }
