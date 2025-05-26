@@ -8,5 +8,10 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 {
     internal class ColumnDAL
     {
+
+        public void AddTask(TaskDAL task)
+        {
+
+        }
     }
 }

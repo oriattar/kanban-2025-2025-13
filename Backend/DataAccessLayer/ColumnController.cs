@@ -8,5 +8,9 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 {
     internal class ColumnController
     {
+        public List<ColumnDAL> SelectColumns(int boardID)
+        {
+            return null;
+        }
     }
 }

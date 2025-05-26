@@ -51,6 +51,7 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
         }
 
 
+
         public string Name { get => name; set => name = value; }
         public Dictionary<int, ColumnBL> Columns { get => columns; set => columns = value; }
         public int BoardID { get => boardID; set => boardID = value; }
@@ -139,13 +140,19 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
         }
 
         /// <summary>
-        /// Returns the in the task list of the inProgress column
+        /// Returns the in the task list of the inProgress column, where the tasks assigned to the input email.
         /// </summary>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public List<TaskBL> GetInProgress()
+        public List<TaskBL> GetInProgress(string email)
         {
-            return this.columns[IN_PROGRESS].Tasks;
+            List<TaskBL> res = new List<TaskBL>();
+            foreach(TaskBL task in this.Columns[IN_PROGRESS].Tasks)
+            {
+                if(task.Asignee.Equals(email))
+                    res.Add(task);
+            }
+            return res;
         }
 
         /// <summary>

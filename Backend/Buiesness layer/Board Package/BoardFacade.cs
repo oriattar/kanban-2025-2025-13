@@ -323,7 +323,7 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
 
             foreach (BoardBL b in uBoards) //going over all of the users boards
             {
-                res.AddRange(b.GetInProgress()); // building the result list
+                res.AddRange(b.GetInProgress(email)); // building the result list
             }
             return res;
 
