@@ -66,7 +66,7 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
             List<BoardBL> userBoards = this.GetUserBoards(email); //sanity check
             foreach (BoardBL board in userBoards) //checks whether a board is already exist
             {
-                if (board.Name.Equals(toAdd.Name)) // the boards already exist
+                if (board.Name.ToLower().Equals(toAdd.Name.ToLower())) // the boards already exist
                 {
                     Log.Warn("Board already exist on User's boardfacade entry - BoardListBL");
                     throw new Exception("Board already exist on User's boardfacade entry");
@@ -146,15 +146,23 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
         /// <param name="col"></param>
         /// <param name="taskId"></param>
         /// <exception cref="Exception"></exception>
-        public void advanceTasK(string email, string bName, int col, int taskId)
+        public void AdvanceTasK(string email, string bName, int col, int taskId)
         {
             if (!this.aFacade.IsLoggedIn(email))
             {
                 Log.Warn("Trying to advance a task while not logged in. - BOARDFACADE");
                 throw new Exception("Trying to advance a task while not logged in.");
             }
+           
+            BoardBL targetBoard = this.GetBoard(email, bName);
+            TaskBL t = targetBoard.GetTask(col, taskId);
 
-            this.GetBoard(email, bName).AdvanceTask(col, taskId);
+            if (!t.Asignee.Equals(email))
+            {
+                Log.Warn("Cant advance a task while not beeing its asignee. - BOARDFACADE");
+                throw new Exception("Cant advance a task while not beeing its asignee");
+            }
+           targetBoard.AdvanceTask(col, taskId);
         }
 
         /// <summary>
@@ -213,7 +221,7 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
 
         /// <summary>
         /// A method that operates the task edition operation
-        
+
         /// </summary>
         /// <param name="email"></param>
         /// <param name="boardName"></param>
@@ -223,16 +231,25 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
         /// <param name="title"></param>
         /// <param name="desc"></param>
         /// <exception cref="Exception"></exception>
-        public void EditTask(string email, string boardName, int col, int taskId, DateTime dueDate, string title,string desc) // needs to be tested when tasks are implemented
+        public void EditTask(string email, string boardName, int col, int taskId, DateTime dueDate, string title, string desc) // needs to be tested when tasks are implemented
         {
             if (!this.aFacade.IsLoggedIn(email))
             {
                 Log.Warn("Cant edit a task while not logged in. - BOARDFACADE");
                 throw new Exception("Cant edit a task while not logged in.");
             }
-           
 
-            this.GetBoard(email,boardName).EditTask(dueDate,title,desc,col,taskId); // finds the board and calls the edit task operation
+            BoardBL targetBoard = this.GetBoard(email, boardName);
+            TaskBL t = targetBoard.GetTask(col, taskId); // finds the board and the task
+
+
+            if (col != BoardBL.DONE && !t.Asignee.Equals(email))
+            {
+                Log.Warn("Cant edit a task while not logged in. - BOARDFACADE");
+                throw new Exception("A task that is not done can only be changed by its asignee");
+            }
+
+            targetBoard.EditTask(dueDate, title, desc, col, taskId);
         }
 
         /// <summary>
@@ -467,6 +484,39 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
 
             targetBoard.TransferOwnership(newOwnerEmail); // changes the owner
             Log.Info("Ownership was transferd from " + currentOwnerEmail + " to " +  newOwnerEmail+" - on board:" + boardName);
+        }
+
+        /// <summary>
+        /// A method that operates the assignemt of a task by a board memeber to another board memeber
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="boardName"></param>
+        /// <param name="col"></param>
+        /// <param name="taskID"></param>
+        /// <param name="emailAssignee"></param>
+        /// <exception cref="Exception"></exception>
+        public void AssignTaskToMember(string email, string boardName, int col, int taskID, string emailAssignee)
+        {
+            if (!this.aFacade.IsLoggedIn(email))
+            {
+                Log.Warn("Cant assign a task while not logged in. - BOARDFACADE");
+                throw new Exception("Cant assign a task while not logged in.");
+            }
+
+            BoardBL targetBoard = this.GetBoard(email,boardName);
+            if(!targetBoard.isActiveMember(email) || !targetBoard.isActiveMember(emailAssignee)) // bouth must be active users of the board
+            {
+                Log.Warn("Either the assigner or the asignee is not an active member in the board. - BOARDFACADE");
+                throw new Exception("Either the assigner or the asignee is not an active member in the board");
+            }
+            TaskBL t = targetBoard.GetTask(col,taskID);
+            if(t.Asignee != "unassigned" && !email.Equals(t.Asignee)) //once a task is assinged, only its assignee can assign to someone else
+            {
+                Log.Warn("While the task is assinged to a member, only its assignee can change its assignment. - BOARDFACADE");
+                throw new Exception("While the task is assinged to a member, only its assignee can change its assignment.");
+            }
+
+            t.Asignee = emailAssignee; //assigns the task.
         }
     }
 }

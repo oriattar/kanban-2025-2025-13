@@ -40,9 +40,9 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
 
             this.columns = new Dictionary<int, ColumnBL>();
 
-            columns.Add(BACKLOG, new ColumnBL("backlog"));
-            columns.Add(IN_PROGRESS, new ColumnBL("in progress"));
-            columns.Add(DONE, new ColumnBL("done"));
+            columns.Add(BACKLOG, new ColumnBL("backlog",ID +"_0"));
+            columns.Add(IN_PROGRESS, new ColumnBL("in progress",ID+"_1"));
+            columns.Add(DONE, new ColumnBL("done", ID + "_2"));
 
             this.boardID = ID;
             this.owner = owner; // sets the creating user to be the owner by default
@@ -91,6 +91,7 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
                 throw new Exception("Invalid column ID, or trying to advance past the column limit (past done)");
 
             TaskBL t = this.columns[sourceCol].FindTask(taskID); // if not found throws an exception
+           
 
             this.columns[sourceCol].transferTask(this.columns[sourceCol+1],t); // trasfers only if destination is not full
         }
@@ -208,5 +209,21 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
             }
             this.Owner = newOwner;
         }
+
+        /// <summary>
+        /// A method that finds a task in a board, given its id and column id
+        /// </summary>
+        /// <param name="colID"></param>
+        /// <param name="taskID"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public TaskBL GetTask(int colID,int taskID)
+        {
+            if (colID < BACKLOG && colID > DONE)
+                throw new Exception("Inalid column number");
+
+            return this.Columns[colID].FindTask(taskID);
+        }
+
     }
 }

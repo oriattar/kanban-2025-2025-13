@@ -32,7 +32,7 @@ namespace UnitTests
 
             this._userFacade.Register(testUser.Email, "Abcdefg123456");
             this._userFacade.Register(testUser2.Email, "Abcdefg123456");
-            
+
             testUser2 = this._userFacade.GetUserBL(testUser2.Email);
             testUser = this._userFacade.GetUserBL(testUser.Email);
 
@@ -131,7 +131,7 @@ namespace UnitTests
                 Assert.Fail();
             }
             catch (Exception ex)
-            { 
+            {
                 Console.WriteLine(ex.Message);
             }
 
@@ -209,18 +209,18 @@ namespace UnitTests
                 Assert.AreEqual(c.Name, "backlog");
                 Assert.AreEqual(c.TaskLimit, 10);
 
-               
-               
+
+
 
                 c = this._boardFacade.GetColByID(testUser.Email, "Test", 1);
                 Assert.AreEqual(c.Name, "in progress");
                 Assert.AreEqual(c.TaskLimit, 10);
-               
+
 
                 c = this._boardFacade.GetColByID(testUser.Email, "Test", 2);
                 Assert.AreEqual(c.Name, "done");
                 Assert.AreEqual(c.TaskLimit, 10);
-                
+
             }
             catch (Exception ex)
             {
@@ -334,7 +334,8 @@ namespace UnitTests
                 this._boardFacade.CreateTask(testUser2.Email, "Test", "T3", "a111", DateTime.MaxValue);
                 Assert.Fail();
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
 
                 Console.WriteLine(ex.Message);
             }
@@ -347,13 +348,16 @@ namespace UnitTests
             this._boardFacade.CreateBoard("Test", testUser.Email);
             this._boardFacade.Setlimit(testUser.Email, "Test", 0, 1);
             this._boardFacade.CreateTask(testUser.Email, "Test", "T", "a", DateTime.MaxValue);
+            this._boardFacade.AssignTaskToMember(testUser.Email, "Test", 0, 0, testUser.Email);
 
             try
             {
-                this._boardFacade.advanceTasK(testUser.Email, "Test", 0, 0);
+
+                this._boardFacade.AdvanceTasK(testUser.Email, "Test", 0, 0);
                 this._boardFacade.CreateTask(testUser.Email, "Test", "T2", "a", DateTime.MaxValue);
-                this._boardFacade.advanceTasK(testUser.Email, "Test", 0, 1);
-                this._boardFacade.advanceTasK(testUser.Email, "Test", 1, 1);
+                this._boardFacade.AssignTaskToMember(testUser.Email, "Test", 0, 1, testUser.Email);
+                this._boardFacade.AdvanceTasK(testUser.Email, "Test", 0, 1);
+                this._boardFacade.AdvanceTasK(testUser.Email, "Test", 1, 1);
             }
             catch (Exception ex)
             {
@@ -370,54 +374,70 @@ namespace UnitTests
             try
             {
                 this._boardFacade.CreateTask(testUser.Email, "Test", "T", "a", DateTime.MaxValue);
-                this._boardFacade.advanceTasK(testUser.Email, "Test", 0, 0);
-                this._boardFacade.advanceTasK(testUser.Email, "Test", 1, 0);
-                this._boardFacade.advanceTasK(testUser.Email, "Test", 2, 0);
+                this._boardFacade.AssignTaskToMember(testUser.Email, "Test", 0, 0, testUser.Email);
+                this._boardFacade.AdvanceTasK(testUser.Email, "Test", 0, 0);
+                this._boardFacade.AdvanceTasK(testUser.Email, "Test", 1, 0);
+                this._boardFacade.AdvanceTasK(testUser.Email, "Test", 2, 0);
                 Assert.Fail();
             }
-            catch { }
+            catch (Exception ex) { Console.WriteLine(ex.Message); }
             try
             {
                 this._boardFacade.CreateTask(testUser.Email, "Test", "T2", "", DateTime.MaxValue);
+                this._boardFacade.AssignTaskToMember(testUser.Email, "Test", 0, 1, testUser.Email);
                 this._boardFacade.Setlimit(testUser.Email, "Test", 1, 0);
-                this._boardFacade.advanceTasK(testUser.Email, "Test", 0, 1);
+                this._boardFacade.AdvanceTasK(testUser.Email, "Test", 0, 1);
                 Assert.Fail();
             }
-            catch { }
+            catch (Exception ex) { Console.WriteLine(ex.Message); }
             this._boardFacade.Setlimit(testUser.Email, "Test", 1, -1);
             try
             {
                 this._boardFacade.CreateTask(testUser.Email, "Test", "T3", "", DateTime.MaxValue);
-                this._boardFacade.advanceTasK(testUser.Email, "Test", 0, 20);
+                this._boardFacade.AssignTaskToMember(testUser.Email, "Test", 0, 2, testUser.Email);
+                this._boardFacade.AdvanceTasK(testUser.Email, "Test", 0, 20);
                 Assert.Fail();
             }
-            catch { }
+            catch (Exception ex) { Console.WriteLine(ex.Message); }
             try
             {
                 this._boardFacade.CreateTask(testUser.Email, "Test", "T3", "", DateTime.MaxValue);
-                this._boardFacade.advanceTasK(testUser.Email, "Test10", 0, 3);
+                this._boardFacade.AssignTaskToMember(testUser.Email, "Test", 0, 3, testUser.Email);
+                this._boardFacade.AdvanceTasK(testUser.Email, "Test10", 0, 3);
                 Assert.Fail();
             }
-            catch { }
+            catch (Exception ex) { Console.WriteLine(ex.Message); }
             try
             {
                 this._boardFacade.CreateTask(testUser.Email, "Test", "T3", "", DateTime.MaxValue);
-                this._boardFacade.advanceTasK("o", "Test", 0, 4);
+                this._boardFacade.AssignTaskToMember(testUser.Email, "Test", 0, 4, testUser.Email);
+                this._boardFacade.AdvanceTasK("o", "Test", 0, 4);
                 Assert.Fail();
             }
-            catch { }
+            catch (Exception ex) { Console.WriteLine(ex.Message); }
             try
             {
                 this._boardFacade.CreateBoard("Test2", testUser.Email);
                 this._boardFacade.CreateTask(testUser.Email, "Test2", "T1", "", DateTime.MaxValue);
                 this._boardFacade.CreateTask(testUser.Email, "Test2", "T2", "", DateTime.MaxValue);
-                this._boardFacade.advanceTasK(testUser.Email, "Test2", 0, 5);
+
+                this._boardFacade.AssignTaskToMember(testUser.Email, "Test2", 0, 5, testUser.Email);
+                this._boardFacade.AssignTaskToMember(testUser.Email, "Test2", 0, 6, testUser.Email);
+                this._boardFacade.AdvanceTasK(testUser.Email, "Test2", 0, 5);
 
                 ColumnBL c = this._boardFacade.GetColByID(testUser.Email, "Test2", 0);
                 if (c.Tasks.Count != 1)
                     Assert.Fail();
             }
-            catch { }
+            catch (Exception ex) { Console.WriteLine(ex.Message); }
+            try
+            {
+                this._boardFacade.CreateTask(testUser.Email, "Test", "T10", "", DateTime.MaxValue);
+                this._boardFacade.AdvanceTasK(testUser.Email, "Test", 0, 7);
+                Assert.Fail();
+            }
+            catch (Exception ex) { Console.WriteLine(ex.Message); }
+
         }
 
         [Test]
@@ -429,30 +449,42 @@ namespace UnitTests
             this._boardFacade.CreateBoard("Test2", testUser.Email);
             try
             {
-                
+
                 this._boardFacade.CreateTask(testUser.Email, "Test", "T1", "a", DateTime.MaxValue);
                 this._boardFacade.CreateTask(testUser.Email, "Test", "T2", "a", DateTime.MaxValue);
                 this._boardFacade.CreateTask(testUser.Email, "Test", "T3", "a", DateTime.MaxValue);
                 this._boardFacade.CreateTask(testUser.Email, "Test", "T4", "a", DateTime.MaxValue);
                 this._boardFacade.CreateTask(testUser.Email, "Test", "T5", "a", DateTime.MaxValue);
 
+                this._boardFacade.AssignTaskToMember(testUser.Email, "Test", 0, 0, testUser.Email);
+                this._boardFacade.AssignTaskToMember(testUser.Email, "Test", 0, 1, testUser.Email);
+                this._boardFacade.AssignTaskToMember(testUser.Email, "Test", 0, 2, testUser.Email);
+                this._boardFacade.AssignTaskToMember(testUser.Email, "Test", 0, 3, testUser.Email);
+                this._boardFacade.AssignTaskToMember(testUser.Email, "Test", 0, 4, testUser.Email);
+
                 this._boardFacade.CreateTask(testUser.Email, "Test1", "T6", "a", DateTime.MaxValue);
                 this._boardFacade.CreateTask(testUser.Email, "Test1", "T7", "a", DateTime.MaxValue);
+
+                this._boardFacade.AssignTaskToMember(testUser.Email, "Test1", 0, 5, testUser.Email);
+                this._boardFacade.AssignTaskToMember(testUser.Email, "Test1", 0, 6, testUser.Email);
 
                 this._boardFacade.CreateTask(testUser.Email, "Test2", "T8", "a", DateTime.MaxValue);
                 this._boardFacade.CreateTask(testUser.Email, "Test2", "T9", "a", DateTime.MaxValue);
 
-                this._boardFacade.advanceTasK(testUser.Email, "Test", 0, 0);
-                this._boardFacade.advanceTasK(testUser.Email, "Test", 1, 0);
-                this._boardFacade.advanceTasK(testUser.Email, "Test", 0, 1);
-                this._boardFacade.advanceTasK(testUser.Email, "Test", 0, 3);
-                this._boardFacade.advanceTasK(testUser.Email, "Test", 0, 4);
+                this._boardFacade.AssignTaskToMember(testUser.Email, "Test2", 0, 7, testUser.Email);
+                this._boardFacade.AssignTaskToMember(testUser.Email, "Test2", 0, 8, testUser.Email);
 
-                this._boardFacade.advanceTasK(testUser.Email, "Test1", 0, 6);
+                this._boardFacade.AdvanceTasK(testUser.Email, "Test", 0, 0);
+                this._boardFacade.AdvanceTasK(testUser.Email, "Test", 1, 0);
+                this._boardFacade.AdvanceTasK(testUser.Email, "Test", 0, 1);
+                this._boardFacade.AdvanceTasK(testUser.Email, "Test", 0, 3);
+                this._boardFacade.AdvanceTasK(testUser.Email, "Test", 0, 4);
 
-                this._boardFacade.advanceTasK(testUser.Email, "Test2", 0, 7);
-                this._boardFacade.advanceTasK(testUser.Email, "Test2", 0, 8);
-                this._boardFacade.advanceTasK(testUser.Email, "Test2", 1, 8);
+                this._boardFacade.AdvanceTasK(testUser.Email, "Test1", 0, 6);
+
+                this._boardFacade.AdvanceTasK(testUser.Email, "Test2", 0, 7);
+                this._boardFacade.AdvanceTasK(testUser.Email, "Test2", 0, 8);
+                this._boardFacade.AdvanceTasK(testUser.Email, "Test2", 1, 8);
 
                 List<TaskBL> t = this._boardFacade.GetInProgressList(testUser.Email);
                 Assert.AreEqual(t[0].Id, 1);
@@ -501,13 +533,14 @@ namespace UnitTests
             try
             {
                 string name = _boardFacade.GetBoardNameById(0);
-              if (!name.Equals("Test"))
+                if (!name.Equals("Test"))
                     Assert.Fail();
             }
             catch (Exception ex) { }
         }
 
-        [Test] public void testCollectIDs_success()
+        [Test]
+        public void testCollectIDs_success()
         {
             try
             {
@@ -520,7 +553,7 @@ namespace UnitTests
                 this._boardFacade.AddUserAsMemeber(testUser2.Email, 0);
 
                 List<int> IDs = this._boardFacade.CollectBoardIds(testUser.Email);
-                for(int i = 0;i<4;i=i+1)
+                for (int i = 0; i < 4; i = i + 1)
                 {
                     if (!IDs.Contains(i))
                         Assert.Fail();
@@ -531,10 +564,11 @@ namespace UnitTests
                     Assert.Fail();
 
             }
-            catch(Exception ex) { Assert.Fail(ex.Message); }
+            catch (Exception ex) { Assert.Fail(ex.Message); }
         }
 
-        [Test] public void testJoinBoard_sucess()
+        [Test]
+        public void testJoinBoard_sucess()
         {
             try
             {
@@ -544,7 +578,7 @@ namespace UnitTests
                 if (!b.isActiveMember(testUser2.Email))
                     Assert.Fail();
                 List<BoardBL> list = this._boardFacade.GetUserBoards(testUser.Email);
-                if(!list.Contains(b))
+                if (!list.Contains(b))
                     Assert.Fail();
 
             }
@@ -564,7 +598,7 @@ namespace UnitTests
             catch (Exception ex) { Console.WriteLine(ex.Message); }
             try
             {
-                
+
                 this._boardFacade.AddUserAsMemeber(testUser2.Email, 100);
                 Assert.Fail();
             }
@@ -605,7 +639,7 @@ namespace UnitTests
                 t[2].Asignee = testUser2.Email;
 
                 this._boardFacade.RemoveUserAsMemeber(testUser2.Email, 0);
-               
+
                 if (b.isActiveMember(testUser2.Email))
                     Assert.Fail();
                 List<BoardBL> list = this._boardFacade.GetUserBoards(testUser2.Email);
@@ -657,7 +691,8 @@ namespace UnitTests
 
         }
 
-        [Test] public void testTransferOwnership_success()
+        [Test]
+        public void testTransferOwnership_success()
         {
             try
             {
@@ -706,5 +741,62 @@ namespace UnitTests
             catch (Exception ex) { Console.WriteLine(ex.Message); }
         }
 
+        [Test]
+
+        public void testAssignemnt_success()
+        {
+            this._boardFacade.CreateBoard("Test", testUser.Email);
+            this._boardFacade.AddUserAsMemeber(testUser2.Email, 0);
+
+            try
+            {
+                this._boardFacade.CreateTask(testUser2.Email, "Test", "T1", "", DateTime.MaxValue);
+
+                this._boardFacade.AssignTaskToMember(testUser.Email, "Test", 0, 0, testUser.Email);
+                this._boardFacade.AssignTaskToMember(testUser.Email, "Test", 0, 0, testUser2.Email);
+                this._boardFacade.AssignTaskToMember(testUser2.Email, "Test", 0, 0, testUser.Email);
+
+                this._boardFacade.AdvanceTasK(testUser.Email, "Test", 0, 0);
+                this._boardFacade.AssignTaskToMember(testUser.Email, "Test", 1, 0, testUser2.Email);
+                this._boardFacade.AdvanceTasK(testUser2.Email, "Test", 1, 0);
+                this._boardFacade.AssignTaskToMember(testUser2.Email, "Test", 2, 0, testUser.Email);
+            }
+            catch (Exception ex) { Assert.Fail(ex.Message); }
+        }
+
+        [Test]
+        public void testAssignemnt_failure()
+        {
+
+            this._boardFacade.CreateBoard("Test", testUser.Email);
+            this._boardFacade.AddUserAsMemeber(testUser2.Email, 0);
+            this._boardFacade.CreateTask(testUser2.Email, "Test", "T1", "", DateTime.MaxValue);
+
+            try
+            {
+                this._boardFacade.AssignTaskToMember(testUser.Email, "Test", 0, 0, "testUser.Email");
+                Assert.Fail();
+            }
+            catch (Exception ex) { Console.WriteLine(ex.Message); }
+            try
+            {
+                this._boardFacade.AssignTaskToMember(testUser.Email, "Test", 0, 0, testUser2.Email);
+                this._boardFacade.AssignTaskToMember(testUser.Email, "Test", 0, 0, testUser.Email);
+                Assert.Fail();
+            }
+            catch (Exception ex) { Console.WriteLine(ex.Message); }
+            try
+            {
+                this._boardFacade.AssignTaskToMember("testUser.Email", "Test", 0, 0, testUser2.Email);
+                Assert.Fail();
+            }
+            catch (Exception ex) { Console.WriteLine(ex.Message); }
+            try
+            {
+                this._boardFacade.AssignTaskToMember("testUser.Email", "Test", 0, -9, testUser2.Email);
+                Assert.Fail();
+            }
+            catch (Exception ex) { Console.WriteLine(ex.Message); }
+        }
     }
 }
