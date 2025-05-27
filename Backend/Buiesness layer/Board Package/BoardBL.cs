@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using IntroSE.Kanban.Backend.ServiceLayer;
 using log4net;
 
 
@@ -19,6 +20,7 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
         public static readonly int NO_LIMIT = -1;
         private static readonly int DESCRIPTION_LIMIT = 300;
 
+        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
 
         private string name;
@@ -48,6 +50,7 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
             this.owner = owner; // sets the creating user to be the owner by default
             this.activeUsers = new List<string>();
             activeUsers.Add(owner);
+            Log.Info("Board " + name + " was created for:" + owner);
         }
 
 
@@ -64,14 +67,20 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
         /// <param name="limit"></param>
         public void setLimit(int col,int limit)
         {
-            
+
             if (limit < NO_LIMIT || col < BACKLOG || col > DONE) //allows removing the limit aswell
+            {
+                Log.Warn("Ileagal collumn number or limit - BOARDBL");
                 throw new Exception("Ileagal collumn number or limit");
+            }
 
             ColumnBL c = this.Columns[col];
 
-            if (c.Tasks.Count > limit && limit !=NO_LIMIT)
+            if (c.Tasks.Count > limit && limit != NO_LIMIT)
+            {
+                Log.Warn("Cant set the new limit, as there are more tasks than the new limit - BOARDBL");
                 throw new Exception("Cant set the new limit, as there are more tasks than the new limit");
+            }
            
 
             
@@ -88,7 +97,10 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
         public void AdvanceTask(int sourceCol ,int taskID)
         {
             if (sourceCol < BACKLOG || sourceCol > IN_PROGRESS)
+            {
+                Log.Warn("Invalid column ID, or trying to advance past the column limit (past done) - BOARDBL");
                 throw new Exception("Invalid column ID, or trying to advance past the column limit (past done)");
+            }
 
             TaskBL t = this.columns[sourceCol].FindTask(taskID); // if not found throws an exception
            
@@ -98,12 +110,21 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
 
         public void CreateTask(string title, string description, DateTime dueDate, int taskID)
         {
-            if(string.IsNullOrEmpty(title))
+            if (string.IsNullOrEmpty(title))
+            {
+                Log.Warn("Trying to create a task with empty title - BOARDBL");
                 throw new Exception("Trying to create a task with empty title");
-            if(description == null || description.Length > DESCRIPTION_LIMIT)
+            }
+            if (description == null || description.Length > DESCRIPTION_LIMIT)
+            {
+                Log.Warn("Trying to create a task with description that is null or past 300 characters - BOARDBL");
                 throw new Exception("Trying to create a task with description that is null or past 300 characters");
+            }
             if (dueDate < DateTime.Now)
+            {
+                Log.Warn("Creating a task with invalid due date - BOARDBL");
                 throw new Exception("Creating a task with invalid due date");
+            }
 
             TaskBL t =new TaskBL(taskID,DateTime.Now,dueDate,title,description);
             this.columns[0].addTask(t);
@@ -126,12 +147,13 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
         {
             if (col < BACKLOG || col >= DONE)
             {
+                Log.Warn("Cant edit a with the given column. - BOARDBL");
                 throw new Exception("Cant edit a with the given column." + col);
             }
 
             TaskBL toEdit = this.columns[col].FindTask(taskId);
             if (title != null)
-                toEdit.EditTitle(title); // to be implemented
+                toEdit.EditTitle(title); 
             else if(deadline != DateTime.MinValue)
                 toEdit.EditDueDate(deadline);
             else
@@ -143,9 +165,15 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
         /// </summary>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public List<TaskBL> GetInProgress()
+        public List<TaskBL> GetInProgress(string email)
         {
-            return this.columns[IN_PROGRESS].Tasks;
+            List<TaskBL> res = new List<TaskBL>();
+            foreach (TaskBL task in this.Columns[IN_PROGRESS].Tasks)
+            {
+                if (task.Asignee.Equals(email))
+                    res.Add(task);
+            }
+            return res;
         }
 
         /// <summary>
@@ -156,6 +184,7 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
         {
             if (this.isActiveMember(email)) // checks wether the input user is already an active user
             {
+                Log.Warn("Input user is already an active member. - BOARDBL");
                 throw new Exception("Input user is already an active member.");
             }
             this.activeUsers.Add(email);
@@ -169,6 +198,7 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
         {
             if (!this.isActiveMember(email))
             {
+                Log.Warn("Input user is not an active member. - BOARDBL");
                 throw new Exception("Input user is not an active member.");
             }
             this.activeUsers.Remove(email);
@@ -204,6 +234,7 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
         {
             if (!this.isActiveMember(newOwner))
             {
+                Log.Warn("Cannot promote a user that is not an active memeber -BOARDBL");
                 throw new Exception("Cannot promote a user that is not an active memeber");
                 
             }
@@ -220,7 +251,10 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
         public TaskBL GetTask(int colID,int taskID)
         {
             if (colID < BACKLOG && colID > DONE)
-                throw new Exception("Inalid column number");
+            {
+                Log.Warn("Invalid column number - BOARDBL");
+                throw new Exception("Invalid column number");
+            }
 
             return this.Columns[colID].FindTask(taskID);
         }
