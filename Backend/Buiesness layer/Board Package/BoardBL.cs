@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using IntroSE.Kanban.Backend.DataAccessLayer;
 using log4net;
 
 
@@ -20,7 +21,7 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
         private static readonly int DESCRIPTION_LIMIT = 300;
 
 
-
+        private BoardDAL boardDTO;
         private string name;
         private Dictionary<int, ColumnBL> columns;
         private int boardID;
@@ -37,7 +38,6 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
         {
             this.name = name;
             
-
             this.columns = new Dictionary<int, ColumnBL>();
 
             columns.Add(BACKLOG, new ColumnBL("backlog",ID +"_0"));
@@ -48,15 +48,25 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
             this.owner = owner; // sets the creating user to be the owner by default
             this.activeUsers = new List<string>();
             activeUsers.Add(owner);
+
+            boardDTO = new BoardDAL(name,ID, owner,  this.activeUsers, this.Columns[BACKLOG].ColumnDTO, this.Columns[IN_PROGRESS].ColumnDTO, this.Columns[DONE].ColumnDTO);
+            boardDTO.Save(); //saves in the db
         }
 
 
 
-        public string Name { get => name; set => name = value; }
-        public Dictionary<int, ColumnBL> Columns { get => columns; set => columns = value; }
-        public int BoardID { get => boardID; set => boardID = value; }
+        public string Name { get => name;}
+        public Dictionary<int, ColumnBL> Columns { get => columns; }
+        public int BoardID { get => boardID; }
         public List<string> ActiveUsers { get => activeUsers; }
-        public string Owner { get => owner; set => owner = value; }
+        public string Owner { get => owner; 
+            set
+            {
+
+                this.Owner = value;
+                this.boardDTO.BoardOwner = value;
+            }
+        }
 
         /// <summary>
         /// A method that gets collumn id and sets it limit to input limit, if possible.
@@ -166,6 +176,7 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
                 throw new Exception("Input user is already an active member.");
             }
             this.activeUsers.Add(email);
+            this.boardDTO.AddUser(email);
         }
         /// <summary>
         /// Removes a user's email from active user list, if he is one
@@ -179,6 +190,7 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
                 throw new Exception("Input user is not an active member.");
             }
             this.activeUsers.Remove(email);
+            this.boardDTO.RemoveUser(email);
         }
             
 
@@ -199,7 +211,7 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
         public void UnassingTasks(string assigneeToRemove)
         {
             this.Columns[BACKLOG].UnassignTasks(assigneeToRemove);
-            this.Columns[DONE].UnassignTasks(assigneeToRemove);
+            this.Columns[IN_PROGRESS].UnassignTasks(assigneeToRemove);
         }
 
         /// <summary>
@@ -230,6 +242,14 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
                 throw new Exception("Inalid column number");
 
             return this.Columns[colID].FindTask(taskID);
+        }
+
+        /// <summary>
+        /// Iniates delete from the db
+        /// </summary>
+        public void Delete()
+        {
+            this.boardDTO.Delete();
         }
 
     }

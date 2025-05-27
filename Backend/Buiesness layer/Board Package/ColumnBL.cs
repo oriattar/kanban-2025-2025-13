@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using IntroSE.Kanban.Backend.DataAccessLayer;
 using IntroSE.Kanban.Backend.ServiceLayer;
 
 namespace IntroSE.Kanban.Backend.Buiesness_layer
@@ -16,6 +17,8 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
         private string name;
         private int taskLimit;
         private string colID;
+
+        private ColumnDAL columnDTO;
 
         /// <summary>
         /// A constructor to a collumn object
@@ -31,6 +34,7 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
         public List<TaskBL> Tasks { get => tasks; set => tasks = value; }
         public string Name { get => name; set => name = value; }
         public int TaskLimit { get => taskLimit; set => taskLimit = value; }
+        public ColumnDAL ColumnDTO { get => columnDTO;  }
 
         /// <summary>
         /// A method that allows adding task to a collumn

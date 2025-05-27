@@ -153,12 +153,14 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 {
                     connection.Open();
 
-                    command.CommandText = $"INSERT INTO {boardTableName} ({BoardDAL.BoardIDColName},{BoardDAL.OwnerColName},{BoardDAL.OwnerColName}) " + "VALUES (@bIDVal,@bName,@bOwner);";
+                    command.CommandText = $"INSERT INTO {boardTableName} ({BoardDAL.BoardIDColName},{BoardDAL.OwnerColName},{BoardDAL.NameColName}) " + "VALUES (@bIDVal,@bOwner,@bName);";
                     
                     SQLiteParameter bIDVal = new SQLiteParameter(@"bIDVal", board.BoardID);
                     SQLiteParameter bName = new SQLiteParameter(@"bName", board.BoardName);
                     SQLiteParameter bOwner = new SQLiteParameter(@"bOwner", board.BoardOwner);
-                    
+
+                    command.Parameters.Clear();
+
                     command.Parameters.Add(bIDVal);
                     command.Parameters.Add(bName);
                     command.Parameters.Add(bOwner);
@@ -179,10 +181,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                     connection.Close();
                 }
 
-                foreach(string email in board.ActiveUsers) //inserting each user to the intersection table
-                {
-                    this.InsertUser(board.BoardID,email);
-                }
                 return res > 0;
             }
         }
@@ -202,20 +200,18 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 {
                     connection.Open();
 
-                    command.CommandText = $"DELETE FROM {userBoardTableName} WHERE idBoard = @bIDVAL;"; //deletes from the boardUser table
-                    
-                    SQLiteParameter bIDVal = new SQLiteParameter(@"bIDVal", board.BoardID);
-                    command.Parameters.Add(bIDVal);
+                    command.CommandText = $"DELETE FROM {userBoardTableName} WHERE idBoard = @bIDVAL;";
+                    command.Parameters.Clear();
+                    command.Parameters.AddWithValue("@bIDVAL", board.BoardID);
                     command.Prepare();
-
                     res = command.ExecuteNonQuery();
 
-                    command.CommandText = $"DELETE FROM {boardTableName} WHERE idBoard = @bIDVAL;"; // deletes from the board table
-
-                    command.Parameters.Add(bIDVal);
+                    command.CommandText = $"DELETE FROM {boardTableName} WHERE idBoard = @bIDVAL;";
+                    command.Parameters.Clear(); 
+                    command.Parameters.AddWithValue("@bIDVAL", board.BoardID);
                     command.Prepare();
-
                     res = command.ExecuteNonQuery();
+
 
                 }
                 catch (Exception ex)
@@ -228,6 +224,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                     command.Dispose();
                     connection.Close();
                 }
+                this.columnController.DeleteColumns(board.BoardID);
+
                 return res > 0;
             }
         }
@@ -252,6 +250,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                     
                     SQLiteParameter bOwner = new SQLiteParameter(@"bOwner", owner);
 
+                    command.Parameters.Clear();
                     command.Parameters.Add(bOwner);
                     command.Prepare();
 
@@ -290,6 +289,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                     command.CommandText = $"INSERT INTO {userBoardTableName} ({BoardDAL.UserIDColName} , {BoardDAL.BoardIDColName}) " + "VALUES (@emailVal,@bIDVal);";
                     SQLiteParameter emailVal = new SQLiteParameter(@"emailVal", user);
                     SQLiteParameter bIDVal = new SQLiteParameter(@"bIDVal", bID);
+
+                    command.Parameters.Clear();
                     command.Parameters.Add(emailVal);
                     command.Parameters.Add(bIDVal);
 
@@ -331,6 +332,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                     command.CommandText = $"DELETE FROM {userBoardTableName} WHERE email = @emailVal and idBoard = @bIDVAL;";
                     SQLiteParameter emailVal = new SQLiteParameter(@"emailVal", user);
                     SQLiteParameter bIDVal = new SQLiteParameter(@"bIDVal", b.BoardID);
+
+                    command.Parameters.Clear();
                     command.Parameters.Add(emailVal);
                     command.Parameters.Add(bIDVal);
 

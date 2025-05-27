@@ -12,5 +12,10 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         {
             return null;
         }
+
+        public void DeleteColumns(int boardID)
+        {
+            
+        }
     }
 }

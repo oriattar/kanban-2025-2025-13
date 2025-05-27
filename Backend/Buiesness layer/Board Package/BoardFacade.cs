@@ -97,7 +97,8 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
                 throw new Exception("Board deletion was initiated by non owner.");
             }
 
-           this.DeleteForAllUsers(toDelete); //deletes the board from users boardlist
+            this.DeleteForAllUsers(toDelete); //deletes the board from users boardlist
+            toDelete.Delete();//deleted from db
             Log.Info("A board was deleted to the user:" + email + " in BOARDFACADE");
         }
 

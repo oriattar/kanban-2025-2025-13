@@ -30,6 +30,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 
         public BoardDAL(string boardName,int boardID, string boardOwner, List<string> activeUsers,ColumnDAL backlog,ColumnDAL inProgress,ColumnDAL done)
         {
+            controller = new BoardController();
             this.boardName = boardName;
             this.boardID = boardID;
             this.BoardOwner = boardOwner;
@@ -39,8 +40,15 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             this.columns = new Dictionary<int, ColumnDAL>();
             this.SetColumns(backlog,inProgress,done);
         }
+        /// <summary>
+        /// A contstructor for boardDAL with empty lists - for controller use only
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="owner"></param>
+        /// <param name="name"></param>
         public BoardDAL(int id,string owner,string name)
         {
+            controller = new BoardController();
             this.boardName = name;
             this.boardID = id;
             this.BoardOwner = owner;
@@ -80,7 +88,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             get => boardOwner;
             set
             {
-                this.BoardOwner = value;
+            
                 if(isPresisted) //if the entry is int the db
                     this.controller.UpdateOwner(value,this.BoardID); //update it
                 
@@ -109,13 +117,22 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             this.controller.RemoveUser(this, email);
         }
 
-        public void save()
+        public void Save()
         {
             if (this.isPresisted) 
                 throw new Exception("Cannot insert an already presisted board");
 
             this.controller.Insert(this);
+            this.AddUser(this.BoardOwner);//adds the owner as the first active member
             isPresisted = true;
+        }
+
+        /// <summary>
+        /// Operates the board deletion
+        /// </summary>
+        public void Delete()
+        {
+            this.controller.Delete(this);
         }
 
     }
