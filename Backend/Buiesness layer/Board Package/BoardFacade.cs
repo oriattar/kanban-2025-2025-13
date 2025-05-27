@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 using IntroSE.Kanban.Backend.ServiceLayer;
 using log4net;
+using log4net.Util;
 
 namespace IntroSE.Kanban.Backend.Buiesness_layer
 {
@@ -53,21 +54,26 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
                 throw new Exception("Cant create a board with no name");
             }
 
-            List<BoardBL> userBoards = this.boards[email];
-
-            foreach (BoardBL board in userBoards) //checks whether a board is already exist
-            {
-                if (board.Name.Equals(name)) // the boards already exist
-                {
-                    Log.Warn("Board already exist on User's BoardListBL - BoardListBL");
-                    throw new Exception("Board already exist on User's BoardListBL");
-                }
-            }
-            BoardBL b = new BoardBL(name,this.boardIdGenerator,email);
+            BoardBL b = new BoardBL(name,this.boardIdGenerator,email); // creating a new board
             this.boardIdGenerator++; // advances the generator
 
             Log.Info("A new board:" + name + " to the user:" + email);
-            userBoards.Add(b);
+            this.AddBoardToUserList(email, b); // adding and ensuring no name duplication
+        }
+
+        private void AddBoardToUserList(string email, BoardBL toAdd)
+        {
+            List<BoardBL> userBoards = this.GetUserBoards(email); //sanity check
+            foreach (BoardBL board in userBoards) //checks whether a board is already exist
+            {
+                if (board.Name.Equals(toAdd.Name)) // the boards already exist
+                {
+                    Log.Warn("Board already exist on User's boardfacade entry - BoardListBL");
+                    throw new Exception("Board already exist on User's boardfacade entry");
+                }
+            }
+
+            userBoards.Add(toAdd);
         }
         /// <summary>
         /// A method that deletes a target board from a user's boardList
@@ -84,10 +90,34 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
                 throw new Exception("Cant delete a board while not logged in.");
             }
 
-            BoardBL toDelte = this.GetBoard(email, bName);
+            BoardBL toDelete = this.GetBoard(email, bName);
+            if(!toDelete.Owner.Equals(email))
+            {
+                Log.Warn("Board deletion was initiated by non owner - BOARDFACADE");
+                throw new Exception("Board deletion was initiated by non owner.");
+            }
 
-            this.boards[email].Remove(toDelte); //deletes the board from users boardlist
+           this.DeleteForAllUsers(toDelete); //deletes the board from users boardlist
             Log.Info("A board was deleted to the user:" + email + " in BOARDFACADE");
+        }
+
+        /// <summary>
+        /// A method that itrates over an input board's user list,and removes it for each of them
+        /// </summary>
+        /// <param name="toDelete"></param>
+        private void DeleteForAllUsers(BoardBL toDelete)
+        {
+            List<string> boardUsers = toDelete.ActiveUsers;
+            foreach (string user in boardUsers)
+            {
+                this.RemoveBoardFromUserList(user, toDelete);
+            }
+        }
+
+        private void RemoveBoardFromUserList(string email,BoardBL toDelete)
+        {
+            List<BoardBL> uBoards = this.GetUserBoards(email); // Going throuth sanity check
+            uBoards.Remove(toDelete);
         }
         /// <summary>
         /// Registers a user's boardlist if one dosnt exist for the user in the facade
@@ -144,7 +174,15 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
                 throw new Exception("Trying to add a task while not logged in.");
             }
 
-            this.GetBoard(email, boardName).CreateTask(title,description,dueDate,this.taskIdGenerator);
+            BoardBL targetBoard = this.GetBoard(email, boardName);
+
+            if (!targetBoard.isActiveMember(email))
+            {
+                Log.Warn("Cant create a task while not an active member - BOARDFACADE");
+                throw new Exception("Cant create a task while not an active member.");
+            }
+
+            targetBoard.CreateTask(title,description,dueDate,this.taskIdGenerator);
             this.taskIdGenerator++; //advances the id generator
             Log.Info("A task was added to the board" + boardName + " in BOARDFACADE");
         }
@@ -205,14 +243,7 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
         /// <exception cref="NotImplementedException"></exception>
         public BoardBL GetBoard(string email, string name)
         {
-
-            if (!this.boards.ContainsKey(email)) // if user is not in the facade
-            {
-                Log.Warn("Access to non existent user's board in BOARDFACADE");
-                throw new Exception("User isnt registered in board Facade");
-            }
-
-            List<BoardBL> userBoards = this.boards[email];
+            List<BoardBL> userBoards = this.GetUserBoards(email); // also checks if user exist in facade
             for (int i = 0; i < userBoards.Count; i++)
             {
                 if (userBoards[i].Name.Equals(name))
@@ -223,7 +254,7 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
             }
 
 
-            Log.Info("Cant locate Board:" + name + " in facade - BOARDFACADE");
+            Log.Info("Cant locate Board:" + name + " in the user's facade entry - BOARDFACADE");
             throw new Exception("Cant locate Board:" + name + " in facade");
         }
         /// <summary>
@@ -267,15 +298,10 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
                 Log.Warn("Cant get the inProgress list while not logged in. - BOARDFACADE");
                 throw new Exception("Cant get the inProgress list while not logged in.");
             }
-            if (!this.boards.ContainsKey(email))
-            {
-                Log.Warn("Cant get inProgress list, user isnt registerd in facade. - BOARDFACADE");
-                throw new Exception("Cant get inProgress list, user isnt registerd in facade");
-            }
 
 
+            List<BoardBL> uBoards = this.GetUserBoards(email);
             List<TaskBL> res = new List<TaskBL>();
-            List<BoardBL> uBoards = this.boards[email];
 
 
             foreach (BoardBL b in uBoards) //going over all of the users boards
@@ -283,6 +309,164 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
                 res.AddRange(b.GetInProgress()); // building the result list
             }
             return res;
+
+        }
+
+        /// <summary>
+        /// A method that gets a user's email, and iterating over its boards.
+        /// Adding each board ID to the result list and returns it
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public List<int> CollectBoardIds(string email)
+        {
+            if (!this.aFacade.IsLoggedIn(email))
+            {
+                Log.Warn("Cant get the inProgress list while not logged in. - BOARDFACADE");
+                throw new Exception("Cant get the inProgress list while not logged in.");
+            }
+            List<BoardBL> boards = this.GetUserBoards(email);
+
+            List<int> res = new List<int>();
+
+            foreach (BoardBL b in boards)
+            {
+                res.Add(b.BoardID);
+            }
+            return res;
+        }
+
+        /// <summary>
+        /// A helper method that returns the user list of boardBL objects
+        /// mainly used for checking if the user exsit on facade, to avoid duplicating code.
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public List<BoardBL> GetUserBoards(string email)
+        {
+            if (!this.boards.ContainsKey(email))
+            {
+                Log.Warn("Cannot locate user in board facade. - BOARDFACADE");
+                throw new Exception("Cannot locate user in board facade.");
+            }
+
+            return this.boards[email];
+        }
+
+        /// <summary>
+        /// A method that locate a board in the facade by its ID.
+        /// itrating over the entries in the facade and searching the id in each.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        private BoardBL GetBoardById(int id)
+        {
+            foreach(KeyValuePair<string,List<BoardBL>> entry in this.boards)
+            {
+                List<BoardBL> userBoards = entry.Value;
+                
+                foreach (BoardBL b in userBoards)
+                {
+                    if(b.BoardID == id)
+                        return b;
+                }
+            }
+
+            Log.Warn("Cannot locate board by ID. - BOARDFACADE");
+            throw new Exception("Cannot locate board by ID");
+        }
+        /// <summary>
+        /// Returns a board's name using its ID, going through a sanity check to see if it exist in facade
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public string GetBoardNameById(int id)
+        {
+            return this.GetBoardById(id).Name;
+        }
+
+
+        /// <summary>
+        /// A method that
+        /// </summary>
+        /// <param name="toAddEmail"></param>
+        /// <param name="boardId"></param>
+        /// <exception cref="Exception"></exception>
+        public void AddUserAsMemeber(string toAddEmail,int boardId)
+        {
+            if (!this.aFacade.IsLoggedIn(toAddEmail))
+            {
+                Log.Warn("Cant join board while not logged in. - BOARDFACADE");
+                throw new Exception("Cant join board while not logged in.");
+            }
+
+            BoardBL targetBoard = this.GetBoardById(boardId); // locates the boards
+
+
+            targetBoard.AddUserAsMemeber(toAddEmail); // adding the user email to the board
+            this.AddBoardToUserList(toAddEmail,targetBoard); // adding the board to the input user list
+            Log.Info("User " + toAddEmail + " joined board:" + targetBoard.Name);
+        }
+
+        /// <summary>
+        /// A method that removes the input user from the board user list, and the board from the user's boardlist.
+        /// Also, setting all his assigned tasks to unassinged
+        /// </summary>
+        /// <param name="emailToRemove"></param>
+        /// <param name="boardId"></param>
+        /// <exception cref="Exception"></exception>
+        public void RemoveUserAsMemeber(string emailToRemove,int boardId)
+        {
+            if (!this.aFacade.IsLoggedIn(emailToRemove))
+            {
+                Log.Warn("Cant leave a board while not logged in. - BOARDFACADE");
+                throw new Exception("Cant leave a board while not logged in.");
+            }
+
+            BoardBL targetBoard = this.GetBoardById(boardId); // locates the boards
+
+            if(targetBoard.Owner.Equals(emailToRemove))
+            {
+                Log.Warn("Cant leave a board while beeing the owner. - BOARDFACADE");
+                throw new Exception("Cant leave a board while beeing the owner.");
+            }
+
+            targetBoard.RemoveUserAsMemeber(emailToRemove);
+            this.RemoveBoardFromUserList(emailToRemove,targetBoard); // removes board from the user list
+
+            targetBoard.UnassingTasks(emailToRemove); // unassigns the leaving user tasks upon leaving
+            Log.Info("User " +  emailToRemove + " left board:" + targetBoard.Name);
+
+        }
+
+        /// <summary>
+        /// A method that finds the target board and transfer
+        /// </summary>
+        /// <param name="currentOwnerEmail"></param>
+        /// <param name="newOwnerEmail"></param>
+        /// <param name="boardName"></param>
+        /// <exception cref="Exception"></exception>
+        public void TransferOwnership(string currentOwnerEmail, string newOwnerEmail, string boardName)
+        {
+            if (!this.aFacade.IsLoggedIn(currentOwnerEmail)) // only transfering user needs to be logged in
+            {
+                Log.Warn("Cant transfer owmership of a board while not logged in. - BOARDFACADE");
+                throw new Exception("Cant transfer owmership of a board while not logged in.");
+            }
+            if (currentOwnerEmail.Equals(newOwnerEmail))
+            {
+                Log.Warn("Cant transfer owmership -Already the owner. - BOARDFACADE");
+                throw new Exception("Cant transfer owmership -Already the owner.");
+
+            }
+
+            BoardBL targetBoard = this.GetBoard(currentOwnerEmail,boardName); // locate target board
+
+            targetBoard.TransferOwnership(newOwnerEmail); // changes the owner
+            Log.Info("Ownership was transferd from " + currentOwnerEmail + " to " +  newOwnerEmail+" - on board:" + boardName);
         }
     }
 }

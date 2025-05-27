@@ -7,6 +7,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using IntroSE.Kanban.Backend.Buiesness_layer;
 using IntroSE.Kanban.Backend.ServiceLayer;
+using NUnit.Framework;
 
 namespace UnitTests
 {
@@ -17,6 +18,7 @@ namespace UnitTests
         private BoardFacade _boardFacade;
         private UserFacade _userFacade;
         private UserBL testUser;
+        private UserBL testUser2;
 
         [SetUp]
         public void Setup()
@@ -25,11 +27,17 @@ namespace UnitTests
             _boardFacade = new BoardFacade(_authFacade);
             _userFacade = new UserFacade(this._authFacade);
             testUser = new UserBL("oriatta@post.bgu.ac.il", "Abcdefg123456");
+            testUser2 = new UserBL("o@post.bgu.ac.il", "Abcdefg123456");
 
-            
+
             this._userFacade.Register(testUser.Email, "Abcdefg123456");
+            this._userFacade.Register(testUser2.Email, "Abcdefg123456");
+            
+            testUser2 = this._userFacade.GetUserBL(testUser2.Email);
             testUser = this._userFacade.GetUserBL(testUser.Email);
+
             _boardFacade.RegisterInFacade(testUser.Email);
+            _boardFacade.RegisterInFacade(testUser2.Email);
         }
 
         [Test]
@@ -114,6 +122,19 @@ namespace UnitTests
             }
             catch (Exception ex)
             { }
+            try
+            {
+                this._boardFacade.CreateBoard("Test2", testUser.Email);
+                this._boardFacade.AddUserAsMemeber(testUser2.Email, 2); //delete by non owner
+                this._boardFacade.DeleteBoard(testUser2.Email, "Test2");
+
+                Assert.Fail();
+            }
+            catch (Exception ex)
+            { 
+                Console.WriteLine(ex.Message);
+            }
+
 
         }
 
@@ -249,6 +270,8 @@ namespace UnitTests
                 this._boardFacade.CreateBoard("Test", testUser.Email);
                 this._boardFacade.CreateTask(testUser.Email, "Test", "T", "a", DateTime.MaxValue);
                 this._boardFacade.CreateTask(testUser.Email, "Test", "T2", "", DateTime.MaxValue);
+                this._boardFacade.AddUserAsMemeber(testUser2.Email, 0);
+                this._boardFacade.CreateTask(testUser2.Email, "Test", "T3", "", DateTime.MaxValue);
             }
             catch (Exception ex)
             {
@@ -306,6 +329,15 @@ namespace UnitTests
                 Assert.Fail();
             }
             catch { }
+            try
+            {
+                this._boardFacade.CreateTask(testUser2.Email, "Test", "T3", "a111", DateTime.MaxValue);
+                Assert.Fail();
+            }
+            catch (Exception ex) {
+
+                Console.WriteLine(ex.Message);
+            }
         }
 
         [Test]
@@ -434,5 +466,245 @@ namespace UnitTests
                 Assert.Fail(ex.Message);
             }
         }
+
+        [Test]
+
+        public void testGetBoardName_success()
+        {
+            try
+            {
+                this._boardFacade.CreateBoard("Test", testUser.Email);
+                string name = this._boardFacade.GetBoardNameById(0);
+                Assert.AreEqual("Test", name);
+                this._boardFacade.CreateBoard("Test1", testUser.Email);
+                this._boardFacade.CreateBoard("Test2", testUser.Email);
+                name = this._boardFacade.GetBoardNameById(2);
+                Assert.AreEqual("Test2", name);
+                this._boardFacade.CreateBoard("Test3", testUser2.Email);
+                name = this._boardFacade.GetBoardNameById(3);
+                Assert.AreEqual("Test3", name);
+            }
+            catch (Exception ex) { Assert.Fail(); }
+        }
+
+
+        [Test]
+        public void testGetBoardName_failure()
+        {
+            this._boardFacade.CreateBoard("Test", testUser.Email);
+            try
+            {
+                _boardFacade.GetBoardNameById(13);
+                Assert.Fail();
+            }
+            catch (Exception ex) { }
+            try
+            {
+                string name = _boardFacade.GetBoardNameById(0);
+              if (!name.Equals("Test"))
+                    Assert.Fail();
+            }
+            catch (Exception ex) { }
+        }
+
+        [Test] public void testCollectIDs_success()
+        {
+            try
+            {
+                this._boardFacade.CreateBoard("Test", testUser.Email);
+                this._boardFacade.CreateBoard("Test1", testUser.Email);
+                this._boardFacade.CreateBoard("Test2", testUser.Email);
+                this._boardFacade.CreateBoard("Test3", testUser.Email);
+                this._boardFacade.CreateBoard("Test4", testUser.Email);
+
+                this._boardFacade.AddUserAsMemeber(testUser2.Email, 0);
+
+                List<int> IDs = this._boardFacade.CollectBoardIds(testUser.Email);
+                for(int i = 0;i<4;i=i+1)
+                {
+                    if (!IDs.Contains(i))
+                        Assert.Fail();
+                }
+                IDs = this._boardFacade.CollectBoardIds(testUser2.Email);
+
+                if (IDs.Count != 1 || !IDs.Contains(0))
+                    Assert.Fail();
+
+            }
+            catch(Exception ex) { Assert.Fail(ex.Message); }
+        }
+
+        [Test] public void testJoinBoard_sucess()
+        {
+            try
+            {
+                this._boardFacade.CreateBoard("Test", testUser.Email);
+                this._boardFacade.AddUserAsMemeber(testUser2.Email, 0);
+                BoardBL b = this._boardFacade.GetBoard(testUser.Email, "Test");
+                if (!b.isActiveMember(testUser2.Email))
+                    Assert.Fail();
+                List<BoardBL> list = this._boardFacade.GetUserBoards(testUser.Email);
+                if(!list.Contains(b))
+                    Assert.Fail();
+
+            }
+            catch (Exception ex) { Assert.Fail(ex.Message); }
+        }
+
+        [Test]
+        public void testJoinBoard_failure()
+        {
+            this._boardFacade.CreateBoard("Test", testUser.Email);
+            try
+            {
+                this._boardFacade.CreateBoard("Test", testUser2.Email);
+                this._boardFacade.AddUserAsMemeber(testUser2.Email, 0);
+                Assert.Fail();
+            }
+            catch (Exception ex) { Console.WriteLine(ex.Message); }
+            try
+            {
+                
+                this._boardFacade.AddUserAsMemeber(testUser2.Email, 100);
+                Assert.Fail();
+            }
+            catch (Exception ex) { Console.WriteLine(ex.Message); }
+            try
+            {
+
+                this._boardFacade.AddUserAsMemeber("testUser2.Email", 0);
+                Assert.Fail();
+            }
+            catch (Exception ex) { Console.WriteLine(ex.Message); }
+            try
+            {
+                this._boardFacade.CreateBoard("Test2", testUser2.Email);
+                this._boardFacade.AddUserAsMemeber(testUser2.Email, 2);
+                this._boardFacade.AddUserAsMemeber(testUser2.Email, 2);
+                Assert.Fail();
+            }
+            catch (Exception ex) { Console.WriteLine(ex.Message); }
+        }
+
+        [Test]
+
+        public void testBoardLeave_success()
+        {
+            try
+            {
+                this._boardFacade.CreateBoard("Test", testUser.Email);
+                this._boardFacade.AddUserAsMemeber(testUser2.Email, 0);
+
+                this._boardFacade.CreateTask(testUser2.Email, "Test", "T1", "", DateTime.MaxValue);
+                this._boardFacade.CreateTask(testUser.Email, "Test", "T2", "", DateTime.MaxValue);
+                this._boardFacade.CreateTask(testUser2.Email, "Test", "T3", "", DateTime.MaxValue);
+
+                BoardBL b = this._boardFacade.GetBoard(testUser.Email, "Test");
+                List<TaskBL> t = b.Columns[0].Tasks;
+                t[0].Asignee = testUser2.Email;
+                t[2].Asignee = testUser2.Email;
+
+                this._boardFacade.RemoveUserAsMemeber(testUser2.Email, 0);
+               
+                if (b.isActiveMember(testUser2.Email))
+                    Assert.Fail();
+                List<BoardBL> list = this._boardFacade.GetUserBoards(testUser2.Email);
+                if (list.Contains(b))
+                    Assert.Fail();
+
+                Assert.AreEqual(t[0].Asignee, "unassigned");
+                Assert.AreEqual(t[2].Asignee, "unassigned");
+            }
+            catch (Exception ex) { Assert.Fail(ex.Message); }
+        }
+
+        [Test]
+        public void testBoardLeave_failure()
+        {
+            this._boardFacade.CreateBoard("Test", testUser.Email);
+            try
+            {
+                this._boardFacade.AddUserAsMemeber(testUser2.Email, 0);
+
+                this._boardFacade.RemoveUserAsMemeber(testUser2.Email, 0);
+                this._boardFacade.RemoveUserAsMemeber(testUser2.Email, 0);
+                Assert.Fail();
+            }
+            catch (Exception ex) { Console.WriteLine(ex.Message); }
+            try
+            {
+                this._boardFacade.RemoveUserAsMemeber(testUser2.Email, 1);
+
+                Assert.Fail();
+            }
+            catch (Exception ex) { Console.WriteLine(ex.Message); }
+            try
+            {
+                this._boardFacade.RemoveUserAsMemeber(testUser.Email, 0);
+
+                Assert.Fail();
+            }
+            catch (Exception ex) { Console.WriteLine(ex.Message); }
+            try
+            {
+                this._boardFacade.AddUserAsMemeber(testUser2.Email, 0);
+                this._boardFacade.TransferOwnership(testUser.Email, testUser2.Email, "Test");
+                this._boardFacade.RemoveUserAsMemeber(testUser2.Email, 0);
+
+                Assert.Fail();
+            }
+            catch (Exception ex) { Console.WriteLine(ex.Message); }
+
+        }
+
+        [Test] public void testTransferOwnership_success()
+        {
+            try
+            {
+                this._boardFacade.CreateBoard("Test", testUser.Email);
+                this._boardFacade.AddUserAsMemeber(testUser2.Email, 0);
+                this._boardFacade.TransferOwnership(testUser.Email, testUser2.Email, "Test");
+
+                BoardBL b = this._boardFacade.GetBoard(testUser2.Email, "Test");
+                Assert.AreEqual(b.Owner, testUser2.Email);
+                this._boardFacade.DeleteBoard(testUser2.Email, "Test");
+            }
+            catch (Exception ex) { Assert.Fail(ex.Message); }
+        }
+
+        [Test]
+        public void testTransferOwnership_failure()
+        {
+            this._boardFacade.CreateBoard("Test", testUser.Email);
+            this._boardFacade.AddUserAsMemeber(testUser2.Email, 0);
+
+            try
+            {
+                this._boardFacade.TransferOwnership(testUser.Email, testUser.Email, "Test");
+                Assert.Fail();
+            }
+            catch (Exception ex) { Console.WriteLine(ex.Message); }
+            try
+            {
+                this._boardFacade.RemoveUserAsMemeber(testUser2.Email, 0);
+                this._boardFacade.TransferOwnership(testUser.Email, testUser2.Email, "Test");
+                Assert.Fail();
+            }
+            catch (Exception ex) { Console.WriteLine(ex.Message); }
+            this._boardFacade.AddUserAsMemeber(testUser2.Email, 0);
+            try
+            {
+                this._boardFacade.TransferOwnership(testUser.Email, "testUser2.Email", "Test");
+                Assert.Fail();
+            }
+            catch (Exception ex) { Console.WriteLine(ex.Message); }
+            try
+            {
+                this._boardFacade.TransferOwnership(testUser.Email, testUser2.Email, "T");
+                Assert.Fail();
+            }
+            catch (Exception ex) { Console.WriteLine(ex.Message); }
+        }
+
     }
 }

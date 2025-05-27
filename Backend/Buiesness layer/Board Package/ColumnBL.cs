@@ -73,5 +73,21 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
 
             this.Tasks.Remove(toTransfer);
         }
+
+        /// <summary>
+        /// Setting all the tasks that are assigned to the input user to unassigned.
+        /// </summary>
+        /// <param name="asigneeToRemove"></param>
+        public void UnassignTasks(string asigneeToRemove)
+        {
+            foreach (TaskBL task in this.Tasks)
+            {
+                if (task.Asignee.Equals(asigneeToRemove))
+                {
+                    task.setAsUnassigned();
+                }
+
+            }
+        }
     }
 }
