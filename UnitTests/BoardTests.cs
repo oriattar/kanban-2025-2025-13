@@ -29,7 +29,7 @@ namespace UnitTests
             
             this._userFacade.Register(testUser.Email, "Abcdefg123456");
             testUser = this._userFacade.GetUserBL(testUser.Email);
-            _boardFacade.RegisterInFacade(testUser);
+            _boardFacade.RegisterInFacade(testUser.Email);
         }
 
         [Test]
@@ -37,7 +37,7 @@ namespace UnitTests
         {
             try
             {
-                this._userFacade.CreateBoard("Test", testUser.Email);
+                this._boardFacade.CreateBoard("Test", testUser.Email);
 
             }
             catch (Exception ex)
@@ -52,8 +52,8 @@ namespace UnitTests
         {
             try
             {
-                this._userFacade.CreateBoard("Test", testUser.Email);
-                this._userFacade.CreateBoard("Test", testUser.Email);
+                this._boardFacade.CreateBoard("Test", testUser.Email);
+                this._boardFacade.CreateBoard("Test", testUser.Email);
                 Assert.Fail();
 
             }
@@ -63,7 +63,7 @@ namespace UnitTests
 
             try
             {
-                this._userFacade.CreateBoard("a", "a");
+                this._boardFacade.CreateBoard("a", "a");
                 Assert.Fail();
 
             }
@@ -77,7 +77,7 @@ namespace UnitTests
         {
             try
             {
-                this._userFacade.CreateBoard("Test", testUser.Email);
+                this._boardFacade.CreateBoard("Test", testUser.Email);
                 this._boardFacade.DeleteBoard(testUser.Email, "Test");
             }
             catch (Exception ex)
@@ -99,7 +99,7 @@ namespace UnitTests
             { }
             try
             {
-                this._userFacade.CreateBoard("Test", testUser.Email);
+                this._boardFacade.CreateBoard("Test", testUser.Email);
                 this._boardFacade.DeleteBoard("a", "Test");
                 Assert.Fail();
             }
@@ -107,7 +107,7 @@ namespace UnitTests
             { }
             try
             {
-                this._userFacade.CreateBoard("Test1", testUser.Email);
+                this._boardFacade.CreateBoard("Test1", testUser.Email);
                 this._boardFacade.DeleteBoard(testUser.Email, "Test1");
                 this._boardFacade.DeleteBoard(testUser.Email, "Test1");
                 Assert.Fail();
@@ -123,7 +123,7 @@ namespace UnitTests
         {
             try
             {
-                this._userFacade.CreateBoard("Test", testUser.Email);
+                this._boardFacade.CreateBoard("Test", testUser.Email);
                 this._boardFacade.Setlimit(testUser.Email, "Test", 0, 10);
                 this._boardFacade.Setlimit(testUser.Email, "Test", 1, 20);
                 this._boardFacade.Setlimit(testUser.Email, "Test", 2, 30);
@@ -142,28 +142,28 @@ namespace UnitTests
         {
             try
             {
-                this._userFacade.CreateBoard("Test", testUser.Email);
+                this._boardFacade.CreateBoard("Test", testUser.Email);
                 this._boardFacade.Setlimit(testUser.Email, "Test", 3, 10);
                 Assert.Fail();
             }
             catch { }
             try
             {
-                this._userFacade.CreateBoard("Tes1t", testUser.Email);
+                this._boardFacade.CreateBoard("Tes1t", testUser.Email);
                 this._boardFacade.Setlimit(testUser.Email, "Test1", -1, 10);
                 Assert.Fail();
             }
             catch { }
             try
             {
-                this._userFacade.CreateBoard("Test2", testUser.Email);
+                this._boardFacade.CreateBoard("Test2", testUser.Email);
                 this._boardFacade.Setlimit(testUser.Email, "Test2", 0, -2);
                 Assert.Fail();
             }
             catch { }
             try
             {
-                this._userFacade.CreateBoard("Test3", testUser.Email);
+                this._boardFacade.CreateBoard("Test3", testUser.Email);
                 this._boardFacade.Setlimit(testUser.Email, "Test3", 0, 1);
                 this._boardFacade.CreateTask(testUser.Email, "Test3", "T", "a", DateTime.MaxValue);
                 this._boardFacade.Setlimit(testUser.Email, "Test3", 0, 0);
@@ -179,7 +179,7 @@ namespace UnitTests
         {
             try
             {
-                this._userFacade.CreateBoard("Test", testUser.Email);
+                this._boardFacade.CreateBoard("Test", testUser.Email);
                 this._boardFacade.Setlimit(testUser.Email, "Test", 0, 10);
                 this._boardFacade.Setlimit(testUser.Email, "Test", 1, 10);
                 this._boardFacade.Setlimit(testUser.Email, "Test", 2, 10);
@@ -213,28 +213,28 @@ namespace UnitTests
         {
             try
             {
-                this._userFacade.CreateBoard("Test", testUser.Email);
+                this._boardFacade.CreateBoard("Test", testUser.Email);
                 ColumnBL c = this._boardFacade.GetColByID(testUser.Email, "Test", 3);
                 Assert.Fail();
             }
             catch { }
             try
             {
-                this._userFacade.CreateBoard("Test1", testUser.Email);
+                this._boardFacade.CreateBoard("Test1", testUser.Email);
                 ColumnBL c = this._boardFacade.GetColByID(testUser.Email, "Test1", -1);
                 Assert.Fail();
             }
             catch { }
             try
             {
-                this._userFacade.CreateBoard("Test2", testUser.Email);
+                this._boardFacade.CreateBoard("Test2", testUser.Email);
                 ColumnBL c = this._boardFacade.GetColByID("A", "Test2", 0);
                 Assert.Fail();
             }
             catch { }
             try
             {
-                this._userFacade.CreateBoard("Test3", testUser.Email);
+                this._boardFacade.CreateBoard("Test3", testUser.Email);
                 ColumnBL c = this._boardFacade.GetColByID(testUser.Email, "A", 0);
                 Assert.Fail();
             }
@@ -246,7 +246,7 @@ namespace UnitTests
         {
             try
             {
-                this._userFacade.CreateBoard("Test", testUser.Email);
+                this._boardFacade.CreateBoard("Test", testUser.Email);
                 this._boardFacade.CreateTask(testUser.Email, "Test", "T", "a", DateTime.MaxValue);
                 this._boardFacade.CreateTask(testUser.Email, "Test", "T2", "", DateTime.MaxValue);
             }
@@ -261,7 +261,7 @@ namespace UnitTests
         public void CreateTask_failure()
         {
 
-            this._userFacade.CreateBoard("Test", testUser.Email);
+            this._boardFacade.CreateBoard("Test", testUser.Email);
 
             try
             {
@@ -312,7 +312,7 @@ namespace UnitTests
 
         public void taskAdvancing_success()
         {
-            this._userFacade.CreateBoard("Test", testUser.Email);
+            this._boardFacade.CreateBoard("Test", testUser.Email);
             this._boardFacade.Setlimit(testUser.Email, "Test", 0, 1);
             this._boardFacade.CreateTask(testUser.Email, "Test", "T", "a", DateTime.MaxValue);
 
@@ -334,7 +334,7 @@ namespace UnitTests
 
         public void taskAdvancing_failure()
         {
-            this._userFacade.CreateBoard("Test", testUser.Email);
+            this._boardFacade.CreateBoard("Test", testUser.Email);
             try
             {
                 this._boardFacade.CreateTask(testUser.Email, "Test", "T", "a", DateTime.MaxValue);
@@ -376,7 +376,7 @@ namespace UnitTests
             catch { }
             try
             {
-                this._userFacade.CreateBoard("Test2", testUser.Email);
+                this._boardFacade.CreateBoard("Test2", testUser.Email);
                 this._boardFacade.CreateTask(testUser.Email, "Test2", "T1", "", DateTime.MaxValue);
                 this._boardFacade.CreateTask(testUser.Email, "Test2", "T2", "", DateTime.MaxValue);
                 this._boardFacade.advanceTasK(testUser.Email, "Test2", 0, 5);
@@ -392,9 +392,9 @@ namespace UnitTests
 
         public void GetInProgress()
         {
-            this._userFacade.CreateBoard("Test", testUser.Email);
-            this._userFacade.CreateBoard("Test1", testUser.Email);
-            this._userFacade.CreateBoard("Test2", testUser.Email);
+            this._boardFacade.CreateBoard("Test", testUser.Email);
+            this._boardFacade.CreateBoard("Test1", testUser.Email);
+            this._boardFacade.CreateBoard("Test2", testUser.Email);
             try
             {
                 

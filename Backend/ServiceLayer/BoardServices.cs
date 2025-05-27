@@ -11,13 +11,11 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 {
     internal class BoardServices
     {
-        private UserFacade uFacade;
         private BoardFacade bFacade;
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        public BoardServices(UserFacade uFacade, BoardFacade bFacade)
+        public BoardServices(BoardFacade bFacade)
         {
-            this.uFacade = uFacade;
             this.bFacade = bFacade;
         }
         /// <summary>
@@ -32,8 +30,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             Response<string> res = null;
             try
             {
-                this.uFacade.CreateBoard(boardName.ToLower(), email); // creates the board
-                bFacade.RegisterInFacade(uFacade.GetUserBL(email)); // adds the list in the board facade if user isnt registerd
+                bFacade.RegisterInFacade(email); // adds the list in the board facade if user isnt registerd
+                bFacade.CreateBoard(email, boardName.ToLower());
                 res = new Response<string>(null, null);
             }
             catch (Exception ex)

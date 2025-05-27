@@ -14,13 +14,13 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
 
     internal class UserBL
     {
+        private static readonly int PASSWORD_MIN_LENGTH = 6;
+        private static readonly int PASSWORD_MAX_LENGTH = 20;
+        
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         private string email;
         private string password;
-        private List<BoardBL> boards;
-
-
 
         public string Email
         {
@@ -62,13 +62,13 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
                     Log.Warn("Password validation failed: password is null, empty, or whitespace. -USER_BL");
                     throw new ArgumentException("Password cannot be empty.");
                 }
-                if (value.Length < 6)
+                if (value.Length < PASSWORD_MIN_LENGTH)
                 {
                     Log.Warn($"Password validation failed: password too short (length {value.Length}). -USER_BL");
                     throw new ArgumentException("Password must be between 6 and 20 characters.");
                 }
 
-                if (value.Length > 20)
+                if (value.Length > PASSWORD_MAX_LENGTH)
                 {
                     Log.Warn($"Password validation failed: password too long (length {value.Length}). -USER_BL");
                     throw new ArgumentException("Password must be between 6 and 20 characters.");
@@ -97,7 +97,7 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
             }
         }
 
-        public List<BoardBL> Boards { get => boards; set => boards = value; }
+        
        
         /// <summary>
         /// UserBL object constructor
@@ -109,7 +109,7 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
             Log.Info("Creating new UserBL object. -USER_BL");
             Email = email;
             Password = password;
-            this.boards = new List<BoardBL>();
+
             Log.Info($"User created successfully: {email} -USER_BL");
 
         }

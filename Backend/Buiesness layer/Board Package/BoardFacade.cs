@@ -15,6 +15,7 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
         private Dictionary<string, List<BoardBL>> boards;
         private AuthenticationFacade aFacade;
         private int taskIdGenerator;
+        private int boardIdGenerator;
 
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -29,8 +30,45 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
             this.boards = new Dictionary<string, List<BoardBL>>();
             this.aFacade = aFacade;
             this.taskIdGenerator = 0;
+            this.boardIdGenerator = 0;
         }
 
+        /// <summary>
+        /// A method that conductos the board creation operation
+        /// *MOVED PREVIOUSLY FROM USERFACADE*
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="email"></param>
+        /// <exception cref="Exception"></exception>
+        public void CreateBoard(string name, string email)
+        {
+            if (!this.aFacade.IsLoggedIn(email))
+            {
+                Log.Warn("Cant create a board while not logged in. - BOARDFACADE");
+                throw new Exception("Cant create a board while not logged in.");
+            }
+            if (string.IsNullOrEmpty(name))
+            {
+                Log.Warn("Cant create a board with no name - BOARDFACADE");
+                throw new Exception("Cant create a board with no name");
+            }
+
+            List<BoardBL> userBoards = this.boards[email];
+
+            foreach (BoardBL board in userBoards) //checks whether a board is already exist
+            {
+                if (board.Name.Equals(name)) // the boards already exist
+                {
+                    Log.Warn("Board already exist on User's BoardListBL - BoardListBL");
+                    throw new Exception("Board already exist on User's BoardListBL");
+                }
+            }
+            BoardBL b = new BoardBL(name,this.boardIdGenerator,email);
+            this.boardIdGenerator++; // advances the generator
+
+            Log.Info("A new board:" + name + " to the user:" + email);
+            userBoards.Add(b);
+        }
         /// <summary>
         /// A method that deletes a target board from a user's boardList
         /// A deletion will occur if the user is logged in, registered in facade and has the target board
@@ -56,12 +94,17 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
         /// </summary>
         /// <param name="b"></param>
         /// <exception cref="Exception"></exception>
-        public void RegisterInFacade(UserBL user)
+        public void RegisterInFacade(string email)
         {
-            if (!this.boards.ContainsKey(user.Email))
+            if (!this.aFacade.IsLoggedIn(email))
             {
-                this.boards.Add(user.Email, user.Boards);
-                Log.Info("A list was added to the user:" + user.Email + " in BOARDFACADE");
+                Log.Warn("Cant create a regisrty while not logged in. - BOARDFACADE");
+                throw new Exception("Cant create a regisrty while not logged in.");
+            }
+            if (!this.boards.ContainsKey(email))
+            {
+                this.boards.Add(email, new List<BoardBL>());
+                Log.Info("A list was added to the user:" + email + " in BOARDFACADE");
             }
         }
 
@@ -149,11 +192,7 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
                 Log.Warn("Cant edit a task while not logged in. - BOARDFACADE");
                 throw new Exception("Cant edit a task while not logged in.");
             }
-            if(col<0 || col >=2)
-            {
-                Log.Warn("Cant edit a with the given column." + col + " - BOARDFACADE");
-                throw new Exception("Cant edit a with the given column." + col);
-            }
+           
 
             this.GetBoard(email,boardName).EditTask(dueDate,title,desc,col,taskId); // finds the board and calls the edit task operation
         }

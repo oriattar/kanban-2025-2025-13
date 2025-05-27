@@ -9,6 +9,9 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
 {
     internal class ColumnBL
     {
+        public static readonly int NO_LIMIT = -1;
+
+
         private List<TaskBL> tasks;
         private string name;
         private int taskLimit;
@@ -21,7 +24,7 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
         {
             this.name = name;
             tasks = new List<TaskBL>();
-            this.taskLimit = -1;
+            this.taskLimit = NO_LIMIT;
         }
         public List<TaskBL> Tasks { get => tasks; set => tasks = value; }
         public string Name { get => name; set => name = value; }
@@ -33,7 +36,7 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
         /// <param name="task"></param>
         public void addTask(TaskBL task)
         {
-            if(this.taskLimit != -1 && this.taskLimit == this.tasks.Count) // -1 marks no limit
+            if(this.taskLimit != NO_LIMIT && this.taskLimit == this.tasks.Count) // -1 marks no limit
             {
                 throw new Exception("Cannot add task, limit has reached for this collumn:" + this.name);
             }    

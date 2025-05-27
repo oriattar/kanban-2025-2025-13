@@ -120,44 +120,5 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
             }
             return this.users[email];
         }
-
-        /// <summary>
-        /// User facade - creating board if its not already exist in the list.
-        /// If user is not logged in, board already exist by name or if user is not exist
-        /// </summary>
-        /// <param name="name"></param>
-        /// <param name="email"></param>
-        /// <returns></returns>
-        /// <exception cref="Exception"></exception>
-        public void CreateBoard(string name, String email)
-        {
-            if (!this.aFacade.IsLoggedIn(email))
-            {
-                Log.Warn("Cant create a board while not logged in. - USERFACADE");
-                throw new Exception("Cant create a board while not logged in.");
-            }
-            if(string.IsNullOrEmpty(name))
-            {
-                Log.Warn("Cant create a board with no name - BOARDFACADE");
-                throw new Exception("Cant create a board with no name");
-            }
-
-            UserBL u = this.GetUserBL(email);
-            List<BoardBL> userBoards = u.Boards;
-
-            foreach (BoardBL board in userBoards) //checks whether a board is already exist
-            {
-                if (board.Name.Equals(name))
-                {
-                    Log.Warn("Board already exist on User's BoardListBL - BoardListBL");
-                    throw new Exception("Board already exist on User's BoardListBL");
-                }
-            }
-            BoardBL b = new BoardBL(name);
-
-            Log.Info("A new board:" + name +" to the user:" + email);
-            u.Boards.Add(b);
-            
-        }
     }
 }

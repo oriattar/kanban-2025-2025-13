@@ -13,7 +13,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 {
     internal class TaskServices
     {
-        private UserFacade uFacade;
         private BoardFacade bFacade;
 
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
@@ -22,9 +21,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// </summary>
         /// <param name="uFacade"></param>
         /// <param name="boardFacade"></param>
-        public TaskServices(UserFacade uFacade, BoardFacade boardFacade)
+        public TaskServices(BoardFacade boardFacade)
         {
-            this.uFacade = uFacade;
             this.bFacade = boardFacade;
 
         }
@@ -58,7 +56,14 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         }
 
  
-
+        /// <summary>
+        /// Operates the task advancing service
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="boardName"></param>
+        /// <param name="col"></param>
+        /// <param name="taskId"></param>
+        /// <returns></returns>
         public string AdvanceTask(string email, string boardName, int col, int taskId)
         {
             Response<string> response = null;
@@ -75,7 +80,15 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             return JsonSerializer.Serialize(response);
         }
 
-
+        /// <summary>
+        /// Operates editing task title.
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="boardName"></param>
+        /// <param name="col"></param>
+        /// <param name="taskId"></param>
+        /// <param name="title"></param>
+        /// <returns></returns>
         public string UpdateTaskTitle(string email, string boardName, int col, int taskId, string title)
         {
             Response<string> response = null;
@@ -91,6 +104,16 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
             return JsonSerializer.Serialize(response);
         }
+
+        /// <summary>
+        /// Operates update task decription operations
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="boardName"></param>
+        /// <param name="col"></param>
+        /// <param name="taskId"></param>
+        /// <param name="desc"></param>
+        /// <returns></returns>
         public string UpdateTaskDescription(string email, string boardName, int col, int taskId, string desc)
         {
             Response<string> response = null;
@@ -106,6 +129,16 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
             return JsonSerializer.Serialize(response);
         }
+
+        /// <summary>
+        /// Operates the update task deadline operation
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="boardName"></param>
+        /// <param name="col"></param>
+        /// <param name="taskId"></param>
+        /// <param name="deadline"></param>
+        /// <returns></returns>
         public string UpdateTaskDeadline(string email, string boardName, int col, int taskId, DateTime deadline)
         {
             Response<string> response = null;
