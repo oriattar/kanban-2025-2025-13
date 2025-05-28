@@ -95,7 +95,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                     reader = command.ExecuteReader();
                     reader.Read();
                     res = (int)reader.GetInt32(0);
-                    if(reader!=null)
+                    if (reader != null)
                     {
                         reader.Close();
                     }
@@ -108,7 +108,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 }
                 finally
                 {
-                   
+
                     command.Dispose();
                     connection.Close();
                 }

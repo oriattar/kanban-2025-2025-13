@@ -66,5 +66,27 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         public UserController Controller { get; }
 
 
+        /// <summary>
+        /// Saves the user data to the database if it has not already been persisted.
+        /// Throws an exception if the object is already persisted.
+        /// </summary>
+        public void Save()
+        {
+            Log.Info($" Attempting to save user: {Email} - USERDAL");
+
+            if (isPersisted)
+            {
+                Log.Warn($" Save failed: User '{Email}' is already persisted. - USERDAL");
+                throw new InvalidOperationException("Cannot save a persisted object. ");
+            }
+
+            
+             controller.Insert(this);
+             isPersisted = true;
+             Log.Info($" User '{Email}' saved successfully. - USERDAL");
+            
+            
+        }
+
     }
 }

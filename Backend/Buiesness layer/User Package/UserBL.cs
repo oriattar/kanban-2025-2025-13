@@ -126,13 +126,17 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
                 Email = email;
                 Password = password;
 
-               
+                dto.Save();
+                Log.Info($" UserDAL persisted successfully for email: {email}   -USER_BL");
+
             }
             catch (Exception ex)
             {
                 Log.Error($" Error during creation of UserBL for email: {email}: {ex.Message}  -USER_BL", ex);
                 throw;
             }
+
+            
         }
 
 
