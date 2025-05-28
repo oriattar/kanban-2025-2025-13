@@ -42,7 +42,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             Response<string> response = null;
             try
             {
-                this.bFacade.CreateTask(email, boardName.ToLower(), title, description, dueDate);
+                this.bFacade.CreateTask(email, boardName, title, description, dueDate);
                 response = new Response<string>(null, null);
                 
             }
@@ -69,7 +69,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             Response<string> response = null;
             try
             {
-                this.bFacade.advanceTasK(email, boardName.ToLower(), col, taskId);
+                this.bFacade.AdvanceTasK(email, boardName, col, taskId);
                 response = new Response<string>(null,null);
             }
             catch (Exception ex)
@@ -94,7 +94,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             Response<string> response = null;
             try
             {
-                this.bFacade.EditTask(email, boardName.ToLower(), col, taskId, DateTime.MinValue, title, null);
+                this.bFacade.EditTask(email, boardName, col, taskId, DateTime.MinValue, title, null);
                 response = new Response<string>(null, null);
             }
             catch (Exception ex)
@@ -118,8 +118,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             Response<string> response = null;
             try
-            {
-                this.bFacade.EditTask(email, boardName.ToLower(), col, taskId, DateTime.MinValue, null,desc);
+            {   
+                this.bFacade.EditTask(email, boardName, col, taskId, DateTime.MinValue, null,desc);
                 response = new Response<string>(null, null);
             }
             catch (Exception ex)
@@ -144,7 +144,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             Response<string> response = null;
             try
             {
-                this.bFacade.EditTask(email, boardName.ToLower(), col, taskId, deadline, null, null);
+                this.bFacade.EditTask(email, boardName, col, taskId, deadline, null, null);
                 response = new Response<string>(null, null);
             }
             catch (Exception ex)
@@ -156,9 +156,29 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
         }
 
+        /// <summary>
+        /// Operates the task assignment service
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="boardName"></param>
+        /// <param name="columnOrdinal"></param>
+        /// <param name="taskID"></param>
+        /// <param name="emailAssignee"></param>
+        /// <returns></returns>
         public string AssignTask(string email, string boardName, int columnOrdinal, int taskID, string emailAssignee)
         {
-            throw new NotImplementedException();
+            Response<string> response = null;
+            try
+            {
+                this.AssignTask(email, boardName, columnOrdinal, taskID, emailAssignee);
+                response = new Response<string>(null, null);
+            }
+            catch (Exception ex)
+            {
+                response = new Response<string>(ex.Message, null);
+                Log.Error("Failed assigning task due to - " + ex.Message);
+            }
+            return JsonSerializer.Serialize(response);
         }
     }
 }

@@ -31,7 +31,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 bFacade.RegisterInFacade(email); // adds the list in the board facade if user isnt registerd
-                bFacade.CreateBoard(email, boardName.ToLower());
+                bFacade.CreateBoard(email, boardName);
                 res = new Response<string>(null, null);
             }
             catch (Exception ex)
@@ -54,7 +54,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             Response<string> res = null;
             try
             {
-                this.bFacade.DeleteBoard(email, boardName.ToLower());
+                this.bFacade.DeleteBoard(email, boardName);
                 res = new Response<string>(null,null);
             }
             catch (Exception ex)
@@ -77,7 +77,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             Response<string> res = null;
             try
             {
-                this.bFacade.Setlimit(email, boardName.ToLower(), col, limit);
+                this.bFacade.Setlimit(email, boardName, col, limit);
                 res = new Response<string>(null, null);
             }
             catch (Exception ex)
@@ -98,7 +98,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             try
             {
-                ColumnBL c = this.bFacade.GetColByID(email, bName.ToLower(), col);
+                ColumnBL c = this.bFacade.GetColByID(email, bName, col);
                 Response<int> res = new Response<int>(null, c.TaskLimit);
                 return JsonSerializer.Serialize(res);
             }
@@ -123,7 +123,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             Response<string> res = null;
             try
             {
-                ColumnBL c = this.bFacade.GetColByID(email, bName.ToLower(), col);
+                ColumnBL c = this.bFacade.GetColByID(email, bName, col);
                 res = new Response<string>(null, c.Name);
             }
             catch (Exception ex)
@@ -146,7 +146,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             Response<List<TaskSL>> res = null;
             try
             {
-                ColumnBL c = this.bFacade.GetColByID(email, bName.ToLower(), col);
+                ColumnBL c = this.bFacade.GetColByID(email, bName, col);
                 res = new Response<List<TaskSL>>(null,ConvertTaskList(c.Tasks)); //converts the collumn taskList to list of TaskListSL
             }
             catch (Exception ex)

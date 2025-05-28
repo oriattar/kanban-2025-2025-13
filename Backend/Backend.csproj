@@ -9,11 +9,16 @@
 
   <ItemGroup>
     <PackageReference Include="log4net" Version="3.0.4" />
+    <PackageReference Include="System.Data.SQLite" Version="1.0.119" />
   </ItemGroup>
 
   <ItemGroup>
     <None Update="log4net.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="DataAccessLayer\" />
   </ItemGroup>
 </Project>

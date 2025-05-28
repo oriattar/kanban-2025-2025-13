@@ -15,16 +15,18 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
         private List<TaskBL> tasks;
         private string name;
         private int taskLimit;
+        private string colID;
 
         /// <summary>
         /// A constructor to a collumn object
         /// </summary>
         /// <param name="name"></param>
-        public ColumnBL(string name)
+        public ColumnBL(string name,string colID)
         {
             this.name = name;
             tasks = new List<TaskBL>();
             this.taskLimit = NO_LIMIT;
+            this.colID = colID;
         }
         public List<TaskBL> Tasks { get => tasks; set => tasks = value; }
         public string Name { get => name; set => name = value; }

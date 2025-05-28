@@ -60,7 +60,7 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
             deadline = newDeadline;
         }
         /// <summary>
-        /// See full implemintation instructions
+        /// Sets a task to unassigned
         /// </summary>
         public void setAsUnassigned()
         {
