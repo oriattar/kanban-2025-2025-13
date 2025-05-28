@@ -8,5 +8,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 {
     internal class TaskDAL
     {
+        private string colID;
+
+        public string ColID { get => colID; set => colID = value; }
     }
 }

@@ -209,7 +209,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 this.bFacade.RegisterInFacade(email); // ensuring an entry exist in facade
-                this.bFacade.AddUserAsMemeber(email, boardID);
+                this.bFacade.AddUserAsMember(email, boardID);
                 res = new Response<string>(null, null);
             }
             catch (Exception ex)
@@ -231,7 +231,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             Response<string> res = null;
             try
             {
-                this.bFacade.RemoveUserAsMemeber(email,boardID);
+                this.bFacade.RemoveUserAsMember(email,boardID);
                 res = new Response<string>(null, null);
             }
             catch (Exception ex)

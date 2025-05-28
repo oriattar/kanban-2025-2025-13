@@ -8,5 +8,11 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 {
     internal class TaskController
     {
+        public List<TaskDAL> SelectTasks(string colID)
+        {
+            return null;
+        }
+
+        public void DeleteTasks(string colID) { }
     }
 }
