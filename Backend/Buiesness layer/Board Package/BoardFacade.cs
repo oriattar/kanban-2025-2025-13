@@ -242,11 +242,15 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
 
             BoardBL targetBoard = this.GetBoard(email, boardName);
             TaskBL t = targetBoard.GetTask(col, taskId); // finds the board and the task
-
+            if(!targetBoard.isActiveMember(email))
+            {
+                Log.Warn("Cant edit a task while not an active user. - BOARDFACADE");
+                throw new Exception("Cant edit a task while not an active user.");
+            }
 
             if (col != BoardBL.DONE && !t.Asignee.Equals(email))
             {
-                Log.Warn("Cant edit a task while not logged in. - BOARDFACADE");
+                Log.Warn("A task that is not done can only be changed by its asignee. - BOARDFACADE");
                 throw new Exception("A task that is not done can only be changed by its asignee");
             }
 
