@@ -302,6 +302,13 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             return result;
         }
 
+        /// <summary>
+        /// Helper method that loads the boards on startup
+        /// </summary>
+        public void LoadBoards()
+        {
+            this.bFacade.LoadAllBoards();
+        }
 
 
     }

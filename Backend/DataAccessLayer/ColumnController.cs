@@ -64,6 +64,12 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 }
             }
 
+            //loop that collets each of the columns task from the db
+            foreach (ColumnDAL col in res)
+            {
+                col.Tasks = new TaskController().SelectTasks(col.ColID);
+            }
+
             return res;
         }
 
@@ -74,7 +80,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         /// <returns></returns>
         private ColumnDAL ConvertReaderToColumnDAL(SQLiteDataReader dataReader)
         {
-            return new ColumnDAL(dataReader.GetString(0),(int)dataReader.GetValue(1),dataReader.GetString(2),(int)dataReader.GetValue(3));
+            return new ColumnDAL(dataReader.GetString(0),dataReader.GetInt32(1),dataReader.GetString(2),dataReader.GetInt32(3));//null we be replaced after connection is closed
         }
 
         /// <summary>

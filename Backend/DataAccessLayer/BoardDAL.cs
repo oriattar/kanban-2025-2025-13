@@ -30,6 +30,16 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 
         private List<string> activeUsers;
 
+        /// <summary>
+        /// A constructor for the boardDal class, full constructor
+        /// </summary>
+        /// <param name="boardName"></param>
+        /// <param name="boardID"></param>
+        /// <param name="boardOwner"></param>
+        /// <param name="activeUsers"></param>
+        /// <param name="backlog"></param>
+        /// <param name="inProgress"></param>
+        /// <param name="done"></param>
         public BoardDAL(string boardName,int boardID, string boardOwner, List<string> activeUsers,ColumnDAL backlog,ColumnDAL inProgress,ColumnDAL done)
         {
             controller = new BoardController();
@@ -42,23 +52,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             this.columns = new Dictionary<int, ColumnDAL>();
             this.SetColumns(backlog,inProgress,done);
         }
-        /// <summary>
-        /// A contstructor for boardDAL with empty lists - for controller use only
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="owner"></param>
-        /// <param name="name"></param>
-        public BoardDAL(int id,string owner,string name)
-        {
-            controller = new BoardController();
-            this.boardName = name;
-            this.boardID = id;
-            this.BoardOwner = owner;
-            this.isPresisted = false;
-
-            this.ActiveUsers = new List<string>();
-            this.columns = new Dictionary<int, ColumnDAL>();
-        }
+        
 
         /// <summary>
         /// Helper method that helps loading columns to the dto.
@@ -68,10 +62,9 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         /// <param name="done"></param>
         public void SetColumns(ColumnDAL backlog, ColumnDAL inProgress, ColumnDAL done)
         {
-            this.Columns.Add(BACKLOG, backlog);
-            this.Columns.Add(IN_PROGRESS, inProgress);
-            this.Columns.Add(DONE, done);
-
+            this.Columns[BACKLOG]= backlog;
+            this.Columns[IN_PROGRESS]= inProgress;
+            this.Columns[DONE] = done;
         }
 
         public string BoardName { get => boardName; }

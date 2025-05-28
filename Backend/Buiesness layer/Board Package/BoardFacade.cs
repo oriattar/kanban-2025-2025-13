@@ -39,6 +39,23 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
         }
 
         /// <summary>
+        /// Loads all information from the database
+        /// </summary>
+        public void LoadAllBoards()
+        {
+            List<BoardDAL> boards = new BoardController().SelectAll(); //reading all the boards
+            foreach (BoardDAL b in boards)
+            {
+                BoardBL toSave = new BoardBL(b); //for each one we construct a new boardbl
+                foreach (string user in toSave.ActiveUsers)
+                {
+                    this.RegisterInFacade(user); //register its users
+                    this.boards[user].Add(toSave);//and adding it to its list
+                }
+            }
+        }
+
+        /// <summary>
         /// A method that conductos the board creation operation
         /// *MOVED PREVIOUSLY FROM USERFACADE*
         /// </summary>
@@ -132,11 +149,6 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
         /// <exception cref="Exception"></exception>
         public void RegisterInFacade(string email)
         {
-            if (!this.aFacade.IsLoggedIn(email))
-            {
-                Log.Warn("Cant create a regisrty while not logged in. - BOARDFACADE");
-                throw new Exception("Cant create a regisrty while not logged in.");
-            }
             if (!this.boards.ContainsKey(email))
             {
                 this.boards.Add(email, new List<BoardBL>());

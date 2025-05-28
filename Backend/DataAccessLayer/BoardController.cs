@@ -68,6 +68,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             {
 
                 b.ActiveUsers = this.LoadActiveUsers(b.BoardID);
+                List<ColumnDAL> cols = new ColumnController().SelectColumns(b.BoardID);
+                b.SetColumns(cols[BoardDAL.BACKLOG], cols[BoardDAL.IN_PROGRESS], cols[BoardDAL.DONE]);
             }
 
             Log.Info("All boards were loaded successfuly");
@@ -81,7 +83,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         /// <returns></returns>
         private BoardDAL ConvertReaderToBoard(SQLiteDataReader dataReader)
         {
-            return new BoardDAL((int)dataReader.GetValue(0),dataReader.GetString(1),dataReader.GetString(2));
+            return new BoardDAL(dataReader.GetString(2), dataReader.GetInt32(0), dataReader.GetString(1),null,null,null,null); //all nulls will be set after connections is closed
         }
 
         

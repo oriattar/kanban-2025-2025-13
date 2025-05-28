@@ -32,13 +32,13 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         /// <param name="colID"></param>
         /// <param name="tasks"></param>
         /// <param name="boardID"></param>
-        public ColumnDAL(string name, int limit, string colID, List<TaskDAL> tasks, int boardID)
+        public ColumnDAL(string colID,int boardID,string name,int limit)
         {
             this.controller = new ColumnController();
             this.name = name;
             this.colID = colID;
             this.TaskLimit = limit;
-            this.tasks = tasks;
+            this.tasks = new List<TaskDAL>();
             this.boardID = boardID;
         }
         /// <summary>
@@ -48,15 +48,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         /// <param name="limit"></param>
         /// <param name="colID"></param>
         /// <param name="boardID"></param>
-        public ColumnDAL(string colID, int boardID, string name, int limit)
-        {
-            this.controller = new ColumnController();
-            this.name = name;
-            this.colID = colID;
-            this.TaskLimit = limit;
-            this.tasks = new List<TaskDAL>();
-            this.boardID = boardID;
-        }
+
         public List<TaskDAL> Tasks { get => tasks; set => tasks = value; }
         public string Name { get => name; }
 
@@ -112,8 +104,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         public void AddTask(TaskDAL task)
         {
             this.Tasks.Add(task);
-            task.ColID = colID;
-           
         }
 
         /// <summary>

@@ -6,12 +6,24 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using IntroSE.Kanban.Backend.Buiesness_layer;
+using IntroSE.Kanban.Backend.DataAccessLayer;
 using IntroSE.Kanban.Backend.ServiceLayer;
 
 namespace UnitTests
 {
     public class UserBLTests
     {
+        private readonly SystemController s = new SystemController();
+        
+        [TearDown]
+
+        public void TearDown()
+        {
+            s.ClearData();
+        }
+
+       
+       
         [TestCase("")]
         [TestCase(" ")]
         [TestCase("noat.com")]
@@ -20,6 +32,8 @@ namespace UnitTests
         [TestCase("@gmail.com")]
         [TestCase("user@.com")]
         [TestCase("user@gmail")]
+
+        
         public void ConstructorWrongEmail_Tests(string email)
         {
             string password = "Ax12345";

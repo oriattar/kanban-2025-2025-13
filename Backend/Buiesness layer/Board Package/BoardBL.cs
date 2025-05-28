@@ -59,7 +59,25 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
 
         }
 
+        /// <summary>
+        /// Constructs a boardBL from boardDAL
+        /// </summary>
+        /// <param name="b"></param>
+        public BoardBL(BoardDAL b)
+        {
+            this.boardDTO = b;
+            this.name = b.BoardName;
 
+            this.columns = new Dictionary<int, ColumnBL>();
+            columns.Add(BACKLOG, new ColumnBL(b.Columns[BACKLOG]));
+            columns.Add(IN_PROGRESS, new ColumnBL(b.Columns[IN_PROGRESS]));
+            columns.Add(DONE, new ColumnBL(b.Columns[DONE]));
+
+            this.boardID = b.BoardID;
+            this.owner = b.BoardOwner;
+            this.activeUsers = b.ActiveUsers;
+
+        }
 
         public string Name { get => name;}
         public Dictionary<int, ColumnBL> Columns { get => columns; }
@@ -140,7 +158,7 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
                 throw new Exception("Creating a task with invalid due date");
             }
 
-            TaskBL t =new TaskBL(taskID,DateTime.Now,dueDate,title,description);
+            TaskBL t =new TaskBL(taskID, this.Columns[BoardBL.BACKLOG].ColID,DateTime.Now,dueDate,title,description);
             this.columns[0].addTask(t);
         }
 

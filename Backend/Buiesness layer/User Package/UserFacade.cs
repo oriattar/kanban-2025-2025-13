@@ -29,8 +29,6 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
         {
             this.users = new Dictionary<string, UserBL>();
             this.aFacade = aFacade;
-
-            LoadAllUsers();
         }
 
 
@@ -52,6 +50,7 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
                 {
                     var uBL = new UserBL(uDAL);
                     users[uBL.Email] = uBL;
+                    this.aFacade.addToFacade(uBL.Email);
                     Log.Info($"Loaded user into memory: {uBL.Email}");
                 }
 

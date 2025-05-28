@@ -43,6 +43,25 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         }
 
         /// <summary>
+        /// Loads the data on startup service
+        /// </summary>
+        /// <returns></returns>
+        public string LoadData()
+        {
+            Response<string> res = null;
+            try
+            {
+                this.us.LoadUsers();
+                this.bs.LoadBoards();
+                res = new Response<string>(null, null);
+            }
+            catch (Exception ex)
+            {
+                res = new Response<string>(ex.Message, null);
+            }
+            return JsonSerializer.Serialize(res);
+        }
+        /// <summary>
         /// Clears data from db using system controller
         /// </summary>
         public string ClearData()
