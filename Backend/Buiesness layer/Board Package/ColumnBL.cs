@@ -17,6 +17,7 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
         private string name;
         private int taskLimit;
         private string colID;
+        private int boardId;
 
         private ColumnDAL columnDTO;
 
@@ -24,12 +25,13 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
         /// A constructor to a collumn object
         /// </summary>
         /// <param name="name"></param>
-        public ColumnBL(string name,string colID)
+        public ColumnBL(string name,string colID, int boardId)
         {
             this.name = name;
             tasks = new List<TaskBL>();
             this.taskLimit = NO_LIMIT;
             this.colID = colID;
+            this.boardId = boardId;
         }
         public List<TaskBL> Tasks { get => tasks; set => tasks = value; }
         public string Name { get => name; set => name = value; }

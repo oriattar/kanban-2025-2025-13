@@ -180,9 +180,32 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                     command.Dispose();
                     connection.Close();
                 }
-
+                this.InsertCols(board.Columns); // Inserting the baord columns
                 return res > 0;
             }
+        }
+
+
+        /// <summary>
+        /// Helper method that helps inserting the cols of the board
+        /// </summary>
+        /// <param name="cols"></param>
+        private void InsertCols(Dictionary<int,ColumnDAL> cols)
+        {
+            this.columnController.Insert(cols[BoardDAL.BACKLOG]);
+            this.columnController.Insert(cols[BoardDAL.IN_PROGRESS]);
+            this.columnController.Insert(cols[BoardDAL.DONE]); // Inserting the baord columns
+        }
+
+        /// <summary>
+        /// Helper method that calls for the removal of the input columns
+        /// </summary>
+        /// <param name="cols"></param>
+        private void DeleteCols(Dictionary<int,ColumnDAL> cols)
+        {
+            this.columnController.Delete(cols[BoardDAL.BACKLOG]);
+            this.columnController.Delete(cols[BoardDAL.IN_PROGRESS]);
+            this.columnController.Delete(cols[BoardDAL.DONE]);
         }
 
         /// <summary>
@@ -224,7 +247,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                     command.Dispose();
                     connection.Close();
                 }
-                this.columnController.DeleteColumns(board.BoardID);
+
+                this.DeleteCols(board.Columns); //Deletes all cols
 
                 return res > 0;
             }

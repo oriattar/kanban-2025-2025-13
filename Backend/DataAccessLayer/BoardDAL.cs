@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using log4net;
 
 namespace IntroSE.Kanban.Backend.DataAccessLayer
 {
@@ -18,6 +19,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         public const string UserIDColName = "email";
 
         private readonly BoardController controller;
+        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         private string boardName;
         private int boardID;
@@ -119,8 +121,12 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 
         public void Save()
         {
-            if (this.isPresisted) 
+            if (this.isPresisted)
+            {
+                Log.Error("Cannot insert an already presisted board - BOARDDAL");
                 throw new Exception("Cannot insert an already presisted board");
+            }
+               
 
             this.controller.Insert(this);
             this.AddUser(this.BoardOwner);//adds the owner as the first active member

@@ -40,9 +40,9 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
             
             this.columns = new Dictionary<int, ColumnBL>();
 
-            columns.Add(BACKLOG, new ColumnBL("backlog",ID +"_0"));
-            columns.Add(IN_PROGRESS, new ColumnBL("in progress",ID+"_1"));
-            columns.Add(DONE, new ColumnBL("done", ID + "_2"));
+            columns.Add(BACKLOG, new ColumnBL("backlog",ID +"_0",ID));
+            columns.Add(IN_PROGRESS, new ColumnBL("in progress",ID+"_1",ID));
+            columns.Add(DONE, new ColumnBL("done", ID + "_2", ID));
 
             this.boardID = ID;
             this.owner = owner; // sets the creating user to be the owner by default
@@ -227,6 +227,7 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
                 
             }
             this.Owner = newOwner;
+            this.boardDTO.BoardOwner = newOwner;
         }
 
         /// <summary>
