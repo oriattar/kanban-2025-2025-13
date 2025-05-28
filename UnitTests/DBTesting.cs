@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using IntroSE.Kanban.Backend.Buiesness_layer;
+using IntroSE.Kanban.Backend.DataAccessLayer;
 
 namespace UnitTests
 {
@@ -17,16 +18,18 @@ namespace UnitTests
         private UserFacade _userFacade;
         private UserBL testUser;
         private UserBL testUser2;
+        private SystemController _systemController;
 
         [SetUp]
         public void Setup()
         {
+            this._systemController = new SystemController();
             _authFacade = new AuthenticationFacade();
-            _boardFacade = new BoardFacade(_authFacade);
+            _boardFacade = new BoardFacade(_authFacade, _systemController);
             _userFacade = new UserFacade(this._authFacade);
             testUser = new UserBL("oriatta@post.bgu.ac.il", "Abcdefg123456");
             testUser2 = new UserBL("o@post.bgu.ac.il", "Abcdefg123456");
-
+            
 
             this._userFacade.Register(testUser.Email, "Abcdefg123456");
             this._userFacade.Register(testUser2.Email, "Abcdefg123456");
@@ -52,6 +55,8 @@ namespace UnitTests
             this._boardFacade.Setlimit(testUser2.Email,"Test1", 0, 5);
             this._boardFacade.Setlimit(testUser2.Email, "Test1", 1, 0);
             this._boardFacade.RemoveUserAsMember(testUser.Email,0);
+
+            this._systemController.ClearData();
 
         }
 

@@ -54,7 +54,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 }
                 catch (Exception ex)
                 {
-                    Log.Error("Error in reading users for a board:" + ex);
+                    Log.Error("Error in selecting columns:" + ex);
                     throw;
                 }
                 finally
@@ -67,11 +67,21 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             return res;
         }
 
+        /// <summary>
+        /// Helper method that convers and sql read to ColumnDAL object
+        /// </summary>
+        /// <param name="dataReader"></param>
+        /// <returns></returns>
         private ColumnDAL ConvertReaderToColumnDAL(SQLiteDataReader dataReader)
         {
             return new ColumnDAL(dataReader.GetString(0),(int)dataReader.GetValue(1),dataReader.GetString(2),(int)dataReader.GetValue(3));
         }
 
+        /// <summary>
+        /// Deletes a col from the data base
+        /// </summary>
+        /// <param name="col"></param>
+        /// <returns></returns>
         public bool Delete(ColumnDAL col)
         {
             using (var connection = new SQLiteConnection(_connectionString))
@@ -97,7 +107,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 }
                 catch (Exception ex)
                 {
-                    Log.Error("Error in deleting board from db:" + ex);
+                    Log.Error("Error in deleting a columns from db:" + ex);
                     throw;
                 }
                 finally

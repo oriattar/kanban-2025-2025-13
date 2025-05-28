@@ -4,11 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-<<<<<<< HEAD
+
 using IntroSE.Kanban.Backend.DataAccessLayer;
-=======
-using IntroSE.Kanban.Backend.ServiceLayer;
->>>>>>> developDataBase
+
+
 using log4net;
 
 

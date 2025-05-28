@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using IntroSE.Kanban.Backend.DataAccessLayer;
 using IntroSE.Kanban.Backend.ServiceLayer;
 using log4net;
 using log4net.Util;
@@ -13,6 +15,7 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
 {
     internal class BoardFacade
     {
+        private readonly SystemController systemController;
         private Dictionary<string, List<BoardBL>> boards;
         private AuthenticationFacade aFacade;
         private int taskIdGenerator;
@@ -26,12 +29,13 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
         /// A constructor to the boardFacade, inits the dict
         /// </summary>
         /// <param name="aFacade"></param>
-        public BoardFacade(AuthenticationFacade aFacade)
+        public BoardFacade(AuthenticationFacade aFacade,SystemController s)
         {
+            this.systemController = s;
             this.boards = new Dictionary<string, List<BoardBL>>();
             this.aFacade = aFacade;
-            this.taskIdGenerator = 0;
-            this.boardIdGenerator = 0;
+            this.taskIdGenerator = s.LoadTaskIDGen();
+            this.boardIdGenerator = s.LoadBoardIDGen();
         }
 
         /// <summary>
@@ -56,6 +60,7 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
 
             BoardBL b = new BoardBL(name,this.boardIdGenerator,email); // creating a new board
             this.boardIdGenerator++; // advances the generator
+            this.systemController.UpdateGenerators(this.boardIdGenerator,this.taskIdGenerator);
 
             Log.Info("A new board:" + name + " to the user:" + email);
             this.AddBoardToUserList(email, b); // adding and ensuring no name duplication
@@ -193,6 +198,7 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
 
             targetBoard.CreateTask(title,description,dueDate,this.taskIdGenerator);
             this.taskIdGenerator++; //advances the id generator
+            this.systemController.UpdateGenerators(this.boardIdGenerator, this.taskIdGenerator); // saves in the db
             Log.Info("A task was added to the board" + boardName + " in BOARDFACADE");
         }
 
