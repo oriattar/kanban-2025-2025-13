@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using IntroSE.Kanban.Backend.Buiesness_layer;
 using log4net.Config;
 using log4net;
+using IntroSE.Kanban.Backend.DataAccessLayer;
+using System.Text.Json;
 
 namespace IntroSE.Kanban.Backend.ServiceLayer
 {
@@ -17,15 +19,18 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         public BoardServices bs;
         public UserServices us;
 
+        private SystemController systemController;
+
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         /// <summary>
         /// Inits the services objects, the SF consturcotr
         /// </summary>
         public ServiceFactory()
         {
+            this.systemController = new SystemController();
             AuthenticationFacade af = new AuthenticationFacade();
             UserFacade uf = new UserFacade(af);
-            BoardFacade bf = new BoardFacade(af); //inits the facades
+            BoardFacade bf = new BoardFacade(af,systemController); //inits the facades
 
             var logRepo = LogManager.GetRepository(Assembly.GetEntryAssembly());
             XmlConfigurator.Configure(logRepo, new FileInfo("log4net.config")); //inits the logger
@@ -35,7 +40,24 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             this.bs = new BoardServices(bf);
             this.ts = new TaskServices(bf); //creates the services
 
-            
+        }
+
+        /// <summary>
+        /// Clears data from db using system controller
+        /// </summary>
+        public string ClearData()
+        {
+            Response<string> res = null;
+            try
+            {
+                this.systemController.ClearData();
+                res = new Response<string>(null, null);
+            }
+            catch (Exception ex)
+            {
+                res = new Response<string>(ex.Message,null); 
+            }
+            return JsonSerializer.Serialize(res);
         }
 
 
