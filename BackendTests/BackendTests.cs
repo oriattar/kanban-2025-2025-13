@@ -30,7 +30,11 @@ public class Test
         XmlConfigurator.Configure(logRepo, new FileInfo("log4net.config")); //inits the logger
 
         Test tester = new Test();
-        
+
+        bool result = tester.TestSuccessfullRegister();
+        Console.WriteLine(result ? "✅ All tests passed" : "❌ Some tests failed");
+
+
     }
 
     /// <summary>
@@ -130,6 +134,10 @@ public class Test
             return false;
         }
 
+
+
+
+
         return true;
     }
 
@@ -216,23 +224,23 @@ public class Test
         return true;
     }
 
-    /*
-        * =====================================
-        * 
-        * 
-        * Methods for testing board operations
-        * 
-        * 
-        * =====================================
-        * Note:To run these successufuly we first must register 2 test users in the system:
-        * email:oriatta@post.bgu.ac.il
-        * email:oriattar12@post.bgu.ac.il
-        */
+    // /*
+    //     * =====================================
+    //     * 
+    //     * 
+    //     * Methods for testing board operations
+    //     * 
+    //     * 
+    //     * =====================================
+    //     * Note:To run these successufuly we first must register 2 test users in the system:
+    //     * email:oriatta@post.bgu.ac.il
+    //     * email:oriattar12@post.bgu.ac.il
+    //     */
 
 
-    /*
-     * Method for testing board creation first one is expceted to be successful, second one we expect
-     */
+    // /*
+    //  * Method for testing board creation first one is expceted to be successful, second one we expect
+    //  */
     public void runBeforeBoardTest()
     {
         Response<string> res = JsonSerializer.Deserialize<Response<string>>(this.sf.us.Register("oriatta@post.bgu.ac.il", "Aa123456"));
@@ -240,7 +248,7 @@ public class Test
     }
     public bool testBoardCreation()
     {
-        Response<string> res = JsonSerializer.Deserialize <Response<string>> (this.sf.bs.CreateBoard("oriatta@post.bgu.ac.il", "Test1"));//expecting success
+        Response<string> res = JsonSerializer.Deserialize<Response<string>>(this.sf.bs.CreateBoard("oriatta@post.bgu.ac.il", "Test1"));//expecting success
         if (res.ErrorMessage != null)
         {
             Console.WriteLine(res.ErrorMessage);
@@ -248,7 +256,7 @@ public class Test
         }
 
 
-        Response<string> res2 = JsonSerializer.Deserialize < Response<string>> ((this.sf.bs.CreateBoard("oriatta@post.bgu.ac.il", "Test1")));// expected error due to duplication
+        Response<string> res2 = JsonSerializer.Deserialize<Response<string>>((this.sf.bs.CreateBoard("oriatta@post.bgu.ac.il", "Test1")));// expected error due to duplication
         if (res2.ErrorMessage == null)
         {
             Console.WriteLine("Error - a duplicate board was created for the user.");
@@ -347,7 +355,7 @@ public class Test
         }
 
         int limit = 0;
-        Response<string> res2 = JsonSerializer.Deserialize<Response<string>>(this.sf.bs.SetLimit("oriatta@post.bgu.ac.il", "Test1", limit,0));//expecting failiure
+        Response<string> res2 = JsonSerializer.Deserialize<Response<string>>(this.sf.bs.SetLimit("oriatta@post.bgu.ac.il", "Test1", limit, 0));//expecting failiure
         if (res2.ErrorMessage == null)
         {
             Console.WriteLine("ilegal limiting was succefull");
@@ -356,7 +364,7 @@ public class Test
 
 
         limit = 20;
-        res2 = JsonSerializer.Deserialize<Response<string>>(this.sf.bs.SetLimit("oriatta@post.bgu.ac.il", "Test1", limit,0));//expecting success
+        res2 = JsonSerializer.Deserialize<Response<string>>(this.sf.bs.SetLimit("oriatta@post.bgu.ac.il", "Test1", limit, 0));//expecting success
         if (res2.ErrorMessage != null)
         {
             Console.WriteLine(res2.ErrorMessage);
@@ -377,7 +385,7 @@ public class Test
             Console.WriteLine(res.ErrorMessage);
         }
 
-        
+
 
         res = JsonSerializer.Deserialize<Response<string>>(this.sf.bs.CreateBoard("oriatta@post.bgu.ac.il", "Test2"));
         if (res.ErrorMessage != null)
@@ -385,7 +393,7 @@ public class Test
             Console.WriteLine(res.ErrorMessage);
         }
 
-        
+
 
         //creating temp boards
         DateTime deadline = DateTime.Parse("30/12/2025 10:00:00 AM"); // creating temp deadline
@@ -396,7 +404,7 @@ public class Test
         {
             Console.WriteLine(res2.ErrorMessage);
         }
-        
+
 
         res2 = JsonSerializer.Deserialize<Response<string>>(this.sf.ts.CreateTask("oriatta@post.bgu.ac.il", "Test2", "TestDescription2", "Test2", deadline));
         if (res2.ErrorMessage != null)
@@ -405,22 +413,22 @@ public class Test
         }
         //creating test tasks
 
-        Response<string> res3 = JsonSerializer.Deserialize <Response<string>>(this.sf.ts.AdvanceTask("oriatta@post.bgu.ac.il", "Test1",0, 0));
+        Response<string> res3 = JsonSerializer.Deserialize<Response<string>>(this.sf.ts.AdvanceTask("oriatta@post.bgu.ac.il", "Test1", 0, 0));
         if (res3.ErrorMessage != null)
         {
             Console.WriteLine(res3.ErrorMessage);
             return false;
         }
-        res3 = JsonSerializer.Deserialize<Response<string>>(this.sf.ts.AdvanceTask("oriatta@post.bgu.ac.il", "Test2",0, 1));
+        res3 = JsonSerializer.Deserialize<Response<string>>(this.sf.ts.AdvanceTask("oriatta@post.bgu.ac.il", "Test2", 0, 1));
         if (res3.ErrorMessage != null)
         {
             Console.WriteLine(res3.ErrorMessage);
             return false;
         }
-       // advancing test tasks.
+        // advancing test tasks.
 
 
-        Response<List<TaskSL>> res4 = JsonSerializer.Deserialize <Response<List<TaskSL>>>( this.sf.bs.GetInProgressList("oriatta@post.bgu.ac.il"));// testing the operation
+        Response<List<TaskSL>> res4 = JsonSerializer.Deserialize<Response<List<TaskSL>>>(this.sf.bs.GetInProgressList("oriatta@post.bgu.ac.il"));// testing the operation
         if (res4.ErrorMessage != null)
         {
             Console.WriteLine(res4.ErrorMessage);
@@ -451,7 +459,7 @@ public class Test
     /// 
 
 
-    
+
     public bool checkCreateTask()
     {
         DateTime dateTime = DateTime.MaxValue;
@@ -468,7 +476,7 @@ public class Test
             return false;
         }
 
-      //  בדיקת עם שם לוח שלא קיים במערכת
+        //  בדיקת עם שם לוח שלא קיים במערכת
         dateTime = DateTime.MaxValue;
         description = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
         title = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
@@ -483,7 +491,7 @@ public class Test
         }
 
 
-    //    בדיקת הוספת משימה ללוח קיים עם מייל שונה
+        //    בדיקת הוספת משימה ללוח קיים עם מייל שונה
         dateTime = DateTime.MaxValue;
         description = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
         title = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
@@ -497,7 +505,7 @@ public class Test
         }
 
 
-    //    בדיקה עם כותרת ריקה
+        //    בדיקה עם כותרת ריקה
         dateTime = DateTime.MaxValue;
         description = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
         title = "";
@@ -513,7 +521,7 @@ public class Test
         }
 
 
-    //    בדיקה עם description ריק
+        //    בדיקה עם description ריק
         dateTime = DateTime.MaxValue;
         description = "";
         title = "gggggggggg";
@@ -526,7 +534,7 @@ public class Test
             return false;
         }
 
-   //     בדיקה עם PastDatetime ריק
+        //     בדיקה עם PastDatetime ריק
         dateTime = DateTime.MaxValue;
         description = "vvvvvvvvvvvv";
         title = "gggggggggg";
@@ -725,14 +733,14 @@ public class Test
     public bool editTaskTest()
     {
         Response<string> res = JsonSerializer.Deserialize<Response<string>>(this.sf.ts.CreateTask("oriatta@post.bgu.ac.il", "TestTask", "Test for editing", "test", DateTime.MaxValue));// creating temp task
-        if (res.ErrorMessage != null) 
+        if (res.ErrorMessage != null)
         {
             Console.WriteLine(res.ErrorMessage);
             return false;
         }
 
 
-        res = JsonSerializer.Deserialize<Response<string>>(this.sf.ts.UpdateTaskDeadline("oriatta@post.bgu.ac.il", "test",0,0,DateTime.MaxValue)); // expecting success
+        res = JsonSerializer.Deserialize<Response<string>>(this.sf.ts.UpdateTaskDeadline("oriatta@post.bgu.ac.il", "test", 0, 0, DateTime.MaxValue)); // expecting success
         if (res.ErrorMessage != null)
         {
             Console.WriteLine(res.ErrorMessage);
@@ -771,7 +779,7 @@ public class Test
             Console.WriteLine(res.ErrorMessage);
             return false;
         }
-        res = JsonSerializer.Deserialize<Response<string>>(this.sf.ts.UpdateTaskDescription("oriatta@post.bgu.ac.il", "test", 0, 0,"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabcdefffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff")); // expecting failure
+        res = JsonSerializer.Deserialize<Response<string>>(this.sf.ts.UpdateTaskDescription("oriatta@post.bgu.ac.il", "test", 0, 0, "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabcdefffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff")); // expecting failure
         if (res.ErrorMessage == null)
         {
             Console.WriteLine("Imvalid desc was set");
@@ -794,7 +802,7 @@ public class Test
             return false;
         }
 
-        Response<string> res2 = JsonSerializer.Deserialize<Response<string>>(this.sf.ts.AdvanceTask("oriatta@post.bgu.ac.il", "test", 0,0));//Advancing to on going
+        Response<string> res2 = JsonSerializer.Deserialize<Response<string>>(this.sf.ts.AdvanceTask("oriatta@post.bgu.ac.il", "test", 0, 0));//Advancing to on going
         if (res2.ErrorMessage != null)
         {
             Console.WriteLine(res2.ErrorMessage);
@@ -822,7 +830,7 @@ public class Test
             return false;
         }
 
-        res2 = JsonSerializer.Deserialize<Response<string>>(this.sf.ts.AdvanceTask("oriatta@post.bgu.ac.il", "test",0, -1)); //trying to advance non existant task
+        res2 = JsonSerializer.Deserialize<Response<string>>(this.sf.ts.AdvanceTask("oriatta@post.bgu.ac.il", "test", 0, -1)); //trying to advance non existant task
         if (res2.ErrorMessage == null)
         {
             Console.WriteLine(res2.ErrorMessage);

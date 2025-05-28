@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using IntroSE.Kanban.Backend.DataAccessLayer;
 using IntroSE.Kanban.Backend.ServiceLayer;
 using log4net;
 
@@ -47,6 +49,13 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
                     Log.Warn("Email format failed domain check. -USER_BL");
                     throw new ArgumentException("Email cannot be like that.");
                 }
+                var regex = new Regex(@"^[^@\s]+@[^@\s]+\.[^@\s]+$");
+                if (!regex.IsMatch(value))
+                {
+                    Log.Warn("Email format failed domain check. -USER_BL");
+                    throw new ArgumentException("Email cannot be like that.");
+                }
+
 
                 email = value;
                 Log.Info($"Email set successfully: {email} -USER_BL");
@@ -106,9 +115,36 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
         /// <param name="password"></param>
         public UserBL(string email, string password)
         {
+
+            Log.Info($" Starting creation of UserBL for email: {email}  -USER_BL");
+
+            try
+            {
+                UserDAL dto = new UserDAL(email, password);
+                Log.Info($" UserDAL created for email: {email}  -USER_BL");
+
+                Email = email;
+                Password = password;
+
+               
+            }
+            catch (Exception ex)
+            {
+                Log.Error($" Error during creation of UserBL for email: {email}: {ex.Message}  -USER_BL", ex);
+                throw;
+            }
+        }
+
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UserBL"/> class from an existing <see cref="UserDAL"/> object.
+        /// </summary>
+        /// <param name="user">The UserDAL object containing the user's email and password.</param>
+        public UserBL(UserDAL user)
+        {
             Log.Info("Creating new UserBL object. -USER_BL");
-            Email = email;
-            Password = password;
+            Email = user.Email;
+            Password = user.Password;
 
             Log.Info($"User created successfully: {email} -USER_BL");
 

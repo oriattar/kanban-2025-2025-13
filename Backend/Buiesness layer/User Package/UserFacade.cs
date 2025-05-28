@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using IntroSE.Kanban.Backend.DataAccessLayer;
 using log4net;
 
 [assembly: InternalsVisibleTo("UnitTests")]
@@ -27,8 +29,50 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
         {
             this.users = new Dictionary<string, UserBL>();
             this.aFacade = aFacade;
+
+            LoadAllUsers();
         }
 
+
+
+        /// <summary>
+        /// Loads all users from the database into the application's memory.
+        /// Retrieves users using the data access layer and stores them in the internal dictionary.
+        /// </summary>
+        public void LoadAllUsers()
+        {
+            Log.Info("Starting LoadAllUsers - retrieving users from database.-USER_FACADE");
+
+            try
+            {
+                List<UserDAL> usersFromDb = new UserController().SelectAll();
+                Log.Info($"Retrieved {usersFromDb.Count} users from database.-USER_FACADE");
+
+                foreach (var uDAL in usersFromDb)
+                {
+                    var uBL = new UserBL(uDAL);
+                    users[uBL.Email] = uBL;
+                    Log.Info($"Loaded user into memory: {uBL.Email}");
+                }
+
+                Log.Info("LoadAllUsers completed successfully.-USER_FACADE");
+            }
+            catch (Exception ex)
+            {
+                Log.Error("An error occurred while loading users from database. -USER_FACADE");
+                throw;
+            }
+        }
+
+
+        /// <summary>
+        /// Registers a new user by creating a UserBL object, adding it to the local user dictionary,
+        /// and persisting it through the appropriate data access layer.
+        /// </summary>
+        /// <param name="email">The user's email address.</param>
+        /// <param name="password">The user's password.</param>
+        /// <exception cref="ArgumentException">Thrown if the email already exists.</exception>
+        /// <exception cref="Exception">Propagates any exceptions thrown during user creation.</exception>
         public void Register(string email, string password) 
         {
             Log.Info($"Attempting to register user with email: {email} -USER_FACADE");
