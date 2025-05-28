@@ -29,11 +29,8 @@ public class Test
         var logRepo = LogManager.GetRepository(Assembly.GetEntryAssembly());
         XmlConfigurator.Configure(logRepo, new FileInfo("log4net.config")); //inits the logger
 
-        Test tester = new Test();
 
-        bool result = tester.TestSuccessfullRegister();
-        Console.WriteLine(result ? "✅ All tests passed" : "❌ Some tests failed");
-
+      
 
     }
 
