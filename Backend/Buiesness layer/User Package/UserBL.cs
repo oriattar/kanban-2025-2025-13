@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using IntroSE.Kanban.Backend.ServiceLayer;
 using log4net;
@@ -47,6 +48,13 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
                     Log.Warn("Email format failed domain check. -USER_BL");
                     throw new ArgumentException("Email cannot be like that.");
                 }
+                var regex = new Regex(@"^[^@\s]+@[^@\s]+\.[^@\s]+$");
+                if (!regex.IsMatch(value))
+                {
+                    Log.Warn("Email format failed domain check. -USER_BL");
+                    throw new ArgumentException("Email cannot be like that.");
+                }
+
 
                 email = value;
                 Log.Info($"Email set successfully: {email} -USER_BL");
