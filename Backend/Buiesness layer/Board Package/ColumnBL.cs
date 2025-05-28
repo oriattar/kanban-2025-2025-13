@@ -32,10 +32,18 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
             this.taskLimit = NO_LIMIT;
             this.colID = colID;
             this.boardId = boardId;
+
+            this.columnDTO = new ColumnDAL(colID, boardId,name,NO_LIMIT);
+            this.columnDTO.Save();
         }
         public List<TaskBL> Tasks { get => tasks; set => tasks = value; }
-        public string Name { get => name; set => name = value; }
-        public int TaskLimit { get => taskLimit; set => taskLimit = value; }
+        public string Name { get => name; }
+        public int TaskLimit { get => taskLimit; set
+            {
+                taskLimit = value;
+                this.columnDTO.TaskLimit = value;
+            }
+        }
         public ColumnDAL ColumnDTO { get => columnDTO;  }
 
         /// <summary>
@@ -49,6 +57,7 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
                 throw new Exception("Cannot add task, limit has reached for this collumn:" + this.name);
             }    
             tasks.Add(task);
+            this.columnDTO.AddTask(task.TaskDTO); //updates the task column
         }
 
         /// <summary>
@@ -80,6 +89,7 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
             destination.addTask(toTransfer); // removes from one column and add to the other, if dest is full throws an exception and not transffering
 
             this.Tasks.Remove(toTransfer);
+            this.ColumnDTO.RemoveTask(toTransfer.TaskDTO); // removes from the dto, its col was already updated in the add task method
         }
 
         /// <summary>

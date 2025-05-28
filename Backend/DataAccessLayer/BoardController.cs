@@ -18,12 +18,12 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 
 
         private readonly string _connectionString;
-        private readonly ColumnController columnController;
+        
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         public BoardController()
         {
-            columnController = new ColumnController();
+            
             string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "kanban.db"));
             this._connectionString = $"Data Source={path}; Version=3;";
         }
@@ -66,8 +66,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 
             foreach(BoardDAL b in res)
             {
-                List<ColumnDAL> cols = this.LoadColumns(b.BoardID);
-                b.SetColumns(cols[BoardDAL.BACKLOG], cols[BoardDAL.IN_PROGRESS], cols[BoardDAL.DONE]);
 
                 b.ActiveUsers = this.LoadActiveUsers(b.BoardID);
             }
@@ -86,15 +84,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             return new BoardDAL((int)dataReader.GetValue(0),dataReader.GetString(1),dataReader.GetString(2));
         }
 
-        /// <summary>
-        /// A method that loads the boards columns, using the column controller
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        private List<ColumnDAL> LoadColumns(int id)
-        {
-            return this.columnController.SelectColumns(id);
-        }
+        
 
         /// <summary>
         /// A method that loads the list of active users for a board from the intersection databas.
@@ -180,33 +170,14 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                     command.Dispose();
                     connection.Close();
                 }
-                this.InsertCols(board.Columns); // Inserting the baord columns
+                
                 return res > 0;
             }
         }
 
 
-        /// <summary>
-        /// Helper method that helps inserting the cols of the board
-        /// </summary>
-        /// <param name="cols"></param>
-        private void InsertCols(Dictionary<int,ColumnDAL> cols)
-        {
-            this.columnController.Insert(cols[BoardDAL.BACKLOG]);
-            this.columnController.Insert(cols[BoardDAL.IN_PROGRESS]);
-            this.columnController.Insert(cols[BoardDAL.DONE]); // Inserting the baord columns
-        }
-
-        /// <summary>
-        /// Helper method that calls for the removal of the input columns
-        /// </summary>
-        /// <param name="cols"></param>
-        private void DeleteCols(Dictionary<int,ColumnDAL> cols)
-        {
-            this.columnController.Delete(cols[BoardDAL.BACKLOG]);
-            this.columnController.Delete(cols[BoardDAL.IN_PROGRESS]);
-            this.columnController.Delete(cols[BoardDAL.DONE]);
-        }
+       
+        
 
         /// <summary>
         /// A method responsible for removing a board from the db, removing from bouth UserBoard and Boards table.
@@ -248,7 +219,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                     connection.Close();
                 }
 
-                this.DeleteCols(board.Columns); //Deletes all cols
 
                 return res > 0;
             }
@@ -353,7 +323,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 {
                     connection.Open();
 
-                    command.CommandText = $"DELETE FROM {userBoardTableName} WHERE email = @emailVal and idBoard = @bIDVAL;";
+                    command.CommandText = $"DELETE FROM {userBoardTableName} WHERE email = @emailVal and idBoard = @bIDVal;";
                     SQLiteParameter emailVal = new SQLiteParameter(@"emailVal", user);
                     SQLiteParameter bIDVal = new SQLiteParameter(@"bIDVal", b.BoardID);
 

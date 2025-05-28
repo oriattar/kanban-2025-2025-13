@@ -63,7 +63,7 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
             set
             {
 
-                this.Owner = value;
+                this.owner = value;
                 this.boardDTO.BoardOwner = value;
             }
         }
@@ -169,7 +169,7 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
         /// Adds a user email to the active memeber list, if he isnt one.
         /// </summary>
         /// <param name="email"></param>
-        public void AddUserAsMemeber(string email)
+        public void AddUserAsMember(string email)
         {
             if (this.isActiveMember(email)) // checks wether the input user is already an active user
             {
@@ -183,7 +183,7 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
         /// </summary>
         /// <param name="email"></param>
         /// <exception cref="Exception"></exception>
-        public void RemoveUserAsMemeber(string email)
+        public void RemoveUserAsMember(string email)
         {
             if (!this.isActiveMember(email))
             {
@@ -227,7 +227,7 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
                 
             }
             this.Owner = newOwner;
-            this.boardDTO.BoardOwner = newOwner;
+            
         }
 
         /// <summary>

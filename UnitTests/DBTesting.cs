@@ -39,10 +39,19 @@ namespace UnitTests
         }
 
         [Test]
-        public void DB_CreateBoard()
+        public void DB_Testings()
         {
             this._boardFacade.CreateBoard("Test1", testUser.Email);
-            this._boardFacade.DeleteBoard(testUser.Email, "Test1");
+            this._boardFacade.CreateBoard("Test2", testUser2.Email);
+            this._boardFacade.CreateBoard("Test3", testUser.Email);
+
+            this._boardFacade.DeleteBoard(testUser2.Email, "Test2");
+
+            this._boardFacade.AddUserAsMember(testUser2.Email, 0);
+            this._boardFacade.TransferOwnership(testUser.Email, testUser2.Email, "Test1");
+            this._boardFacade.Setlimit(testUser2.Email,"Test1", 0, 5);
+            this._boardFacade.Setlimit(testUser2.Email, "Test1", 1, 0);
+            this._boardFacade.RemoveUserAsMember(testUser.Email,0);
 
         }
 

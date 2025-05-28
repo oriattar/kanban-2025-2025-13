@@ -138,6 +138,15 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         /// </summary>
         public void Delete()
         {
+            if (!this.isPresisted)
+            {
+                Log.Error("Cannot delete a non registered board - BOARDDAL");
+                throw new Exception("Cannot delete a non registered board");
+            }
+            this.Columns[BACKLOG].Delete();
+            this.Columns[IN_PROGRESS].Delete();
+            this.Columns[DONE].Delete(); //deleting its cols
+
             this.controller.Delete(this);
         }
 

@@ -12,19 +12,25 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 {
     internal class ColumnController
     {
-
+        private const string TaskTableName = "Tasks";
         private const string ColumnTableName = "Columns";
         private readonly string _connectionString;
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        private readonly TaskController tController;
+     
 
         public ColumnController()
         {
-            this.tController = new TaskController();
+           
             string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "kanban.db"));
             this._connectionString = $"Data Source={path}; Version=3;";
         }
+
+        /// <summary>
+        /// Selects the column of a board from the database, given the boardID.
+        /// </summary>
+        /// <param name="boardID"></param>
+        /// <returns></returns>
         public List<ColumnDAL> SelectColumns(int boardID)
         {
             List<ColumnDAL> res = new List<ColumnDAL>();
@@ -58,10 +64,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 }
             }
 
-            foreach(ColumnDAL col in res)
-            {
-                col.Tasks = this.tController.SelectTasks(col.ColID);
-            }
             return res;
         }
 
@@ -86,6 +88,12 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                     command.Prepare();
                     res = command.ExecuteNonQuery(); // Deletes cols from DB
 
+                    command.CommandText = $"DELETE FROM {TaskTableName} WHERE {ColumnDAL.idColumnName} = @cID;";
+                    command.Parameters.Clear();
+                    command.Parameters.AddWithValue("@cID", col.ColID);
+                    command.Prepare();
+                    res = command.ExecuteNonQuery(); // tasks of the cols in the tasks table
+
                 }
                 catch (Exception ex)
                 {
@@ -98,12 +106,16 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                     connection.Close();
                 }
 
-                this.tController.DeleteTasks(col.ColID); //Deletes its tasks
-
+                 
                 return res > 0;
             }
         }
 
+        /// <summary>
+        /// A method responsible of inserting a column to the db
+        /// </summary>
+        /// <param name="column"></param>
+        /// <returns></returns>
         public bool Insert(ColumnDAL column)
         {
             using (var connection = new SQLiteConnection(_connectionString))
@@ -117,17 +129,11 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                     command.CommandText = $"INSERT INTO {ColumnTableName} ({ColumnDAL.idColumnName},{ColumnDAL.BoardColumnName},{ColumnDAL.NameColumnName},{ColumnDAL.LimitColumnName}) " +
                         $"" + "VALUES (@cID,@bID,@cName,@cLimit);";
 
-                    SQLiteParameter cID = new SQLiteParameter(@"cID", column.ColID);
-                    SQLiteParameter bID = new SQLiteParameter(@"bID", column.BoardID);
-                    SQLiteParameter cName = new SQLiteParameter(@"cName", column.Name);
-                    SQLiteParameter cLimit = new SQLiteParameter(@"cLimit", column.TaskLimit);
-
                     command.Parameters.Clear();
-
-                    command.Parameters.Add(cID);
-                    command.Parameters.Add(bID);
-                    command.Parameters.Add(cName);
-                    command.Parameters.Add(cLimit); // adding the parameters
+                    command.Parameters.AddWithValue("@cID", column.ColID);
+                    command.Parameters.AddWithValue("@bID", column.BoardID);
+                    command.Parameters.AddWithValue("@cName", column.Name);
+                    command.Parameters.AddWithValue("@cLimit", column.TaskLimit); // adds parameters
 
                     command.Prepare();
 
@@ -166,13 +172,11 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 {
                     connection.Open();
 
-                    command.CommandText = $"update {ColumnTableName} set [{ColumnDAL.LimitColumnName}]=@cLimit where {ColumnDAL.idColumnName}={column.ColID}";
-
-                    SQLiteParameter cLimit = new SQLiteParameter(@"cLimit", limit);
+                    command.CommandText = $"UPDATE {ColumnTableName} SET [{ColumnDAL.LimitColumnName}] = @cLimit WHERE {ColumnDAL.idColumnName} = @cID";
 
                     command.Parameters.Clear();
-                    command.Parameters.Add(cLimit);
-                    command.Prepare();
+                    command.Parameters.AddWithValue("@cLimit", limit);
+                    command.Parameters.AddWithValue("@cID", column.ColID);
 
                     res = command.ExecuteNonQuery();
                 }

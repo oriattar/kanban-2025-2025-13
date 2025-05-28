@@ -125,7 +125,7 @@ namespace UnitTests
             try
             {
                 this._boardFacade.CreateBoard("Test2", testUser.Email);
-                this._boardFacade.AddUserAsMemeber(testUser2.Email, 2); //delete by non owner
+                this._boardFacade.AddUserAsMember(testUser2.Email, 2); //delete by non owner
                 this._boardFacade.DeleteBoard(testUser2.Email, "Test2");
 
                 Assert.Fail();
@@ -270,7 +270,7 @@ namespace UnitTests
                 this._boardFacade.CreateBoard("Test", testUser.Email);
                 this._boardFacade.CreateTask(testUser.Email, "Test", "T", "a", DateTime.MaxValue);
                 this._boardFacade.CreateTask(testUser.Email, "Test", "T2", "", DateTime.MaxValue);
-                this._boardFacade.AddUserAsMemeber(testUser2.Email, 0);
+                this._boardFacade.AddUserAsMember(testUser2.Email, 0);
                 this._boardFacade.CreateTask(testUser2.Email, "Test", "T3", "", DateTime.MaxValue);
             }
             catch (Exception ex)
@@ -550,7 +550,7 @@ namespace UnitTests
                 this._boardFacade.CreateBoard("Test3", testUser.Email);
                 this._boardFacade.CreateBoard("Test4", testUser.Email);
 
-                this._boardFacade.AddUserAsMemeber(testUser2.Email, 0);
+                this._boardFacade.AddUserAsMember(testUser2.Email, 0);
 
                 List<int> IDs = this._boardFacade.CollectBoardIds(testUser.Email);
                 for (int i = 0; i < 4; i = i + 1)
@@ -573,7 +573,7 @@ namespace UnitTests
             try
             {
                 this._boardFacade.CreateBoard("Test", testUser.Email);
-                this._boardFacade.AddUserAsMemeber(testUser2.Email, 0);
+                this._boardFacade.AddUserAsMember(testUser2.Email, 0);
                 BoardBL b = this._boardFacade.GetBoard(testUser.Email, "Test");
                 if (!b.isActiveMember(testUser2.Email))
                     Assert.Fail();
@@ -592,29 +592,29 @@ namespace UnitTests
             try
             {
                 this._boardFacade.CreateBoard("Test", testUser2.Email);
-                this._boardFacade.AddUserAsMemeber(testUser2.Email, 0);
+                this._boardFacade.AddUserAsMember(testUser2.Email, 0);
                 Assert.Fail();
             }
             catch (Exception ex) { Console.WriteLine(ex.Message); }
             try
             {
 
-                this._boardFacade.AddUserAsMemeber(testUser2.Email, 100);
+                this._boardFacade.AddUserAsMember(testUser2.Email, 100);
                 Assert.Fail();
             }
             catch (Exception ex) { Console.WriteLine(ex.Message); }
             try
             {
 
-                this._boardFacade.AddUserAsMemeber("testUser2.Email", 0);
+                this._boardFacade.AddUserAsMember("testUser2.Email", 0);
                 Assert.Fail();
             }
             catch (Exception ex) { Console.WriteLine(ex.Message); }
             try
             {
                 this._boardFacade.CreateBoard("Test2", testUser2.Email);
-                this._boardFacade.AddUserAsMemeber(testUser2.Email, 2);
-                this._boardFacade.AddUserAsMemeber(testUser2.Email, 2);
+                this._boardFacade.AddUserAsMember(testUser2.Email, 2);
+                this._boardFacade.AddUserAsMember(testUser2.Email, 2);
                 Assert.Fail();
             }
             catch (Exception ex) { Console.WriteLine(ex.Message); }
@@ -627,7 +627,7 @@ namespace UnitTests
             try
             {
                 this._boardFacade.CreateBoard("Test", testUser.Email);
-                this._boardFacade.AddUserAsMemeber(testUser2.Email, 0);
+                this._boardFacade.AddUserAsMember(testUser2.Email, 0);
 
                 this._boardFacade.CreateTask(testUser2.Email, "Test", "T1", "", DateTime.MaxValue);
                 this._boardFacade.CreateTask(testUser.Email, "Test", "T2", "", DateTime.MaxValue);
@@ -638,7 +638,7 @@ namespace UnitTests
                 t[0].Asignee = testUser2.Email;
                 t[2].Asignee = testUser2.Email;
 
-                this._boardFacade.RemoveUserAsMemeber(testUser2.Email, 0);
+                this._boardFacade.RemoveUserAsMember(testUser2.Email, 0);
 
                 if (b.isActiveMember(testUser2.Email))
                     Assert.Fail();
@@ -658,32 +658,32 @@ namespace UnitTests
             this._boardFacade.CreateBoard("Test", testUser.Email);
             try
             {
-                this._boardFacade.AddUserAsMemeber(testUser2.Email, 0);
+                this._boardFacade.AddUserAsMember(testUser2.Email, 0);
 
-                this._boardFacade.RemoveUserAsMemeber(testUser2.Email, 0);
-                this._boardFacade.RemoveUserAsMemeber(testUser2.Email, 0);
+                this._boardFacade.RemoveUserAsMember(testUser2.Email, 0);
+                this._boardFacade.RemoveUserAsMember(testUser2.Email, 0);
                 Assert.Fail();
             }
             catch (Exception ex) { Console.WriteLine(ex.Message); }
             try
             {
-                this._boardFacade.RemoveUserAsMemeber(testUser2.Email, 1);
-
-                Assert.Fail();
-            }
-            catch (Exception ex) { Console.WriteLine(ex.Message); }
-            try
-            {
-                this._boardFacade.RemoveUserAsMemeber(testUser.Email, 0);
+                this._boardFacade.RemoveUserAsMember(testUser2.Email, 1);
 
                 Assert.Fail();
             }
             catch (Exception ex) { Console.WriteLine(ex.Message); }
             try
             {
-                this._boardFacade.AddUserAsMemeber(testUser2.Email, 0);
+                this._boardFacade.RemoveUserAsMember(testUser.Email, 0);
+
+                Assert.Fail();
+            }
+            catch (Exception ex) { Console.WriteLine(ex.Message); }
+            try
+            {
+                this._boardFacade.AddUserAsMember(testUser2.Email, 0);
                 this._boardFacade.TransferOwnership(testUser.Email, testUser2.Email, "Test");
-                this._boardFacade.RemoveUserAsMemeber(testUser2.Email, 0);
+                this._boardFacade.RemoveUserAsMember(testUser2.Email, 0);
 
                 Assert.Fail();
             }
@@ -697,7 +697,7 @@ namespace UnitTests
             try
             {
                 this._boardFacade.CreateBoard("Test", testUser.Email);
-                this._boardFacade.AddUserAsMemeber(testUser2.Email, 0);
+                this._boardFacade.AddUserAsMember(testUser2.Email, 0);
                 this._boardFacade.TransferOwnership(testUser.Email, testUser2.Email, "Test");
 
                 BoardBL b = this._boardFacade.GetBoard(testUser2.Email, "Test");
@@ -711,7 +711,7 @@ namespace UnitTests
         public void testTransferOwnership_failure()
         {
             this._boardFacade.CreateBoard("Test", testUser.Email);
-            this._boardFacade.AddUserAsMemeber(testUser2.Email, 0);
+            this._boardFacade.AddUserAsMember(testUser2.Email, 0);
 
             try
             {
@@ -721,12 +721,12 @@ namespace UnitTests
             catch (Exception ex) { Console.WriteLine(ex.Message); }
             try
             {
-                this._boardFacade.RemoveUserAsMemeber(testUser2.Email, 0);
+                this._boardFacade.RemoveUserAsMember(testUser2.Email, 0);
                 this._boardFacade.TransferOwnership(testUser.Email, testUser2.Email, "Test");
                 Assert.Fail();
             }
             catch (Exception ex) { Console.WriteLine(ex.Message); }
-            this._boardFacade.AddUserAsMemeber(testUser2.Email, 0);
+            this._boardFacade.AddUserAsMember(testUser2.Email, 0);
             try
             {
                 this._boardFacade.TransferOwnership(testUser.Email, "testUser2.Email", "Test");
@@ -746,7 +746,7 @@ namespace UnitTests
         public void testAssignemnt_success()
         {
             this._boardFacade.CreateBoard("Test", testUser.Email);
-            this._boardFacade.AddUserAsMemeber(testUser2.Email, 0);
+            this._boardFacade.AddUserAsMember(testUser2.Email, 0);
 
             try
             {
@@ -769,7 +769,7 @@ namespace UnitTests
         {
 
             this._boardFacade.CreateBoard("Test", testUser.Email);
-            this._boardFacade.AddUserAsMemeber(testUser2.Email, 0);
+            this._boardFacade.AddUserAsMember(testUser2.Email, 0);
             this._boardFacade.CreateTask(testUser2.Email, "Test", "T1", "", DateTime.MaxValue);
 
             try

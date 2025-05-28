@@ -15,7 +15,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         public const string idColumnName = "idColumn";
         public const string BoardColumnName = "idBoard";
         public const string NameColumnName = "name";
-        public const string LimitColumnName = "limit";
+        public const string LimitColumnName = "taskLimit";
 
         private bool isPresisted;
         private List<TaskDAL> tasks;
@@ -37,7 +37,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             this.controller = new ColumnController();
             this.name = name;
             this.colID = colID;
-            this.taskLimit = limit;
+            this.TaskLimit = limit;
             this.tasks = tasks;
             this.boardID = boardID;
         }
@@ -53,7 +53,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             this.controller = new ColumnController();
             this.name = name;
             this.colID = colID;
-            this.taskLimit = limit;
+            this.TaskLimit = limit;
             this.tasks = new List<TaskDAL>();
             this.boardID = boardID;
         }
@@ -95,6 +95,15 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             }
             this.controller.Insert(this);
             IsPresisted = true;
+        }
+        public void Delete()
+        {
+            if(!IsPresisted)
+            {
+                Log.Error("Cannot delete a non registered col - COLUMNDAL");
+                throw new Exception("Cannot delete a non registered col");
+            }
+            this.controller.Delete(this);
         }
         /// <summary>
         /// Adds a task to a column,and updates its col id.

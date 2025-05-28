@@ -413,7 +413,7 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
         /// <param name="toAddEmail"></param>
         /// <param name="boardId"></param>
         /// <exception cref="Exception"></exception>
-        public void AddUserAsMemeber(string toAddEmail,int boardId)
+        public void AddUserAsMember(string toAddEmail,int boardId)
         {
             if (!this.aFacade.IsLoggedIn(toAddEmail))
             {
@@ -424,7 +424,7 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
             BoardBL targetBoard = this.GetBoardById(boardId); // locates the boards
 
 
-            targetBoard.AddUserAsMemeber(toAddEmail); // adding the user email to the board
+            targetBoard.AddUserAsMember(toAddEmail); // adding the user email to the board
             this.AddBoardToUserList(toAddEmail,targetBoard); // adding the board to the input user list
             Log.Info("User " + toAddEmail + " joined board:" + targetBoard.Name);
         }
@@ -436,7 +436,7 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
         /// <param name="emailToRemove"></param>
         /// <param name="boardId"></param>
         /// <exception cref="Exception"></exception>
-        public void RemoveUserAsMemeber(string emailToRemove,int boardId)
+        public void RemoveUserAsMember(string emailToRemove,int boardId)
         {
             if (!this.aFacade.IsLoggedIn(emailToRemove))
             {
@@ -452,7 +452,7 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
                 throw new Exception("Cant leave a board while beeing the owner.");
             }
 
-            targetBoard.RemoveUserAsMemeber(emailToRemove);
+            targetBoard.RemoveUserAsMember(emailToRemove);
             this.RemoveBoardFromUserList(emailToRemove,targetBoard); // removes board from the user list
 
             targetBoard.UnassingTasks(emailToRemove); // unassigns the leaving user tasks upon leaving
