@@ -6,6 +6,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using IntroSE.Kanban.Backend.Buiesness_layer;
+using IntroSE.Kanban.Backend.DataAccessLayer;
 using IntroSE.Kanban.Backend.ServiceLayer;
 using NUnit.Framework;
 
@@ -19,15 +20,19 @@ namespace UnitTests
         private UserFacade _userFacade;
         private UserBL testUser;
         private UserBL testUser2;
+        private SystemController _systemController;
 
         [SetUp]
         public void Setup()
         {
+            this._systemController = new SystemController();
             _authFacade = new AuthenticationFacade();
-            _boardFacade = new BoardFacade(_authFacade);
+            _boardFacade = new BoardFacade(_authFacade,_systemController);
             _userFacade = new UserFacade(this._authFacade);
             testUser = new UserBL("oriatta@post.bgu.ac.il", "Abcdefg123456");
             testUser2 = new UserBL("o@post.bgu.ac.il", "Abcdefg123456");
+            
+
 
 
             this._userFacade.Register(testUser.Email, "Abcdefg123456");
@@ -38,6 +43,12 @@ namespace UnitTests
 
             _boardFacade.RegisterInFacade(testUser.Email);
             _boardFacade.RegisterInFacade(testUser2.Email);
+        }
+
+        [TearDown]
+        public void Teardown()
+        {
+            this._systemController.ClearData();
         }
 
         [Test]
