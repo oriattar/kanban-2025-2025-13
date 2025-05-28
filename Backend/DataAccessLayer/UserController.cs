@@ -117,54 +117,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         }
 
 
-        /// <summary>
-        /// Inserts a new user into the Users table.
-        /// </summary>
-        /// <param name="user">UserDAL object containing Email and Password.</param>
-        /// <returns>True if the insert succeeded, false otherwise.</returns>
-        public bool Insert(UserDAL user)
-        {
-
-            using (
-                var connection = new SQLiteConnection(_connectionString))
-            {
-                int res = -1;
-                SQLiteCommand command = new SQLiteCommand(null, connection);
-                try
-                {
-                    Log.Info($"Attempting to insert user with email: {user.Email}- USERCONTROLLER");
-                    connection.Open();
-                    command.CommandText = $"INSERT INTO {UserTableName} ({UserDAL.UserEmail} ,{UserDAL.UserPassword}) " +
-                        $"VALUES (@emailVal,@passwordVal);";
-
-                    SQLiteParameter emailParam = new SQLiteParameter(@"emailVal", user.Email);
-                    SQLiteParameter passwordParam = new SQLiteParameter(@"passwordVal", user.Password);
-
-                    command.Parameters.Clear();
-
-                    command.Parameters.Add(emailParam);
-                    command.Parameters.Add(passwordParam);
-                    command.Prepare();
-
-                    res = command.ExecuteNonQuery();
-                    Log.Info($"Insert operation affected {res} rows.- USERCONTROLLER");
-
-                }
-                catch (Exception e) 
-                {
-                    Log.Error($"Failed to insert user with email: {user.Email}- USERCONTROLLER", e);
-                    throw;
-                }
-
-                finally{
-                    command.Dispose();
-                    connection.Close();
-                    Log.Info("Database connection closed.- USERCONTROLLER");
-                }
-                return res > 0;
-            }
-        }
-
 
 
 
