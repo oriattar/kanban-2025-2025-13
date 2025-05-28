@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using IntroSE.Kanban.Backend.DataAccessLayer;
 using IntroSE.Kanban.Backend.ServiceLayer;
 
 namespace IntroSE.Kanban.Backend.Buiesness_layer
@@ -20,6 +21,7 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
         private string description;
         private string asignee;
 
+        private TaskDAL taskDTO;
         public TaskBL(int id, DateTime creationtime, DateTime deadline, string title, string description)
         {
             this.id = id;
@@ -28,6 +30,7 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
             this.title = title;
             this.description = description;
             this.asignee = "unassigned";
+            
         }
 
         public int Id { get => id; set => id = value; }
@@ -36,6 +39,7 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
         public string Title { get => title; set => title = value; }
         public string Description { get => description; set => description = value; }
         public string Asignee { get => asignee; set => asignee = value; }
+        public TaskDAL TaskDTO { get => taskDTO; }
 
         public void EditTitle(string newTitle)
         {

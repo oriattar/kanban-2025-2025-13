@@ -4,7 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+<<<<<<< HEAD
+using IntroSE.Kanban.Backend.DataAccessLayer;
+=======
 using IntroSE.Kanban.Backend.ServiceLayer;
+>>>>>>> developDataBase
 using log4net;
 
 
@@ -22,7 +26,7 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
 
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-
+        private BoardDAL boardDTO;
         private string name;
         private Dictionary<int, ColumnBL> columns;
         private int boardID;
@@ -39,26 +43,37 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
         {
             this.name = name;
             
-
             this.columns = new Dictionary<int, ColumnBL>();
 
-            columns.Add(BACKLOG, new ColumnBL("backlog",ID +"_0"));
-            columns.Add(IN_PROGRESS, new ColumnBL("in progress",ID+"_1"));
-            columns.Add(DONE, new ColumnBL("done", ID + "_2"));
+            columns.Add(BACKLOG, new ColumnBL("backlog",ID +"_0",ID));
+            columns.Add(IN_PROGRESS, new ColumnBL("in progress",ID+"_1",ID));
+            columns.Add(DONE, new ColumnBL("done", ID + "_2", ID));
 
             this.boardID = ID;
             this.owner = owner; // sets the creating user to be the owner by default
             this.activeUsers = new List<string>();
             activeUsers.Add(owner);
+
+            boardDTO = new BoardDAL(name,ID, owner,  this.activeUsers, this.Columns[BACKLOG].ColumnDTO, this.Columns[IN_PROGRESS].ColumnDTO, this.Columns[DONE].ColumnDTO);
+            boardDTO.Save(); //saves in the db
             Log.Info("Board " + name + " was created for:" + owner);
+
         }
 
 
-        public string Name { get => name; set => name = value; }
-        public Dictionary<int, ColumnBL> Columns { get => columns; set => columns = value; }
-        public int BoardID { get => boardID; set => boardID = value; }
+
+        public string Name { get => name;}
+        public Dictionary<int, ColumnBL> Columns { get => columns; }
+        public int BoardID { get => boardID; }
         public List<string> ActiveUsers { get => activeUsers; }
-        public string Owner { get => owner; set => owner = value; }
+        public string Owner { get => owner; 
+            set
+            {
+
+                this.owner = value;
+                this.boardDTO.BoardOwner = value;
+            }
+        }
 
         /// <summary>
         /// A method that gets collumn id and sets it limit to input limit, if possible.
@@ -161,16 +176,16 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
         }
 
         /// <summary>
-        /// Returns the in the task list of the inProgress column
+        /// Returns the in the task list of the inProgress column, where the tasks assigned to the input email.
         /// </summary>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
         public List<TaskBL> GetInProgress(string email)
         {
             List<TaskBL> res = new List<TaskBL>();
-            foreach (TaskBL task in this.Columns[IN_PROGRESS].Tasks)
+            foreach(TaskBL task in this.Columns[IN_PROGRESS].Tasks)
             {
-                if (task.Asignee.Equals(email))
+                if(task.Asignee.Equals(email))
                     res.Add(task);
             }
             return res;
@@ -180,7 +195,7 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
         /// Adds a user email to the active memeber list, if he isnt one.
         /// </summary>
         /// <param name="email"></param>
-        public void AddUserAsMemeber(string email)
+        public void AddUserAsMember(string email)
         {
             if (this.isActiveMember(email)) // checks wether the input user is already an active user
             {
@@ -188,13 +203,14 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
                 throw new Exception("Input user is already an active member.");
             }
             this.activeUsers.Add(email);
+            this.boardDTO.AddUser(email);
         }
         /// <summary>
         /// Removes a user's email from active user list, if he is one
         /// </summary>
         /// <param name="email"></param>
         /// <exception cref="Exception"></exception>
-        public void RemoveUserAsMemeber(string email)
+        public void RemoveUserAsMember(string email)
         {
             if (!this.isActiveMember(email))
             {
@@ -202,6 +218,7 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
                 throw new Exception("Input user is not an active member.");
             }
             this.activeUsers.Remove(email);
+            this.boardDTO.RemoveUser(email);
         }
             
 
@@ -222,7 +239,7 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
         public void UnassingTasks(string assigneeToRemove)
         {
             this.Columns[BACKLOG].UnassignTasks(assigneeToRemove);
-            this.Columns[DONE].UnassignTasks(assigneeToRemove);
+            this.Columns[IN_PROGRESS].UnassignTasks(assigneeToRemove);
         }
 
         /// <summary>
@@ -239,6 +256,7 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
                 
             }
             this.Owner = newOwner;
+            
         }
 
         /// <summary>
@@ -257,6 +275,14 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
             }
 
             return this.Columns[colID].FindTask(taskID);
+        }
+
+        /// <summary>
+        /// Iniates delete from the db
+        /// </summary>
+        public void Delete()
+        {
+            this.boardDTO.Delete();
         }
 
     }
