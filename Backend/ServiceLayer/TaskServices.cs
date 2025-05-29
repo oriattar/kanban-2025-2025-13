@@ -170,7 +170,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             Response<string> response = null;
             try
             {
-                this.AssignTask(email, boardName, columnOrdinal, taskID, emailAssignee);
+                this.bFacade.AssignTaskToMember(email, boardName, columnOrdinal, taskID, emailAssignee);
                 response = new Response<string>(null, null);
             }
             catch (Exception ex)

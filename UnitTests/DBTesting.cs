@@ -24,9 +24,10 @@ namespace UnitTests
         public void Setup()
         {
             this._systemController = new SystemController();
+            this._systemController.ClearData();
             _authFacade = new AuthenticationFacade();
             _userFacade = new UserFacade(this._authFacade);
-            _boardFacade = new BoardFacade(_authFacade, _systemController);
+            _boardFacade = new BoardFacade(_authFacade, _systemController,0,0);
 
             this._userFacade.Register("oriatta@post.bgu.ac.il", "Abcdefg123456");
             this._userFacade.Register("o@post.bgu.ac.il", "Abcdefg123456");
@@ -66,6 +67,11 @@ namespace UnitTests
             
 
         }
-        
+        [Test]
+
+        public void Clear()
+        {
+            this._systemController.ClearData();
+        }
     }
 }

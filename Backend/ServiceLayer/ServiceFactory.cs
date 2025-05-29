@@ -30,7 +30,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             this.systemController = new SystemController();
             AuthenticationFacade af = new AuthenticationFacade();
             UserFacade uf = new UserFacade(af);
-            BoardFacade bf = new BoardFacade(af,systemController); //inits the facades
+            BoardFacade bf = new BoardFacade(af,systemController,0,0); //inits the facades
 
             var logRepo = LogManager.GetRepository(Assembly.GetEntryAssembly());
             XmlConfigurator.Configure(logRepo, new FileInfo("log4net.config")); //inits the logger

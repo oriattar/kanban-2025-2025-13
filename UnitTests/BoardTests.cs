@@ -28,7 +28,7 @@ namespace UnitTests
             this._systemController = new SystemController();
             _authFacade = new AuthenticationFacade();
             _userFacade = new UserFacade(this._authFacade);
-            _boardFacade = new BoardFacade(_authFacade,_systemController);
+            _boardFacade = new BoardFacade(_authFacade,_systemController,0,0);
            
             
             

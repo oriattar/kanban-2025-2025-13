@@ -29,8 +29,44 @@ public class Test
         var logRepo = LogManager.GetRepository(Assembly.GetEntryAssembly());
         XmlConfigurator.Configure(logRepo, new FileInfo("log4net.config")); //inits the logger
 
+        Console.WriteLine(g.DeleteData());
+        
+        Console.WriteLine(g.Register("oriattar12@gmail.com", "Aa123456"));
+        Console.WriteLine(g.CreateBoard("oriattar12@gmail.com", "T1"));
+        
+        Console.WriteLine(g.CreateBoard("oriattar12@gmail.com", "T2"));
+        Console.WriteLine(g.CreateBoard("oriattar12@gmail.com", "T3"));
 
-      
+        Console.WriteLine(g.DeleteBoard("oriattar12@gmail.com", "T3"));
+
+        Console.WriteLine(g.GetBoardName(0));
+        Console.WriteLine(g.GetColumnName("oriattar12@gmail.com","T1",0));
+        Console.WriteLine(g.LimitColumn("oriattar12@gmail.com", "T1", 1, 10));
+        Console.WriteLine(g.AddTask("oriattar12@gmail.com","T1","A","",DateTime.MaxValue));
+        Console.WriteLine(g.AssignTask("oriattar12@gmail.com", "T1", 0, 0, "oriattar12@gmail.com"));
+        Console.WriteLine(g.UpdateTaskDescription("oriattar12@gmail.com", "T1", 0, 0, "desc"));
+        Console.WriteLine(g.UpdateTaskDueDate("oriattar12@gmail.com", "T1", 0, 0, DateTime.Now));
+        Console.WriteLine(g.UpdateTaskTitle("oriattar12@gmail.com", "T1", 0, 0, "Title"));
+        Console.WriteLine(g.GetUserBoards("oriattar12@gmail.com"));
+        Console.WriteLine(g.Register("oriattar123@gmail.com", "Aa123456"));
+        Console.WriteLine(g.JoinBoard("oriattar123@gmail.com",0));
+        Console.WriteLine(g.CreateBoard("oriattar123@gmail.com", "T4"));
+        Console.WriteLine(g.GetUserBoards("oriattar123@gmail.com"));
+        Console.WriteLine(g.AdvanceTask("oriattar12@gmail.com", "T1", 0, 0));
+        Console.WriteLine(g.Register("oriattar1234@gmail.com", "Aa123456"));
+        Console.WriteLine(g.GetUserBoards("oriattar1234@gmail.com"));
+
+
+
+
+
+
+
+
+
+
+
+
 
     }
 
