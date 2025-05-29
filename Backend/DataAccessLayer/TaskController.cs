@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -68,8 +69,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 
                     command.Parameters.AddWithValue("@taskId", task.TaskId);
                     command.Parameters.AddWithValue("@columnId", task.ColID);
-                    command.Parameters.AddWithValue("@creationTime", task.CreatedAt);
-                    command.Parameters.AddWithValue("@dueTime", task.DueAt);
+                    command.Parameters.AddWithValue("@creationTime", task.CreatedAt.ToString("yyyy-MM-dd HH:mm:ss"));
+                    command.Parameters.AddWithValue("@dueTime", task.DueAt.ToString("yyyy-MM-dd HH:mm:ss"));
                     command.Parameters.AddWithValue("@title", task.TaskTitle);
                     command.Parameters.AddWithValue("@description", task.TaskDescription);
                     command.Parameters.AddWithValue("@asignee", task.AssignedUser);
@@ -145,8 +146,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 var task = new TaskDAL(
                     reader.GetInt32(PARAM_0),    // TaskId
                     reader.GetString(PARAM_1),   // ColumnId
-                    reader.GetDateTime(PARAM_2), // CreatedAt
-                    reader.GetDateTime(PARAM_3), // DueAt
+                    DateTime.ParseExact(reader.GetString(PARAM_2), "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture),
+                    DateTime.ParseExact(reader.GetString(PARAM_3), "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture),
                     reader.GetString(PARAM_4),   // TaskTitle
                     reader.GetString(PARAM_5),   // TaskDescription
                     reader.GetString(PARAM_6)    // AssignedUser

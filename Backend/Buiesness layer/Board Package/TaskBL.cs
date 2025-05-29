@@ -59,6 +59,7 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
             this.title = t.TaskTitle;
             this.description = t.TaskDescription;
             this.asignee = t.AssignedUser;
+            this.colID = t.ColID;
         }
 
         public int Id { get => id;}

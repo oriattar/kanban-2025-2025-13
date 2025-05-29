@@ -87,7 +87,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             set
             {
                 if (isPersisted)
-                    controller.Update(this.TaskId,DueTime, value.ToString());
+                    controller.Update(this.TaskId,DueTime, value.ToString("yyyy-MM-dd HH:mm:ss"));
                 dueAt = value;
             }
         }
