@@ -13,7 +13,9 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 {
     internal class UserController
     {
-
+        public const int PARAM_0 = 0;
+        public const int PARAM_1 = 1;
+        
         private const string UserTableName = "Users";
 
         private readonly string _connectionString;
@@ -105,7 +107,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             Log.Info("Converting SQLiteDataReader row to UserDAL object.- USERCONTROLLER");
             try
             {
-                var user = new UserDAL(reader.GetString(0), reader.GetString(1));
+                var user = new UserDAL(reader.GetString(PARAM_0), reader.GetString(PARAM_1));
                 Log.Info($"Converted user: {user.Email}- USERCONTROLLER");
                 return user;
             }

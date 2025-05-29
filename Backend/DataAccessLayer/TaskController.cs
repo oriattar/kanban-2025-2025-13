@@ -12,12 +12,20 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
     internal class TaskController
     {
 
+        public const int PARAM_0 = 0;
+        public const int PARAM_1 = 1;
+        public const int PARAM_2 = 2;
+        public const int PARAM_3 = 3;
+        public const int PARAM_4 = 4;
+        public const int PARAM_5 = 5;
+        public const int PARAM_6 = 6;
 
         private const string TaskTableName = "Tasks";
 
         private readonly string _connectionString;
 
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        
 
 
 
@@ -135,13 +143,13 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             try
             {
                 var task = new TaskDAL(
-                    reader.GetInt32(0),    // TaskId
-                    reader.GetString(1),   // ColumnId
-                    reader.GetDateTime(2), // CreatedAt
-                    reader.GetDateTime(3), // DueAt
-                    reader.GetString(4),   // TaskTitle
-                    reader.GetString(5),   // TaskDescription
-                    reader.GetString(6)    // AssignedUser
+                    reader.GetInt32(PARAM_0),    // TaskId
+                    reader.GetString(PARAM_1),   // ColumnId
+                    reader.GetDateTime(PARAM_2), // CreatedAt
+                    reader.GetDateTime(PARAM_3), // DueAt
+                    reader.GetString(PARAM_4),   // TaskTitle
+                    reader.GetString(PARAM_5),   // TaskDescription
+                    reader.GetString(PARAM_6)    // AssignedUser
                 );
 
                 Log.Info($"Converted task: {task.TaskId} - TASKCONTROLLER");
@@ -154,7 +162,13 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             }
         }
 
-
+        /// <summary>
+        /// updates the input attribute to the input value in the db, for the input task.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="attributeName"></param>
+        /// <param name="attributeValue"></param>
+        /// <returns></returns>
         public bool Update(int id, string attributeName, string attributeValue)
         {
             int res = -1;

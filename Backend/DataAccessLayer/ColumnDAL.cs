@@ -88,6 +88,11 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             this.controller.Insert(this);
             IsPresisted = true;
         }
+
+        /// <summary>
+        /// A method responsible for deleting a column from the db.
+        /// </summary>
+        /// <exception cref="Exception"></exception>
         public void Delete()
         {
             if(!IsPresisted)

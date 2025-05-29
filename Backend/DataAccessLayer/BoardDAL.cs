@@ -112,6 +112,10 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             this.controller.RemoveUser(this, email);
         }
 
+        /// <summary>
+        /// Saves the dto in the db if not presisted already
+        /// </summary>
+        /// <exception cref="Exception"></exception>
         public void Save()
         {
             if (this.isPresisted)
@@ -127,7 +131,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         }
 
         /// <summary>
-        /// Operates the board deletion
+        /// Operates the board deletion from the db
         /// </summary>
         public void Delete()
         {

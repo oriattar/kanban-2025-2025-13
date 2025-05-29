@@ -140,6 +140,14 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
             this.columns[sourceCol].transferTask(this.columns[sourceCol+1],t); // trasfers only if destination is not full
         }
 
+        /// <summary>
+        /// A method ensuring that new task input is valid, also creates the task and adds it to the backlog.
+        /// </summary>
+        /// <param name="title"></param>
+        /// <param name="description"></param>
+        /// <param name="dueDate"></param>
+        /// <param name="taskID"></param>
+        /// <exception cref="Exception"></exception>
         public void CreateTask(string title, string description, DateTime dueDate, int taskID)
         {
             if (string.IsNullOrEmpty(title))

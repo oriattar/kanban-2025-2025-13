@@ -29,13 +29,13 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
         /// A constructor to the boardFacade, inits the dict
         /// </summary>
         /// <param name="aFacade"></param>
-        public BoardFacade(AuthenticationFacade aFacade,SystemController s,int bID,int cID)
+        public BoardFacade(AuthenticationFacade aFacade,SystemController s)
         {
             this.systemController = s;
             this.boards = new Dictionary<string, List<BoardBL>>();
             this.aFacade = aFacade;
-            this.taskIdGenerator = bID;
-            this.boardIdGenerator = cID;
+            this.taskIdGenerator = SystemController.DEFULT_GENERATOR;
+            this.boardIdGenerator = SystemController.DEFULT_GENERATOR;
         }
 
         /// <summary>

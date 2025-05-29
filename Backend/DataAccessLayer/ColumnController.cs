@@ -17,7 +17,12 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         private readonly string _connectionString;
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-     
+        public const int PARAM_0 = 0;
+        public const int PARAM_1 = 1;
+        public const int PARAM_2 = 2;
+        public const int PARAM_3 = 3;
+
+
 
         public ColumnController()
         {
@@ -80,7 +85,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         /// <returns></returns>
         private ColumnDAL ConvertReaderToColumnDAL(SQLiteDataReader dataReader)
         {
-            return new ColumnDAL(dataReader.GetString(0),dataReader.GetInt32(1),dataReader.GetString(2),dataReader.GetInt32(3));//null we be replaced after connection is closed
+            return new ColumnDAL(dataReader.GetString(PARAM_0),dataReader.GetInt32(PARAM_1),dataReader.GetString(PARAM_2),dataReader.GetInt32(PARAM_3));//null we be replaced after connection is closed
         }
 
         /// <summary>

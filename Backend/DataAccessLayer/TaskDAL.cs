@@ -11,6 +11,9 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
     internal class TaskDAL
     {
         
+        /*
+         * NAMES OF THE COLUMNS IN THE TABLE
+         */
 
         public const string IdTask = "idTask";
         public const string IdColumn = "idColumn";
@@ -33,6 +36,16 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         private string taskDescription;
         private string assignedUser;
 
+        /// <summary>
+        /// Constructor for a taskDAL, given the req parameters, at creating of taskBL
+        /// </summary>
+        /// <param name="taskId"></param>
+        /// <param name="col"></param>
+        /// <param name="createdAt"></param>
+        /// <param name="dueAt"></param>
+        /// <param name="title"></param>
+        /// <param name="description"></param>
+        /// <param name="asignee"></param>
         public TaskDAL(int taskId,string col, DateTime createdAt, DateTime dueAt, string title, string description, string asignee)
         {
             this.controller = new TaskController();
@@ -52,6 +65,12 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         public int TaskId {get => taskId; }
         public DateTime CreatedAt{ get => createdAt; }
 
+        /*
+         * 
+         * Next method are setters ,which also responsible for updating the files in the db.
+         * ---------------------------------------------------------------------------------
+         * 
+         */
         public string ColID { get => colID;
             set
             {
@@ -107,9 +126,15 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         }
 
 
+        /// <summary>
+        /// Saves a task in the db, if not presisted
+        /// </summary>
+        /// <exception cref="InvalidOperationException"></exception>
         public void Save()
         {
-            if (isPersisted) throw new InvalidOperationException("Cannot save a persisted task.");
+            if (isPersisted)
+                throw new InvalidOperationException("Cannot save a persisted task.");
+
             controller.Insert(this);
             isPersisted = true;
         }
