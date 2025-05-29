@@ -88,6 +88,7 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
 
         /// <summary>
         /// Using to register users while loading the system
+        /// not logging the user automatically
         /// </summary>
         /// <param name="un"></param>
         public void addToFacade(string un)

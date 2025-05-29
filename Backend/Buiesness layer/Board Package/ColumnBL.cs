@@ -52,6 +52,10 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
 
         public List<TaskBL> Tasks { get => tasks; set => tasks = value; }
         public string Name { get => name; }
+
+        /// <summary>
+        /// setter for the limit field, updates to dto aswell.
+        /// </summary>
         public int TaskLimit { get => taskLimit; set
             {
                 taskLimit = value;

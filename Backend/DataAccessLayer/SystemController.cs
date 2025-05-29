@@ -19,6 +19,9 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         private const string UserTableName = "Users";
         private const string TaskTableName = "Tasks";
 
+        public const int DEFULT_GENERATOR = 0;
+        private const int PARAM_0 = 0;
+
 
 
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
@@ -94,7 +97,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 
                     reader = command.ExecuteReader();
                     reader.Read();
-                    res = (int)reader.GetInt32(0);
+                    res = (int)reader.GetInt32(PARAM_0);
                     if (reader != null)
                     {
                         reader.Close();
@@ -178,8 +181,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 
                     command.Parameters.Clear();
                     command.Parameters.AddWithValue("@facade", "BoardFacade");
-                    command.Parameters.AddWithValue("@def_gen", 0);
-                    command.Parameters.AddWithValue("@def_task_gen", 0);
+                    command.Parameters.AddWithValue("@def_gen", DEFULT_GENERATOR);
+                    command.Parameters.AddWithValue("@def_task_gen", DEFULT_GENERATOR);
 
                     res = command.ExecuteNonQuery(); //clears data and inserting defualt ID Generator cols in the system db table
 

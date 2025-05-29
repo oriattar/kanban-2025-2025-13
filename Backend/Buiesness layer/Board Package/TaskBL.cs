@@ -24,6 +24,16 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
         private string colID;
 
         private TaskDAL taskDTO;
+
+        /// <summary>
+        /// A normal constructor, given the needed parameters, at creation of a task
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="col"></param>
+        /// <param name="creationtime"></param>
+        /// <param name="deadline"></param>
+        /// <param name="title"></param>
+        /// <param name="description"></param>
         public TaskBL(int id,string col, DateTime creationtime, DateTime deadline, string title, string description)
         {
             this.taskDTO = new TaskDAL(id,col, creationtime, deadline, title, description, "unassigned");
@@ -53,6 +63,13 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
 
         public int Id { get => id;}
         public DateTime Creationtime { get => creationtime;}
+
+        /*
+         * 
+         * Setters, which also responsible to set the new values at the TaskDTO object
+         * 
+         * 
+         */
         public DateTime Deadline
         {
             get => deadline;
@@ -97,6 +114,11 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
 
         }
 
+        /// <summary>
+        /// Editing the title, using the property.
+        /// </summary>
+        /// <param name="newTitle"></param>
+        /// <exception cref="ArgumentException"></exception>
         public void EditTitle(string newTitle)
         {
             if (string.IsNullOrWhiteSpace(newTitle))
@@ -106,6 +128,11 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
             Title = newTitle;
         }
 
+        /// <summary>
+        /// Editing the description, using the property.
+        /// </summary>
+        /// <param name="newDescription"></param>
+        /// <exception cref="ArgumentException"></exception>
         public void EditDescription(string newDescription)
         {
             if (newDescription.Length > DESCRIPTION_LIMIT)
@@ -113,6 +140,11 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
             Description = newDescription;
         }
 
+        /// <summary>
+        /// Editing the duedate, using the property.
+        /// </summary>
+        /// <param name="newDeadline"></param>
+        /// <exception cref="ArgumentException"></exception>
         public void EditDueDate(DateTime newDeadline)
         {
             if (newDeadline <= creationtime)
@@ -120,7 +152,7 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
             Deadline = newDeadline;
         }
         /// <summary>
-        /// Sets a task to unassigned
+        /// Sets a task to unassigned,using the property
         /// </summary>
         public void setAsUnassigned()
         {

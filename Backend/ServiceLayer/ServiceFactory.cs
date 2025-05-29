@@ -30,7 +30,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             this.systemController = new SystemController();
             AuthenticationFacade af = new AuthenticationFacade();
             UserFacade uf = new UserFacade(af);
-            BoardFacade bf = new BoardFacade(af,systemController,0,0); //inits the facades
+            BoardFacade bf = new BoardFacade(af,systemController); //inits the facades
 
             var logRepo = LogManager.GetRepository(Assembly.GetEntryAssembly());
             XmlConfigurator.Configure(logRepo, new FileInfo("log4net.config")); //inits the logger
@@ -51,8 +51,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             Response<string> res = null;
             try
             {
-                this.us.LoadUsers();
-                this.bs.LoadBoards();
+                this.us.LoadUsers(); //loads user data
+                this.bs.LoadBoards();//loads board data
                 res = new Response<string>(null, null);
             }
             catch (Exception ex)

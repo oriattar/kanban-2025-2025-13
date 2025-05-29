@@ -16,6 +16,12 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         private const string userBoardTableName = "BoardUser";
         private const string boardTableName = "Boards";
 
+        public const int PARAM_0 = 0;
+        public const int PARAM_1 = 1;
+        public const int PARAM_2 = 2;
+        public const int PARAM_3 = 3;
+        
+
 
         private readonly string _connectionString;
         
@@ -83,7 +89,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         /// <returns></returns>
         private BoardDAL ConvertReaderToBoard(SQLiteDataReader dataReader)
         {
-            return new BoardDAL(dataReader.GetString(2), dataReader.GetInt32(0), dataReader.GetString(1),null,null,null,null); //all nulls will be set after connections is closed
+            return new BoardDAL(dataReader.GetString(PARAM_2), dataReader.GetInt32(PARAM_0), dataReader.GetString(PARAM_1),null,null,null,null); //all nulls will be set after connections is closed
         }
 
         
@@ -110,7 +116,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 
                     while (reader.Read())
                     {
-                        res.Add(reader.GetString(0));
+                        res.Add(reader.GetString(PARAM_0));
                     }
 
                 }
