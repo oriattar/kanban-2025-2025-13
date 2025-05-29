@@ -92,5 +92,13 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 return JsonSerializer.Serialize(new Response<string>(ex.Message, null));
             }
         }
+
+        /// <summary>
+        /// A Method to load all users on startup
+        /// </summary>
+        public void LoadUsers()
+        {
+            this.uFacade.LoadAllUsers();
+        }
     }
 }

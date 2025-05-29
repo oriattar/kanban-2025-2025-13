@@ -30,7 +30,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             this.systemController = new SystemController();
             AuthenticationFacade af = new AuthenticationFacade();
             UserFacade uf = new UserFacade(af);
-            BoardFacade bf = new BoardFacade(af,systemController); //inits the facades
+            BoardFacade bf = new BoardFacade(af,systemController,0,0); //inits the facades
 
             var logRepo = LogManager.GetRepository(Assembly.GetEntryAssembly());
             XmlConfigurator.Configure(logRepo, new FileInfo("log4net.config")); //inits the logger
@@ -42,6 +42,25 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
         }
 
+        /// <summary>
+        /// Loads the data on startup service
+        /// </summary>
+        /// <returns></returns>
+        public string LoadData()
+        {
+            Response<string> res = null;
+            try
+            {
+                this.us.LoadUsers();
+                this.bs.LoadBoards();
+                res = new Response<string>(null, null);
+            }
+            catch (Exception ex)
+            {
+                res = new Response<string>(ex.Message, null);
+            }
+            return JsonSerializer.Serialize(res);
+        }
         /// <summary>
         /// Clears data from db using system controller
         /// </summary>

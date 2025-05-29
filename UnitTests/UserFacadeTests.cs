@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using IntroSE.Kanban.Backend.Buiesness_layer;
+using IntroSE.Kanban.Backend.DataAccessLayer;
 using NUnit.Framework;
 
 namespace UnitTests
@@ -14,6 +15,7 @@ namespace UnitTests
         private AuthenticationFacade aFacade;
         private UserFacade ufacade;
         private Dictionary<string, UserBL> dic;
+        private readonly SystemController s = new SystemController();
 
         [SetUp]
         public void SetUp() 
@@ -22,6 +24,12 @@ namespace UnitTests
             dic = new Dictionary<string, UserBL>();
             ufacade = new UserFacade(aFacade);
         }
+        [TearDown]
+        public void TearDown()
+        {
+            this.s.ClearData();
+        }
+
 
         [Test]
         public void RegisterSameEmail_Test()

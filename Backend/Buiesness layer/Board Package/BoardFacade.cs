@@ -29,13 +29,32 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
         /// A constructor to the boardFacade, inits the dict
         /// </summary>
         /// <param name="aFacade"></param>
-        public BoardFacade(AuthenticationFacade aFacade,SystemController s)
+        public BoardFacade(AuthenticationFacade aFacade,SystemController s,int bID,int cID)
         {
             this.systemController = s;
             this.boards = new Dictionary<string, List<BoardBL>>();
             this.aFacade = aFacade;
-            this.taskIdGenerator = s.LoadTaskIDGen();
-            this.boardIdGenerator = s.LoadBoardIDGen();
+            this.taskIdGenerator = bID;
+            this.boardIdGenerator = cID;
+        }
+
+        /// <summary>
+        /// Loads all information from the database
+        /// </summary>
+        public void LoadAllBoards()
+        {
+            this.boardIdGenerator = this.systemController.LoadBoardIDGen();
+            this.taskIdGenerator = this.systemController.LoadTaskIDGen();
+            List<BoardDAL> boards = new BoardController().SelectAll(); //reading all the boards
+            foreach (BoardDAL b in boards)
+            {
+                BoardBL toSave = new BoardBL(b); //for each one we construct a new boardbl
+                foreach (string user in toSave.ActiveUsers)
+                {
+                    this.RegisterInFacade(user); //register its users
+                    this.boards[user].Add(toSave);//and adding it to its list
+                }
+            }
         }
 
         /// <summary>
@@ -132,11 +151,6 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
         /// <exception cref="Exception"></exception>
         public void RegisterInFacade(string email)
         {
-            if (!this.aFacade.IsLoggedIn(email))
-            {
-                Log.Warn("Cant create a regisrty while not logged in. - BOARDFACADE");
-                throw new Exception("Cant create a regisrty while not logged in.");
-            }
             if (!this.boards.ContainsKey(email))
             {
                 this.boards.Add(email, new List<BoardBL>());
@@ -351,8 +365,8 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
         {
             if (!this.aFacade.IsLoggedIn(email))
             {
-                Log.Warn("Cant get the inProgress list while not logged in. - BOARDFACADE");
-                throw new Exception("Cant get the inProgress list while not logged in.");
+                Log.Warn("Cant collect boards while not logged in. - BOARDFACADE");
+                throw new Exception("Cant collect boards while not logged in.");
             }
             List<BoardBL> boards = this.GetUserBoards(email);
 

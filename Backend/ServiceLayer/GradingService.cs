@@ -101,7 +101,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>An empty response, unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string LimitColumn(string email, string boardName, int columnOrdinal, int limit)
         {
-            return this.sf.bs.SetLimit(email, boardName, columnOrdinal, limit);
+            return this.sf.bs.SetLimit(email, boardName, limit, columnOrdinal);
         }
 
         /// <summary>
@@ -297,7 +297,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>An empty response, unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string AssignTask(string email, string boardName, int columnOrdinal, int taskID, string emailAssignee)
         {
-            return this.AssignTask(email, boardName, columnOrdinal, taskID, emailAssignee);
+            return this.sf.ts.AssignTask(email, boardName, columnOrdinal, taskID, emailAssignee);
         }
 
         /// <summary>
@@ -331,7 +331,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>An empty response, unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string LoadData()
         {
-            throw new NotImplementedException();
+            return this.sf.LoadData();
         }
 
         ///<summary>This method deletes all persisted data.

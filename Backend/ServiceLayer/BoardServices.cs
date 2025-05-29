@@ -31,7 +31,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 bFacade.RegisterInFacade(email); // adds the list in the board facade if user isnt registerd
-                bFacade.CreateBoard(email, boardName);
+                bFacade.CreateBoard(boardName, email);
                 res = new Response<string>(null, null);
             }
             catch (Exception ex)
@@ -185,6 +185,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             Response<List<int>> res = null;
             try
             {
+                this.bFacade.RegisterInFacade(email);
                 res = new Response<List<int>>(null, this.bFacade.CollectBoardIds(email));
             }
             catch (Exception ex)
@@ -302,6 +303,13 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             return result;
         }
 
+        /// <summary>
+        /// Helper method that loads the boards on startup
+        /// </summary>
+        public void LoadBoards()
+        {
+            this.bFacade.LoadAllBoards();
+        }
 
 
     }

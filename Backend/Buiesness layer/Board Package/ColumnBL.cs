@@ -33,9 +33,23 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
             this.colID = colID;
             this.boardId = boardId;
 
-            this.columnDTO = new ColumnDAL(colID, boardId,name,NO_LIMIT);
+            this.columnDTO = new ColumnDAL(colID,boardId,name,NO_LIMIT);
             this.columnDTO.Save();
         }
+        /// <summary>
+        /// Constructs a col from a dal object
+        /// </summary>
+        /// <param name="c"></param>
+        public ColumnBL(ColumnDAL c)
+        {
+            this.columnDTO = c;
+            this.name = c.Name;
+            this.tasks = TaskBL.Convert(c.Tasks);
+            this.taskLimit = c.TaskLimit;
+            this.colID=c.ColID;
+            this.boardId = c.BoardID;
+        }
+
         public List<TaskBL> Tasks { get => tasks; set => tasks = value; }
         public string Name { get => name; }
         public int TaskLimit { get => taskLimit; set
@@ -45,6 +59,7 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
             }
         }
         public ColumnDAL ColumnDTO { get => columnDTO;  }
+        public string ColID { get => colID; set => colID = value; }
 
         /// <summary>
         /// A method that allows adding task to a collumn
@@ -57,7 +72,7 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
                 throw new Exception("Cannot add task, limit has reached for this collumn:" + this.name);
             }    
             tasks.Add(task);
-            this.columnDTO.AddTask(task.TaskDTO); //updates the task column
+            task.ColID = this.colID; //updates the task column
         }
 
         /// <summary>

@@ -5,6 +5,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using IntroSE.Kanban.Backend.Buiesness_layer;
+using IntroSE.Kanban.Backend.DataAccessLayer;
 using IntroSE.Kanban.Backend.ServiceLayer;
 using Microsoft.Win32;
 
@@ -20,6 +21,7 @@ namespace UnitTests
         private AuthenticationFacade aFacade;
         private string email;
         private string password;
+        private readonly SystemController s = new SystemController();
 
 
         [SetUp]
@@ -32,14 +34,17 @@ namespace UnitTests
             password = "asdfA123";
 
         }
+        [TearDown]
+        public void TearDown()
+        {
+            this.s.ClearData();
+        }
 
 
         [Test]
         public void RegisterSuccessReturnsUserJson_Test()
         {
-            UserBL user = new UserBL(email, password);
-            UserSL userSL = new UserSL(user);
-
+            
             string result = us.Register(email, password);
 
             string a = JsonSerializer.Serialize(new Response<string>(null, null));
