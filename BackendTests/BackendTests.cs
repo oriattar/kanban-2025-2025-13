@@ -29,7 +29,7 @@ public class Test
         var logRepo = LogManager.GetRepository(Assembly.GetEntryAssembly());
         XmlConfigurator.Configure(logRepo, new FileInfo("log4net.config")); //inits the logger
 
-        Console.WriteLine(g.LoadData());
+        g.DeleteData();
         
         Console.WriteLine(g.Register("oriattar12@gmail.com", "Aa123456"));
         Console.WriteLine(g.CreateBoard("oriattar12@gmail.com", "T1"));
@@ -57,6 +57,7 @@ public class Test
         Console.WriteLine(g.GetUserBoards("oriattar1234@gmail.com"));
 
 
+        g.DeleteData();
 
 
 
