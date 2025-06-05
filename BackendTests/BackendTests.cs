@@ -65,6 +65,7 @@ public class Test
         Console.WriteLine(g.AdvanceTask("oriattar123@gmail.com", "T4", 1, 1));
         Console.WriteLine(g.AdvanceTask("oriattar123@gmail.com", "T4", 0, 2));
         Console.WriteLine(g.AdvanceTask("oriattar123@gmail.com", "T4", 0, 3));
+        
 
 
         Console.WriteLine(g.GetUserBoards("oriattar123@gmail.com"));
@@ -82,7 +83,14 @@ public class Test
         Console.WriteLine(g.JoinBoard("oriattar12@gmail.com", 3));
         g.AssignTask("oriattar123@gmail.com", "T4", 1, 2, "oriattar12@gmail.com");
         g.AssignTask("oriattar123@gmail.com", "T4", 1, 2, "oriattar123@gmail.com");
-
+        Console.WriteLine(g.LimitColumn("oriattar123@gmail.com", "T4", 2, 1));
+        Console.WriteLine(g.AdvanceTask("oriattar12@gmail.com", "T4", 1, 2));
+        Console.WriteLine(g.GetColumn("oriattar12@gmail.com", "T1", 0));
+        Console.WriteLine(g.GetColumn("oriattar12@gmail.com", "T1", 1));
+        Console.WriteLine(g.GetColumn("oriattar12@gmail.com", "T1", 2));
+        Console.WriteLine(g.GetColumn("oriattar123@gmail.com", "T4", 0));
+        Console.WriteLine(g.GetColumn("oriattar123@gmail.com", "T4", 1));
+        Console.WriteLine(g.GetColumn("oriattar123@gmail.com", "T4", 2));
 
     }
 
