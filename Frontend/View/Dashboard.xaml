@@ -48,48 +48,70 @@
         </DockPanel>
 
 
-        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
-            <ItemsControl>
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <StackPanel Orientation="Vertical"/>
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
+        <Grid Grid.Row="1" Margin="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
 
-                <ItemsControl.Resources>
-                    <Style TargetType="Border">
-                        <Setter Property="Margin" Value="5"/>
-                        <Setter Property="Padding" Value="10"/>
-                        <Setter Property="BorderBrush" Value="Gray"/>
-                        <Setter Property="BorderThickness" Value="1"/>
-                        <Setter Property="Background" Value="#F0F0F0"/>
-                    </Style>
-                </ItemsControl.Resources>
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                <ItemsControl>
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Vertical"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
 
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Border>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
+                    <ItemsControl.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="Margin" Value="5"/>
+                            <Setter Property="Padding" Value="10"/>
+                            <Setter Property="BorderBrush" Value="Gray"/>
+                            <Setter Property="BorderThickness" Value="1"/>
+                            <Setter Property="Background" Value="#F0F0F0"/>
+                        </Style>
+                    </ItemsControl.Resources>
 
-                                <TextBlock Text="Board 1" VerticalAlignment="Center" FontSize="16" Grid.Column="0" />
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
 
-                                <StackPanel Orientation="Horizontal" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" >
-                                    <Button Content="✕" Width="30" Height="30" Cursor="Hand" ToolTip="מחק לוח" Background="Transparent" BorderThickness="0" />
+                                    <TextBlock Text="Board 1" VerticalAlignment="Center" FontSize="16" Grid.Column="0" />
 
-                                    <Button Width="30" Height="30" Cursor="Hand" ToolTip="פרטים" Background="Transparent" BorderThickness="0" Margin="10,0,0,0">
-                                        <materialDesign:PackIcon Kind="DotsVertical" Height="18" Width="18" Foreground="Black" VerticalAlignment="Center"/>
-                                    </Button>
-                                </StackPanel>
-                            </Grid>
-                        </Border>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-        </ScrollViewer>
+                                    <StackPanel Orientation="Horizontal" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" >
+                                        <Button Content="✕" Width="30" Height="30" Cursor="Hand" ToolTip="מחק לוח" Background="Transparent" BorderThickness="0" />
+
+                                        <Button Width="30" Height="30" Cursor="Hand" ToolTip="פרטים" Background="Transparent" BorderThickness="0" Margin="10,0,0,0">
+                                            <materialDesign:PackIcon Kind="DotsVertical" Height="18" Width="18" Foreground="Black" VerticalAlignment="Center"/>
+                                        </Button>
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+
+            <Button Grid.Row="1"
+            Width="120"
+            Height="35"
+            HorizontalAlignment="Right"
+            Margin="3"
+            Cursor="Hand"
+            Foreground="Black">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" >
+                    <materialDesign:PackIcon Kind="PlusBox" Width="20" Height="20" Margin="0,0,5,0" VerticalAlignment="Center"/>
+                    <TextBlock Text="Add Board" VerticalAlignment="Center"/>
+                </StackPanel>
+            </Button>
+        </Grid>
+
+
     </Grid>
 
 </Window>
