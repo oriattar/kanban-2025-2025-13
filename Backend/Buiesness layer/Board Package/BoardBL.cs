@@ -280,6 +280,11 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
                 throw new Exception("Cannot promote a user that is not an active memeber");
                 
             }
+            if(this.Owner.Equals(newOwner))
+            {
+                Log.Warn("Cannot promote a user that is already the owner -BOARDBL");
+                throw new Exception("Cannot promote a user that is already the owner -BOARDBL");
+            }
             this.Owner = newOwner;
             
         }
