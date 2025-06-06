@@ -55,7 +55,6 @@
 
         <StackPanel Grid.Row="2" HorizontalAlignment="Center" Margin="10">
 
-            <!-- Email section -->
             <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
                 <TextBox x:Name="EmailTextBox" Width="300" Height="25" Margin="0,0,20,0"
                          VerticalContentAlignment="Center"
@@ -77,7 +76,6 @@
                        Visibility="Collapsed"
                        Text="Invalid email address"/>
 
-            <!-- Username section -->
             <StackPanel Orientation="Horizontal">
                 <TextBox x:Name="UsernameTextBox" Width="300" Height="25" Margin="0,0,20,0"
                          VerticalContentAlignment="Center"

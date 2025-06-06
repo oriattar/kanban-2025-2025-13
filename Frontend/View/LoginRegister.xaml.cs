@@ -15,11 +15,11 @@ using System.Windows.Shapes;
 namespace Frontend.View
 {
     /// <summary>
-    /// Interaction logic for Login.xaml
+    /// Interaction logic for LoginRegister.xaml
     /// </summary>
-    public partial class Login : Window
+    public partial class LoginRegister : Window
     {
-        public Login()
+        public LoginRegister()
         {
             InitializeComponent();
         }

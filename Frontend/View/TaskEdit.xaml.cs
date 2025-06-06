@@ -15,11 +15,11 @@ using System.Windows.Shapes;
 namespace Frontend.View
 {
     /// <summary>
-    /// Interaction logic for NewTask.xaml
+    /// Interaction logic for TaskEdit.xaml
     /// </summary>
-    public partial class NewTask : Window
+    public partial class TaskEdit : Window
     {
-        public NewTask()
+        public TaskEdit()
         {
             InitializeComponent();
         }
