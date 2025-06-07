@@ -76,6 +76,11 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
                 Log.Warn("Cant create a board with no name - BOARDFACADE");
                 throw new Exception("Cant create a board with no name");
             }
+            if (this.isBoardExist(email, name)) // the boards already exist
+            {
+                Log.Warn("Board already exist on User's boardfacade entry - BOARDFACADE");
+                throw new Exception("Board already exist on User's boardfacade entry");
+            }
 
             BoardBL b = new BoardBL(name,this.boardIdGenerator,email); // creating a new board
             this.boardIdGenerator++; // advances the generator
@@ -85,17 +90,34 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
             this.AddBoardToUserList(email, b); // adding and ensuring no name duplication
         }
 
+        /// <summary>
+        /// Checks if a board exsit on a user's list
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="boardName"></param>
+        /// <returns></returns>
+        private bool isBoardExist(string user,string boardName)
+        {
+            List<BoardBL> userBoards = this.GetUserBoards(user); //sanity check
+            foreach (BoardBL board in userBoards) //checks whether a board is already exist
+            {
+                if (board.Name.ToLower().Equals(boardName.ToLower())) // the boards already exist
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         private void AddBoardToUserList(string email, BoardBL toAdd)
         {
             List<BoardBL> userBoards = this.GetUserBoards(email); //sanity check
-            foreach (BoardBL board in userBoards) //checks whether a board is already exist
+            if (this.isBoardExist(email,toAdd.Name)) // the boards already exist
             {
-                if (board.Name.ToLower().Equals(toAdd.Name.ToLower())) // the boards already exist
-                {
-                    Log.Warn("Board already exist on User's boardfacade entry - BoardListBL");
+                    Log.Warn("Board already exist on User's boardfacade entry - BOARDFACADE");
                     throw new Exception("Board already exist on User's boardfacade entry");
-                }
             }
+            
 
             userBoards.Add(toAdd);
         }

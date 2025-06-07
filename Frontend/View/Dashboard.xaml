@@ -1,4 +1,6 @@
 ﻿<Window x:Class="Frontend.View.Dashboard"
+                     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -6,7 +8,110 @@
         xmlns:local="clr-namespace:Frontend.View"
         mc:Ignorable="d"
         Title="Dashboard" Height="450" Width="800">
-    <Grid>
-        
+    
+    <Grid Background="White" Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <DockPanel Grid.Row="0" Margin="0,0,0,10" >
+
+            <Button 
+        DockPanel.Dock="Right"
+        Background="Transparent"
+        BorderThickness="1"
+        Cursor="Hand"
+        ToolTip="התנתק"
+        VerticalAlignment="Center"
+        Padding="4"
+                >
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" >
+                    <TextBlock Text="יציאה" FontSize="14" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                    <materialDesign:PackIcon Kind="Logout" Width="18" Height="18" VerticalAlignment="Center"/>
+                </StackPanel>
+            </Button>
+
+            <TextBlock 
+        Text="aaaa@gmail.com" 
+        FontSize="14" 
+        VerticalAlignment="Center" 
+        DockPanel.Dock="Right" 
+        Margin="0,0,10,0"/>
+
+            <TextBlock 
+        Text="list board" 
+        FontSize="25" 
+        FontWeight="Bold" 
+        DockPanel.Dock="Left" 
+        VerticalAlignment="Center"/>
+        </DockPanel>
+
+
+        <Grid Grid.Row="1" Margin="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                <ItemsControl>
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Vertical"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+
+                    <ItemsControl.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="Margin" Value="5"/>
+                            <Setter Property="Padding" Value="10"/>
+                            <Setter Property="BorderBrush" Value="Gray"/>
+                            <Setter Property="BorderThickness" Value="1"/>
+                            <Setter Property="Background" Value="#F0F0F0"/>
+                        </Style>
+                    </ItemsControl.Resources>
+
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock Text="Board 1" VerticalAlignment="Center" FontSize="16" Grid.Column="0" />
+
+                                    <StackPanel Orientation="Horizontal" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" >
+                                        <Button Content="✕" Width="30" Height="30" Cursor="Hand" ToolTip="מחק לוח" Background="Transparent" BorderThickness="0" />
+
+                                        <Button Width="30" Height="30" Cursor="Hand" ToolTip="פרטים" Background="Transparent" BorderThickness="0" Margin="10,0,0,0">
+                                            <materialDesign:PackIcon Kind="DotsVertical" Height="18" Width="18" Foreground="Black" VerticalAlignment="Center"/>
+                                        </Button>
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+
+            <Button Grid.Row="1"
+            Width="120"
+            Height="35"
+            HorizontalAlignment="Right"
+            Margin="3"
+            Cursor="Hand"
+            Foreground="Black">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" >
+                    <materialDesign:PackIcon Kind="PlusBox" Width="20" Height="20" Margin="0,0,5,0" VerticalAlignment="Center"/>
+                    <TextBlock Text="Add Board" VerticalAlignment="Center"/>
+                </StackPanel>
+            </Button>
+        </Grid>
+
+
     </Grid>
+
 </Window>
