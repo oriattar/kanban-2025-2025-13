@@ -21,20 +21,20 @@
         <StackPanel Grid.Row="1" Margin="30,0,30,10" >
             <StackPanel Margin="0,0,0,10"  >
                 <TextBlock Text="Email" FontWeight="SemiBold"/>
-                <TextBox  Text="{Binding Path=Email, Mode=TwoWay}" Height="30" VerticalContentAlignment="Center"/>
+                <TextBox  Text="{Binding Path=Email, Mode=OneWayToSource}" Height="30" VerticalContentAlignment="Center"/>
             </StackPanel>
 
             <StackPanel Margin="0,0,0,10">
                 <TextBlock Text="Password" FontWeight="SemiBold"/>
-                <PasswordBox   x:Name="PasswordBox" Height="30" VerticalContentAlignment="Center"/>
+                <TextBox  Text="{Binding Path=Password, Mode=OneWayToSource}" Height="30" VerticalContentAlignment="Center"/>
             </StackPanel>
 
-            <TextBlock x:Name="ErrorTextBlock"
+            <TextBox Text="{Binding Path=ErrorMessage, Mode=OneWay}"
                        Foreground="Red"
                        FontSize="12"
                        HorizontalAlignment="Center"
                        Visibility="Collapsed"
-                       Text="Invalid email or password."/>
+                       />
         </StackPanel>
 
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,20,0,0">
