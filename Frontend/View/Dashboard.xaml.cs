@@ -11,6 +11,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Frontend.Model;
+using Frontend.ViewModel;
 
 namespace Frontend.View
 {
@@ -19,9 +21,22 @@ namespace Frontend.View
     /// </summary>
     public partial class Dashboard : Window
     {
-        public Dashboard()
+        private UserModel user;
+        private DashboardVM dashboardVM;
+
+        
+        public Dashboard(UserModel u)
         {
             InitializeComponent();
+            this.user = u;
+            this.dashboardVM = new DashboardVM(u);
+            this.DataContext = this.dashboardVM;
+
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

@@ -7,7 +7,7 @@ using log4net;
 
 namespace IntroSE.Kanban.Backend.DataAccessLayer
 {
-    internal class BoardDAL
+    public class BoardDAL
     {
         public static readonly int BACKLOG = 0;
         public static readonly int IN_PROGRESS = 1;

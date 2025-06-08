@@ -11,7 +11,7 @@ using log4net;
 
 namespace IntroSE.Kanban.Backend.DataAccessLayer
 {
-    internal class UserController
+    public class UserController
     {
         public const int PARAM_0 = 0;
         public const int PARAM_1 = 1;

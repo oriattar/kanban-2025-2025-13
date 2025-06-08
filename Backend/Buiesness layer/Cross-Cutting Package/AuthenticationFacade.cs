@@ -6,13 +6,12 @@ using System.Text;
 using System.Threading.Tasks;
 using log4net;
 
-[assembly: InternalsVisibleTo("UnitTests")]
-[assembly: InternalsVisibleTo("BackendTests")]
+
 
 
 namespace IntroSE.Kanban.Backend.Buiesness_layer
 {
-    internal class AuthenticationFacade
+    public class AuthenticationFacade
     {
         private Dictionary<string, bool> uStatus;
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);

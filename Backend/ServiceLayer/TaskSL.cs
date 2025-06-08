@@ -11,7 +11,7 @@ using IntroSE.Kanban.Backend.Buiesness_layer;
 namespace IntroSE.Kanban.Backend.ServiceLayer
 {
 
-    internal class TaskSL
+    public class TaskSL
     {
         public int Id { get; set; }
         public DateTime CreationTime { get; set; }

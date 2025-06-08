@@ -8,7 +8,7 @@ using Microsoft.VisualBasic;
 
 namespace IntroSE.Kanban.Backend.DataAccessLayer
 {
-    internal class TaskDAL
+    public class TaskDAL
     {
         
         /*

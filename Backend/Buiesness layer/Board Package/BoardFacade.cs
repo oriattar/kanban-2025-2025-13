@@ -13,7 +13,7 @@ using log4net.Util;
 
 namespace IntroSE.Kanban.Backend.Buiesness_layer
 {
-    internal class BoardFacade
+    public class BoardFacade
     {
         private readonly SystemController systemController;
         private Dictionary<string, List<BoardBL>> boards;
@@ -564,6 +564,24 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
             }
 
             t.Asignee = emailAssignee; //assigns the task.
+        }
+
+        /// <summary>
+        /// A method returning a list of boardBL
+        /// </summary>
+        /// <param name="ids"></param>
+        /// <returns></returns>
+        public List<BoardBL> GetBoards(string email)
+        {
+            List<int> ids = this.CollectBoardIds(email);
+            List<BoardBL> res = new List<BoardBL>();
+
+            foreach (int id in ids)
+            {
+                res.Add(this.GetBoardById(id));
+            }
+
+            return res;
         }
     }
 }

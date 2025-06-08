@@ -14,7 +14,7 @@ using log4net;
 namespace IntroSE.Kanban.Backend.Buiesness_layer
 {
 
-    internal class UserBL
+    public class UserBL
     {
         private static readonly int PASSWORD_MIN_LENGTH = 6;
         private static readonly int PASSWORD_MAX_LENGTH = 20;

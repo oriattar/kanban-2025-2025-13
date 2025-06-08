@@ -15,7 +15,7 @@ using log4net;
 
 namespace IntroSE.Kanban.Backend.Buiesness_layer
 {
-    internal class BoardBL
+    public class BoardBL
     {
         public static readonly int BACKLOG = 0;
         public static readonly int IN_PROGRESS = 1;

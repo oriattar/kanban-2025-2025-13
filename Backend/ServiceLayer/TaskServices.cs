@@ -11,7 +11,7 @@ using log4net;
 
 namespace IntroSE.Kanban.Backend.ServiceLayer
 {
-    internal class TaskServices
+    public class TaskServices
     {
         private BoardFacade bFacade;
 

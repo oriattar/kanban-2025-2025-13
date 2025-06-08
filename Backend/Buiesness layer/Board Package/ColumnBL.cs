@@ -8,7 +8,7 @@ using IntroSE.Kanban.Backend.ServiceLayer;
 
 namespace IntroSE.Kanban.Backend.Buiesness_layer
 {
-    internal class ColumnBL
+    public class ColumnBL
     {
         public static readonly int NO_LIMIT = -1;
 

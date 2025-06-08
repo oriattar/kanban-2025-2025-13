@@ -9,7 +9,7 @@ using log4net;
 
 namespace IntroSE.Kanban.Backend.ServiceLayer
 {
-    internal class BoardServices
+    public class BoardServices
     {
         private BoardFacade bFacade;
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
@@ -301,6 +301,28 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// Services that returns a list of a user board SL objects
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns></returns>
+        public string GetBoards(string email)
+        {
+            Response<List<BoardSL>> res = null;
+            try
+            {
+                List<BoardSL> list = bFacade.GetBoards(email).Select(b => new BoardSL(b)).ToList();
+                res = new Response<List<BoardSL>>(null, list);
+
+            }
+            catch (Exception e)
+            {
+                res = new Response<List<BoardSL>>(e.Message, null);
+                Log.Error("Error in collecting boards for the user. - BOARDSERVICES:" + e.Message);
+            }
+            return JsonSerializer.Serialize(res);
         }
 
         /// <summary>

@@ -12,7 +12,7 @@ using log4net;
 
 namespace IntroSE.Kanban.Backend.ServiceLayer
 {
-    internal class UserSL
+    public class UserSL
     {
 
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
