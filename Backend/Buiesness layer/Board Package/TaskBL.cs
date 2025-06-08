@@ -10,7 +10,7 @@ using IntroSE.Kanban.Backend.ServiceLayer;
 namespace IntroSE.Kanban.Backend.Buiesness_layer
 {
     
-    internal class TaskBL
+    public class TaskBL
     {
         private static readonly int DESCRIPTION_LIMIT = 300;
         private static readonly int TITLE_LIMIT = 50;

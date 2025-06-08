@@ -33,14 +33,14 @@
             </Button>
 
             <TextBlock 
-        Text="aaaa@gmail.com" 
+        Text="{Binding Path =UserEmail, Mode=OneWay}"
         FontSize="14" 
         VerticalAlignment="Center" 
         DockPanel.Dock="Right" 
         Margin="0,0,10,0"/>
 
             <TextBlock 
-        Text="list board" 
+        Text="Dashboard"
         FontSize="25" 
         FontWeight="Bold" 
         DockPanel.Dock="Left" 
@@ -55,7 +55,7 @@
             </Grid.RowDefinitions>
 
             <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
-                <ItemsControl>
+                <ItemsControl ItemsSource="{Binding Boards}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <StackPanel Orientation="Vertical"/>
@@ -81,7 +81,7 @@
                                         <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
 
-                                    <TextBlock Text="Board 1" VerticalAlignment="Center" FontSize="16" Grid.Column="0" />
+                                    <TextBlock Text="{Binding BName}" VerticalAlignment="Center" FontSize="16" Grid.Column="0" />
 
                                     <StackPanel Orientation="Horizontal" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" >
                                         <Button Content="✕" Width="30" Height="30" Cursor="Hand" ToolTip="מחק לוח" Background="Transparent" BorderThickness="0" />
@@ -103,7 +103,7 @@
             HorizontalAlignment="Right"
             Margin="3"
             Cursor="Hand"
-            Foreground="Black">
+            Foreground="Black" Click="Button_Click">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" >
                     <materialDesign:PackIcon Kind="PlusBox" Width="20" Height="20" Margin="0,0,5,0" VerticalAlignment="Center"/>
                     <TextBlock Text="Add Board" VerticalAlignment="Center"/>

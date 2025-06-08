@@ -8,7 +8,7 @@ using log4net;
 
 namespace IntroSE.Kanban.Backend.DataAccessLayer
 {
-    internal class ColumnDAL
+    public class ColumnDAL
     {
         private readonly ColumnController controller;
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);

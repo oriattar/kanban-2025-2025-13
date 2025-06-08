@@ -10,7 +10,7 @@ using log4net;
 
 namespace IntroSE.Kanban.Backend.DataAccessLayer
 {
-    internal class TaskController
+    public class TaskController
     {
 
         public const int PARAM_0 = 0;

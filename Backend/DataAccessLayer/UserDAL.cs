@@ -8,7 +8,7 @@ using log4net;
 
 namespace IntroSE.Kanban.Backend.DataAccessLayer
 {
-    internal class UserDAL
+    public class UserDAL
     {
         public const string UserEmail = "Email";
         public const string UserPassword = "Password";

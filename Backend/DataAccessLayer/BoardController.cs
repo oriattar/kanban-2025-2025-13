@@ -11,7 +11,7 @@ using log4net;
 
 namespace IntroSE.Kanban.Backend.DataAccessLayer
 {
-    internal class BoardController
+    public class BoardController
     {
         private const string userBoardTableName = "BoardUser";
         private const string boardTableName = "Boards";

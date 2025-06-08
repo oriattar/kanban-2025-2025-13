@@ -13,7 +13,7 @@ using log4net;
 
 namespace IntroSE.Kanban.Backend.Buiesness_layer
 {
-    internal class UserFacade
+    public class UserFacade
     {
         private Dictionary<string, UserBL> users;
         private AuthenticationFacade aFacade;

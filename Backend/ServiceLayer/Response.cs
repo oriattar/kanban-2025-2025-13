@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace IntroSE.Kanban.Backend.ServiceLayer
 {
-    internal class Response<T>
+    public class Response<T>
     {
         public string ErrorMessage { get; set; }
         public T? ReturnValue { get; set; }

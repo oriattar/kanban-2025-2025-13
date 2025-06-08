@@ -23,5 +23,10 @@ namespace Frontend.View
         {
             InitializeComponent();
         }
+
+        private void SaveTask_Click(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -13,7 +13,7 @@ using System.Text.Json;
 
 namespace IntroSE.Kanban.Backend.ServiceLayer
 {
-    internal class ServiceFactory
+    public class ServiceFactory
     {
         public TaskServices ts;
         public BoardServices bs;

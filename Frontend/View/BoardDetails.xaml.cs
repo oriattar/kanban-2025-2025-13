@@ -23,5 +23,15 @@ namespace Frontend.View
         {
             InitializeComponent();
         }
+
+        private void AddMember_Click(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void AddUsername_Click(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

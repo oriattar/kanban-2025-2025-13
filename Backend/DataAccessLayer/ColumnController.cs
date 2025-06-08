@@ -10,7 +10,7 @@ using log4net;
 
 namespace IntroSE.Kanban.Backend.DataAccessLayer
 {
-    internal class ColumnController
+    public class ColumnController
     {
         private const string TaskTableName = "Tasks";
         private const string ColumnTableName = "Columns";

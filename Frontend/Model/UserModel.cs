@@ -6,7 +6,12 @@ using System.Threading.Tasks;
 
 namespace Frontend.Model
 {
-    class UserModel
+    public class UserModel
     {
+        private string email;
+
+        private List<BoardModel> boards;
+        public string Email { get => email; set => email = value; }
+        public List<BoardModel> Boards { get => boards; set => boards = value; }
     }
 }

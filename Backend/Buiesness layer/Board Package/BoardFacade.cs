@@ -13,7 +13,7 @@ using log4net.Util;
 
 namespace IntroSE.Kanban.Backend.Buiesness_layer
 {
-    internal class BoardFacade
+    public class BoardFacade
     {
         private readonly SystemController systemController;
         private Dictionary<string, List<BoardBL>> boards;
@@ -520,14 +520,14 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
                 Log.Warn("Cant transfer owmership of a board while not logged in. - BOARDFACADE");
                 throw new Exception("Cant transfer owmership of a board while not logged in.");
             }
-            if (currentOwnerEmail.Equals(newOwnerEmail))
+            BoardBL targetBoard = this.GetBoard(currentOwnerEmail, boardName); // locate target board
+            if (currentOwnerEmail.Equals(newOwnerEmail) || targetBoard.Owner.Equals(newOwnerEmail))
             {
                 Log.Warn("Cant transfer owmership -Already the owner. - BOARDFACADE");
                 throw new Exception("Cant transfer owmership -Already the owner.");
 
             }
 
-            BoardBL targetBoard = this.GetBoard(currentOwnerEmail,boardName); // locate target board
 
             targetBoard.TransferOwnership(newOwnerEmail); // changes the owner
             Log.Info("Ownership was transferd from " + currentOwnerEmail + " to " +  newOwnerEmail+" - on board:" + boardName);
@@ -564,6 +564,24 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
             }
 
             t.Asignee = emailAssignee; //assigns the task.
+        }
+
+        /// <summary>
+        /// A method returning a list of boardBL
+        /// </summary>
+        /// <param name="ids"></param>
+        /// <returns></returns>
+        public List<BoardBL> GetBoards(string email)
+        {
+            List<int> ids = this.CollectBoardIds(email);
+            List<BoardBL> res = new List<BoardBL>();
+
+            foreach (int id in ids)
+            {
+                res.Add(this.GetBoardById(id));
+            }
+
+            return res;
         }
     }
 }
