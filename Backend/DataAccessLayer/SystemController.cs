@@ -50,7 +50,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 
                     command.CommandText = $"SELECT BoardIDGenerator from {SystemTableName} where Facade=@facade;";
 
-                    command.Parameters.Clear();
+                    //command.Parameters.Clear();
                     command.Parameters.AddWithValue("@facade", "BoardFacade");
 
                     reader = command.ExecuteReader();
@@ -172,12 +172,12 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                     connection.Open();
 
                     command.CommandText = $"DELETE FROM {TaskTableName};" +
-                        $"DELETE FROM {ColumnTableName};"+
-                        $"DELETE FROM {BoardUserTableName};"+
-                        $"DELETE FROM {UserTableName};"+
-                        $"DELETE FROM {BoardTableName};"+
+                        $"DELETE FROM {ColumnTableName};" +
+                        $"DELETE FROM {BoardUserTableName};" +
+                        $"DELETE FROM {UserTableName};" +
+                        $"DELETE FROM {BoardTableName};" +
                         $"DELETE FROM {SystemTableName};"
-                        +$"INSERT INTO {SystemTableName} (Facade,BoardIDGenerator,TaskIDGenerator) VALUES (@facade,@def_gen,@def_task_gen);";
+                        + $"INSERT INTO {SystemTableName} (Facade,BoardIDGenerator,TaskIDGenerator) VALUES (@facade,@def_gen,@def_task_gen);";
 
                     command.Parameters.Clear();
                     command.Parameters.AddWithValue("@facade", "BoardFacade");

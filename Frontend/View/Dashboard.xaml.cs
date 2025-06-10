@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using ControlzEx.Standard;
 using Frontend.Model;
 using Frontend.ViewModel;
 
@@ -36,6 +37,14 @@ namespace Frontend.View
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+
+        }
+
+        private void homepage(object sender, RoutedEventArgs e)
+        {
+            LoginRegister dashboard = new LoginRegister();
+            dashboard.Show();
+            this.Close();
 
         }
     }

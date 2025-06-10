@@ -22,6 +22,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         private SystemController systemController;
 
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
+        public UserServices Us { get; set; }
+
         /// <summary>
         /// Inits the services objects, the SF consturcotr
         /// </summary>
@@ -36,7 +39,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             XmlConfigurator.Configure(logRepo, new FileInfo("log4net.config")); //inits the logger
 
 
-            this.us = new UserServices(uf);
+            this.Us = new UserServices(uf);
             this.bs = new BoardServices(bf);
             this.ts = new TaskServices(bf); //creates the services
 
@@ -74,7 +77,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
             catch (Exception ex)
             {
-                res = new Response<string>(ex.Message,null); 
+                res = new Response<string>(ex.Message, null);
             }
             return JsonSerializer.Serialize(res);
         }
