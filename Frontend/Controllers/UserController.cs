@@ -22,24 +22,13 @@ namespace Frontend.Controllers
 
         public UserModel Login(string username, string password)
         {
-            var json = Us.Login(username, password);
-            var response = JsonSerializer.Deserialize<Response<string>>(json);
-
-            if (response.ErrorMessage != null)
-                throw new Exception(response.ErrorMessage);
-
-            return new UserModel(response.ReturnValue, this);
+            return null;
         }
 
         public UserModel Register(string username, string password)
         {
-            var json = Us.Register(username, password);
-            var response = JsonSerializer.Deserialize<Response<string>>(json);
+            return null;
 
-            if (response.ErrorMessage != null)
-                throw new Exception(response.ErrorMessage);
-
-            return new UserModel(response.ReturnValue, this);
         }
 
     }

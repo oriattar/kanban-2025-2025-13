@@ -33,26 +33,15 @@ namespace Frontend.View
 
         private void Login_Click(object sender, RoutedEventArgs e)
         {
-            UserModel? ret = loginVM.Login();
-            if (ret != null)
-            {
-                //MessageBox.Show($"Login successful! with {ret.Email}");
-                Dashboard dashboard = new Dashboard(ret);
-                dashboard.Show();
-                this.Close();
-            }
+     
+
+
         }
 
         private void Register_Click(object sender, RoutedEventArgs e)
         {
-            UserModel? ret = loginVM.Register();
-            if (ret != null)
-            {
-                //MessageBox.Show($"Login successful! with {ret.Email}");
-                Dashboard dashboard = new Dashboard(ret);
-                dashboard.Show();
-                this.Close();
-            }
+
+
         }
 
     }

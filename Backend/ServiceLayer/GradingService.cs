@@ -341,9 +341,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         ///</para>
         /// </summary>
         ///<returns>An empty response, unless an error occurs (see <see cref="GradingService"/>)</returns>
-        public string DeleteData()
-        {
-            return this.sf.ClearData();
-        }
+        //public string DeleteData()
+        //{
+        //    return this.sf.ClearData();
+        //}
     }
 }

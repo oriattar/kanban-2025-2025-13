@@ -37,7 +37,7 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
                 if (string.IsNullOrWhiteSpace(value) ||!value.Contains('@') || !value.Contains('.') ||value.Contains(" "))
                 {
                     Log.Warn("Invalid email format.-USER_BL");
-                    throw new ArgumentException("Email cannot be like that.");
+                    throw new ArgumentException("The email format is invalid.");
                 }
 
                 int atIndex = value.IndexOf('@');
@@ -47,13 +47,13 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
                     lastDotIndex < atIndex + 2 || lastDotIndex == value.Length - 1)
                 {
                     Log.Warn("Email format failed domain check. -USER_BL");
-                    throw new ArgumentException("Email cannot be like that.");
+                    throw new ArgumentException("The email format is invalid.");
                 }
                 var regex = new Regex(@"^[^@\s]+@[^@\s]+\.[^@\s]+$");
                 if (!regex.IsMatch(value))
                 {
                     Log.Warn("Email format failed domain check. -USER_BL");
-                    throw new ArgumentException("Email cannot be like that.");
+                    throw new ArgumentException("The email format is invalid.");
                 }
 
 
