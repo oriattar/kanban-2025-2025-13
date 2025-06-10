@@ -48,14 +48,32 @@ namespace Frontend.ViewModel
 
         internal UserModel? Login()
         {
-
+            return null;
             
         }
 
 
         public UserModel? Register()
         {
-            
+            if (string.IsNullOrEmpty(Email))
+            {
+                ErrorMessage = "email cannot be empty";
+                return null;
+            }
+            if (string.IsNullOrEmpty(Password))
+            {
+                ErrorMessage = "password cannot be empty";
+                return null;
+            }
+            try
+            {
+                return userController.Register(Email, Password);
+            }
+            catch (Exception e)
+            {
+                ErrorMessage = e.Message;
+                return null;
+            }
         }
     }
 

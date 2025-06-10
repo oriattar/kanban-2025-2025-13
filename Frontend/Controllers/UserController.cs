@@ -27,8 +27,13 @@ namespace Frontend.Controllers
 
         public UserModel Register(string username, string password)
         {
-            return null;
+            var json = Us.Register(username, password);
+            var response = JsonSerializer.Deserialize<Response<string>>(json);
 
+            if (response.ErrorMessage != null)
+                throw new Exception(response.ErrorMessage);
+
+            return new UserModel(response.ReturnValue);
         }
 
     }
