@@ -48,6 +48,7 @@ namespace Frontend.View
         private void Register_Click(object sender, RoutedEventArgs e)
         {
             UserModel? ret = loginVM.Register();
+    
             if (ret != null)
             {
                 Dashboard dashboard = new Dashboard(ret);

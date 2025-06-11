@@ -575,6 +575,7 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
         /// <returns></returns>
         public List<BoardBL> GetBoards(string email)
         {
+            this.RegisterInFacade(email); // first of checks if a user needs to be registered.
             List<int> ids = this.CollectBoardIds(email);
             List<BoardBL> res = new List<BoardBL>();
 

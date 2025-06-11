@@ -13,6 +13,9 @@ namespace Frontend.Model
 
 
         public string Email { get; }
+        
+
+        private bool isNewUser;
 
         internal UserModel(string email)
         {
