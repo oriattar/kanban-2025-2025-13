@@ -7,7 +7,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Frontend.View"
         mc:Ignorable="d"
-        Title="TaskAdd"  Height="350" Width="600">
+        Title="TaskAdd"  Height="400" Width="600">
     <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -26,12 +26,23 @@
                 Margin="0,0,0,5"
                 Grid.Row="0"/>
 
+        <Button DockPanel.Dock="Left" Background="Transparent" BorderThickness="0" Padding="0" Margin="0,0,10,0" Click="BackToBoard_Click" Grid.Row="0" HorizontalAlignment="Left">
+            <materialDesign:PackIcon Kind="Backburger"
+                     Height="25"
+                     Width="25"
+                     VerticalAlignment="Center"
+                     Foreground="Black"/>
+        </Button>
+
+
         <StackPanel Grid.Row="1" Margin="0,10,0,0">
             <TextBlock Text="Title:" FontWeight="SemiBold"/>
             <TextBox x:Name="Title"
           Height="30"
           Margin="0,5,0,0"
-          TextWrapping="Wrap"/>
+          FontSize="17"
+          TextWrapping="Wrap"
+          Text="{Binding Path=Title , Mode=OneWayToSource}"/>
         </StackPanel>
 
         <StackPanel Grid.Row="2" Margin="0,10,0,0">
@@ -39,7 +50,10 @@
             <TextBox x:Name="TaskDescriptionTextBox"
                   Height="30"
                   Margin="0,5,0,0"
-                  TextWrapping="Wrap"/>
+                  FontSize="17"
+                  TextWrapping="Wrap"
+                  Text="{Binding Path=Description , Mode=OneWayToSource}" />
+            
         </StackPanel>
 
       
@@ -49,7 +63,8 @@
             <DatePicker x:Name="DueDatePicker"
                      Height="30"
                      Margin="0,5,0,0"
-                     Padding="5"/>
+                     Padding="5"
+                     SelectedDate="{Binding Path=DueDate ,Mode=OneWayToSource}"/>
         </StackPanel>
 
 
@@ -68,5 +83,8 @@
                 <TextBlock Text="Add Task" VerticalAlignment="Center"/>
             </StackPanel>
         </Button>
+
+        <Label Grid.Row="5" Height="30" Width="500" Content="{Binding Path=ErrorMsg, Mode=OneWay}" FontWeight="SemiBold" FontSize="14" HorizontalAlignment="Left" Margin="0,10,0,0" Foreground="Red"/>
+
     </Grid>
 </Window>

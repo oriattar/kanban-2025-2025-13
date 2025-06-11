@@ -7,7 +7,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Frontend.View"
         mc:Ignorable="d"
-        Title="BoardView" Height="450" Width="800">
+        Title="BoardView" Height="480" Width="820">
     <Grid Background="White" Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -30,6 +30,9 @@
                        DockPanel.Dock="Left"
                        FontWeight="Bold"/>
 
+            <Label Content="{Binding Path=ErrorMsg ,Mode=OneWay}" HorizontalAlignment="Center" Width="300" Margin="250,0,0,0" Height="35" FontSize="14" FontWeight="SemiBold"
+                   ></Label>
+
 
             <Button DockPanel.Dock="Right" 
         BorderThickness="2" 
@@ -40,7 +43,7 @@
         ToolTip="פרטים"
         HorizontalAlignment="Right"
         Cursor="Hand"
-        Margin="5"
+        Margin="0,0,7,0"
                 >
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="3">
                     <TextBlock Text="פרטים" 
@@ -60,7 +63,7 @@
             </Button>
 
         </DockPanel>
-        <UniformGrid Grid.Row="1" Columns="3" HorizontalAlignment="Center" Margin="5" Width="740" >
+        <UniformGrid Grid.Row="1" Columns="3" HorizontalAlignment="Center" Margin="5" Width="760" >
             <Border BorderBrush="Gray" BorderThickness="1" Margin="5">
                 <StackPanel>
                     <Grid Margin="5" VerticalAlignment="Center">
@@ -71,13 +74,18 @@
 
                         <TextBlock Text="Backlog" FontWeight="Bold" Grid.Column="0" VerticalAlignment="Center"/>
 
-                        <materialDesign:PackIcon Kind="NotePlusOutline" Width="20" Height="20" Grid.Column="1" VerticalAlignment="Center"/>
+                        
+                            <Button Width="20" Height="20" Grid.Column="1" VerticalAlignment="Center" Background="Transparent" Click="TaskCreation_Click">
+                                <materialDesign:PackIcon Kind="NotePlusOutline" Width="15" Height="15"/>
+                            </Button>
+                        
+                        
                     </Grid>
                     <Separator Margin="5,0" Height="2" Background="Gray"/>
 
-                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Height="295">
 
-                        <ItemsControl ItemsSource="{Binding Tasks}">
+                        <ItemsControl ItemsSource="{Binding Backlog}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                     <Border BorderBrush="LightGray" BorderThickness="1" Margin="5" Padding="8" CornerRadius="5" Background="White">
@@ -90,12 +98,12 @@
 
                                             <TextBlock Text="{Binding Title}"
            TextWrapping="Wrap"
-           FontSize="10"
+           FontSize="16"
            FontWeight="Bold"
            Grid.Row="0"
            Margin="0,0,0,5"/>
 
-                                            <TextBlock Text="{Binding Text}" TextWrapping="Wrap" FontSize="10" Grid.Row="1" Margin="0,0,0,5"/>
+                                            
                                             <Grid Grid.Row="2">
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="*"/>
@@ -103,38 +111,47 @@
                                                 </Grid.ColumnDefinitions>
 
                                                 <StackPanel Grid.Column="0" Orientation="Vertical">
-                                                    <TextBlock Text="{Binding AssignedTo}" FontSize="8" Foreground="Gray"/>
-                                                    <TextBlock Text="{Binding DueDate}" FontSize="8" Foreground="Gray" Margin="0,4,0,0"/>
+                                                    <TextBlock Text="{Binding AssignedTo}" FontSize="12" Foreground="Gray"/>
+                                                    <TextBlock Text="{Binding CreationTime}" FontSize="10" Foreground="Gray" Margin="0,4,0,0"/>
+                                                    <TextBlock Text="{Binding DueDate}" FontSize="10" Foreground="Gray" Margin="0,4,0,0" FontWeight="Bold"/>
                                                 </StackPanel>
 
-                                                <Button Background="Transparent"
-                BorderBrush="Transparent"
-                BorderThickness="0"
-                Padding="0"
-                Width="60"
-                Height="30"
-                Grid.Column="1"
-                VerticalAlignment="Center"
-                Margin="10,0,0,0"
-                Cursor="Hand">
-                                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1" Margin="0,20,0,0" >
 
+                                                    <Button Width="30" Height="30"
+                                                    Background="Transparent"
+                                                    BorderBrush="Transparent"
+                                                    BorderThickness="0"
+                                                    Padding="0"
+                                                    Cursor="Hand"
+                                                    ToolTip="Edit">
                                                         <materialDesign:PackIcon Kind="CircleEditOutline"
-             Width="18"
-             Height="18"
-             Foreground="Black"
-             VerticalAlignment="Center"
-             Margin="5,0,0,0"/>
+                                                         Width="18"
+                                                         Height="18"
+                                                         Foreground="Black"
+                                                     VerticalAlignment="Center"
+                                                     HorizontalAlignment="Center"/> 
+                                                    </Button>
+
+                                                    
+                                                    <Button Width="30" Height="30"
+                                                        Background="Transparent"
+                                                        BorderBrush="Transparent"
+                                                        BorderThickness="0"
+                                                        Padding="0"
+                                                        Margin="5,0,0,0"
+                                                        Cursor="Hand"
+                                                        ToolTip="Advance">
                                                         <materialDesign:PackIcon Kind="ChevronRight"
-             Width="20"
-             Height="20"
-             Foreground="Black"
-             VerticalAlignment="Center"
-             Margin="5,0,0,0"/>
+                                                         Width="20"
+                                                         Height="20"
+                                                         Foreground="Black"
+                                                         VerticalAlignment="Center"
+                                                         HorizontalAlignment="Center"/>     
+                                                    </Button>
 
+                                                </StackPanel>
 
-                                                    </StackPanel>
-                                                </Button>
                                             </Grid>
                                         </Grid>
                                     </Border>
@@ -155,9 +172,9 @@
                     <TextBlock Text="In progress" FontWeight="Bold" Margin="5"/>
                     <Separator Margin="5,0" Height="2" Background="Gray"/>
 
-                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Height="300">
 
-                        <ItemsControl ItemsSource="{Binding Tasks}">
+                        <ItemsControl ItemsSource="{Binding Inprogress}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <Border BorderBrush="LightGray" BorderThickness="1" Margin="5" Padding="8" CornerRadius="5" Background="White">
@@ -170,12 +187,11 @@
 
                                             <TextBlock Text="{Binding Title}"
            TextWrapping="Wrap"
-           FontSize="10"
+           FontSize="16"
            FontWeight="Bold"
            Grid.Row="0"
            Margin="0,0,0,5"/>
 
-                                            <TextBlock Text="{Binding Text}" TextWrapping="Wrap" FontSize="10" Grid.Row="1" Margin="0,0,0,5"/>
                                             <Grid Grid.Row="2">
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="*"/>
@@ -183,38 +199,45 @@
                                                 </Grid.ColumnDefinitions>
 
                                                 <StackPanel Grid.Column="0" Orientation="Vertical">
-                                                    <TextBlock Text="{Binding AssignedTo}" FontSize="8" Foreground="Gray"/>
-                                                    <TextBlock Text="{Binding DueDate}" FontSize="8" Foreground="Gray" Margin="0,4,0,0"/>
+                                                    <TextBlock Text="{Binding AssignedTo}" FontSize="12" Foreground="Gray"/>
+                                                    <TextBlock Text="{Binding CreationTime}" FontSize="10" Foreground="Gray" Margin="0,4,0,0"/>
+                                                    <TextBlock Text="{Binding DueDate}" FontSize="10" Foreground="Gray" Margin="0,4,0,0" FontWeight="Bold"/>
                                                 </StackPanel>
+                                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1" Margin="0,20,0,0" >
 
-                                                <Button Background="Transparent"
-                BorderBrush="Transparent"
-                BorderThickness="0"
-                Padding="0"
-                Width="60"
-                Height="30"
-                Grid.Column="1"
-                VerticalAlignment="Center"
-                Margin="10,0,0,0"
-                Cursor="Hand">
-                                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-
+                                                    <Button Width="30" Height="30"
+                                                                Background="Transparent"
+                                                                BorderBrush="Transparent"
+                                                                BorderThickness="0"
+                                                                Padding="0"
+                                                                Cursor="Hand"
+                                                                ToolTip="Edit">
                                                         <materialDesign:PackIcon Kind="CircleEditOutline"
-             Width="18"
-             Height="18"
-             Foreground="Black"
-             VerticalAlignment="Center"
-             Margin="5,0,0,0"/>
+                                                                 Width="18"
+                                                                 Height="18"
+                                                                 Foreground="Black"
+                                                             VerticalAlignment="Center"
+                                                             HorizontalAlignment="Center"/>
+                                                     </Button>
+
+
+                                                        <Button Width="30" Height="30"
+                                                                        Background="Transparent"
+                                                                        BorderBrush="Transparent"
+                                                                        BorderThickness="0"
+                                                                        Padding="0"
+                                                                        Margin="5,0,0,0"
+                                                                        Cursor="Hand"
+                                                                        ToolTip="Advance">
                                                         <materialDesign:PackIcon Kind="ChevronRight"
-             Width="20"
-             Height="20"
-             Foreground="Black"
-             VerticalAlignment="Center"
-             Margin="5,0,0,0"/>
+                                                                 Width="20"
+                                                                 Height="20"
+                                                                 Foreground="Black"
+                                                                 VerticalAlignment="Center"
+                                                                 HorizontalAlignment="Center"/>
+                                                    </Button>
 
-
-                                                    </StackPanel>
-                                                </Button>
+                                                </StackPanel>
                                             </Grid>
                                         </Grid>
                                     </Border>
@@ -231,9 +254,9 @@
                 <StackPanel>
                     <TextBlock Text="Done" FontWeight="Bold" Margin="5"/>
                     <Separator Margin="5,0" Height="2" Background="Gray"/>
-                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Height="300">
 
-                        <ItemsControl ItemsSource="{Binding Tasks}">
+                        <ItemsControl ItemsSource="{Binding Done}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <Border BorderBrush="LightGray" BorderThickness="1" Margin="5" Padding="8" CornerRadius="5" Background="White">
@@ -246,12 +269,12 @@
 
                                             <TextBlock Text="{Binding Title}"
            TextWrapping="Wrap"
-           FontSize="10"
+           FontSize="16"
            FontWeight="Bold"
            Grid.Row="0"
            Margin="0,0,0,5"/>
 
-                                            <TextBlock Text="{Binding Text}" TextWrapping="Wrap" FontSize="10" Grid.Row="1" Margin="0,0,0,5"/>
+                                            
                                             <Grid Grid.Row="2">
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="*"/>
@@ -259,38 +282,29 @@
                                                 </Grid.ColumnDefinitions>
 
                                                 <StackPanel Grid.Column="0" Orientation="Vertical">
-                                                    <TextBlock Text="{Binding AssignedTo}" FontSize="8" Foreground="Gray"/>
-                                                    <TextBlock Text="{Binding DueDate}" FontSize="8" Foreground="Gray" Margin="0,4,0,0"/>
+                                                        <TextBlock Text="{Binding AssignedTo}" FontSize="12" Foreground="Gray"/>
+                                                        <TextBlock Text="{Binding CreationTime}" FontSize="10" Foreground="Gray" Margin="0,4,0,0"/>
+                                                        <TextBlock Text="{Binding DueDate}" FontSize="10" Foreground="Gray" Margin="0,4,0,0" FontWeight="Bold"/>
                                                 </StackPanel>
 
-                                                <Button Background="Transparent"
-                BorderBrush="Transparent"
-                BorderThickness="0"
-                Padding="0"
-                Width="60"
-                Height="30"
-                Grid.Column="1"
-                VerticalAlignment="Center"
-                Margin="10,0,0,0"
-                Cursor="Hand">
-                                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1" Margin="0,20,0,0" >
 
+                                                    <Button Width="30" Height="30"
+                                                            Background="Transparent"
+                                                            BorderBrush="Transparent"
+                                                            BorderThickness="0"
+                                                            Padding="0"
+                                                            Cursor="Hand"
+                                                            ToolTip="Edit">
                                                         <materialDesign:PackIcon Kind="CircleEditOutline"
-             Width="18"
-             Height="18"
-             Foreground="Black"
-             VerticalAlignment="Center"
-             Margin="5,0,0,0"/>
-                                                        <materialDesign:PackIcon Kind="ChevronRight"
-             Width="20"
-             Height="20"
-             Foreground="Black"
-             VerticalAlignment="Center"
-             Margin="5,0,0,0"/>
+                                                            Width="18"
+                                                            Height="18"
+                                                            Foreground="Black"
+                                                            VerticalAlignment="Center"
+                                                            HorizontalAlignment="Center"/>
+                                                    </Button>
 
-
-                                                    </StackPanel>
-                                                </Button>
+                                                </StackPanel>
                                             </Grid>
                                         </Grid>
                                     </Border>

@@ -61,5 +61,22 @@ namespace Frontend.Controllers
             return new ObservableCollection<BoardModel>(res.ReturnValue.Select(b => new BoardModel(b))); //constructs and OC list from boardmodel list.
 
         }
+
+        /// <summary>
+        /// Loads the tasks of the input column from backend, using the service.
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="boardName"></param>
+        /// <param name="col"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public ObservableCollection<TaskModel> GetTasks(string email,string boardName,int col)
+        {
+            Response<List<TaskSL>> res = JsonSerializer.Deserialize<Response<List<TaskSL>>>(this.bs.GetColTasks(email,boardName,col));
+            if(res.ErrorMessage != null)
+                throw new Exception(res.ErrorMessage);
+
+            return new ObservableCollection<TaskModel>(res.ReturnValue.Select(t=>new TaskModel(t)));
+        }
     }
 }

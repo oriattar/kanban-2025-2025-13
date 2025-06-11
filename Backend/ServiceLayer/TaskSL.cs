@@ -42,5 +42,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             this.Description = t.Description;
             this.Asignee = t.Asignee;
         }
+
+        public TaskSL() { }
     }
 }

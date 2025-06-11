@@ -14,6 +14,7 @@ using System.Windows.Shapes;
 using Frontend.Model;
 using Frontend.ViewModel;
 
+
 namespace Frontend.View
 {
     /// <summary>
@@ -37,5 +38,23 @@ namespace Frontend.View
             dashboard.Show();
             this.Close();
         }
+
+        private void TaskCreation_Click(object sender, RoutedEventArgs e)
+        {
+            TaskAdd taskWindow = new TaskAdd(this.bvm.User,this.bvm.Board);
+            taskWindow.Show();
+            this.Close();
+        }
+
+        private void TaskAdvance_Click(object sender, RoutedEventArgs e)
+        {
+            Button b = (Button)sender;
+
+            TaskModel t = (TaskModel)(b.DataContext);
+
+
+
+        }
+
     }
 }
