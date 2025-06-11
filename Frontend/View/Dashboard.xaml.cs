@@ -24,6 +24,7 @@ namespace Frontend.View
     {
         private UserModel user;
         private DashboardVM dashboardVM;
+        
 
         
         public Dashboard(UserModel u)
@@ -34,10 +35,17 @@ namespace Frontend.View
             this.DataContext = this.dashboardVM;
 
         }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void CreateBoard_Click(object sender, RoutedEventArgs e)
         {
+            this.dashboardVM.CreateBoard();
+        }
+        private void BoardDelete(object sender, RoutedEventArgs e)
+        {
+            
+            Button button = (Button)sender;
+            BoardModel b = (BoardModel)(button.DataContext);
 
+            this.dashboardVM.DeleteBoard(b.BName);
         }
 
         private void homepage(object sender, RoutedEventArgs e)
@@ -47,5 +55,7 @@ namespace Frontend.View
             this.Close();
 
         }
+
+        
     }
 }

@@ -36,6 +36,7 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
             this.aFacade = aFacade;
             this.taskIdGenerator = SystemController.DEFULT_GENERATOR;
             this.boardIdGenerator = SystemController.DEFULT_GENERATOR;
+            LoadAllBoards();
         }
 
         /// <summary>
@@ -143,8 +144,9 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
                 throw new Exception("Board deletion was initiated by non owner.");
             }
 
-            this.DeleteForAllUsers(toDelete); //deletes the board from users boardlist
+            
             toDelete.Delete();//deleted from db
+            this.DeleteForAllUsers(toDelete); //deletes the board from users boardlist
             Log.Info("A board was deleted to the user:" + email + " in BOARDFACADE");
         }
 

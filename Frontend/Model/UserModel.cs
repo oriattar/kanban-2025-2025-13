@@ -11,9 +11,6 @@ namespace Frontend.Model
     public class UserModel
     {
 
-        private List<BoardModel> boards;
-        public List<BoardModel> Boards { get => boards; set => boards = value; }
-
 
         public string Email { get; }
 

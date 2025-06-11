@@ -8,7 +8,7 @@
         xmlns:local="clr-namespace:Frontend.View"
         mc:Ignorable="d"
         Title="Dashboard" Height="450" Width="800">
-    
+
     <Grid Background="White" Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -55,8 +55,8 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
-                <ItemsControl ItemsSource="{Binding Boards}">
+            <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto">
+                <ItemsControl ItemsSource="{Binding Path=Boards}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <StackPanel Orientation="Vertical"/>
@@ -78,15 +78,16 @@
                             <Border>
                                 <Grid>
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="2*"/>
+                                        <ColumnDefinition Width="2*"/>
                                         <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
 
-                                    <TextBlock Text="{Binding BName}" VerticalAlignment="Center" FontSize="16" Grid.Column="0" />
-
-                                    <StackPanel Orientation="Horizontal" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" >
-                                        <Button Content="✕" Width="30" Height="30" Cursor="Hand" ToolTip="מחק לוח" Background="Transparent" BorderThickness="0" />
-
+                                    <TextBlock Text="{Binding BName}" VerticalAlignment="Center" FontSize="16" FontFamily="Arial" FontWeight="DemiBold" Grid.Column="0" />
+                                    <TextBlock Text="{Binding Owner}" VerticalAlignment="Center" FontSize="16" Grid.Column="1"></TextBlock>
+                                    <StackPanel Orientation="Horizontal" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Right" >
+                                        <Button Content="✕" Width="30" Height="30" Cursor="Hand" ToolTip="מחק לוח" Background="Transparent" BorderThickness="0" Click="BoardDelete" />
+                                        
                                         <Button Width="30" Height="30" Cursor="Hand" ToolTip="פרטים" Background="Transparent" BorderThickness="0" Margin="10,0,0,0">
                                             <materialDesign:PackIcon Kind="DotsVertical" Height="18" Width="18" Foreground="Black" VerticalAlignment="Center"/>
                                         </Button>
@@ -98,13 +99,17 @@
                 </ItemsControl>
             </ScrollViewer>
 
+            <TextBox Grid.Row="1" Name="BoardCreationText" Height="30" Width="150" HorizontalAlignment="Right" Margin="0,0,130,0" FontSize="17" FontWeight="Regular" 
+                     Text="{Binding Path=BoardCreationName,Mode=OneWayToSource}"></TextBox>
+            <Label Grid.Row="1" Name="FeedbackLabel" Height="30" Width="400" HorizontalAlignment="Left" Margin="70,0,0,0" FontSize="12"
+                     FontWeight="Black" Content="{Binding Path=ErrorMsg, Mode=OneWay}"></Label>
             <Button Grid.Row="1"
             Width="120"
             Height="35"
             HorizontalAlignment="Right"
             Margin="3"
             Cursor="Hand"
-            Foreground="Black" Click="Button_Click">
+            Foreground="Black" Click="CreateBoard_Click">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" >
                     <materialDesign:PackIcon Kind="PlusBox" Width="20" Height="20" Margin="0,0,5,0" VerticalAlignment="Center"/>
                     <TextBlock Text="Add Board" VerticalAlignment="Center"/>

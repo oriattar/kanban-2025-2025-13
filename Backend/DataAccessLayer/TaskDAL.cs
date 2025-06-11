@@ -125,6 +125,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             }
         }
 
+        public bool IsPersisted { get => isPersisted; set => isPersisted = value; }
+
 
         /// <summary>
         /// Saves a task in the db, if not presisted

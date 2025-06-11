@@ -12,7 +12,7 @@ namespace Frontend.Model
     {
         private string owner;
         private string bName;
-        private int id;
+        
 
         /// <summary>
         /// Constructs a board model from a boardSL
@@ -20,13 +20,16 @@ namespace Frontend.Model
         /// <param name="b"></param>
         public BoardModel(BoardSL b) {
 
-            this.owner = b.owner;
-            this.bName = b.name;
-            this.id = b.id;
+            this.owner = b.Owner;
+            this.bName = b.Name;
         }
 
+        public BoardModel(string name,string owner)
+        {
+            this.owner = owner;
+            this.bName = name;
+        }
         public string BName { get => bName; set => bName = value; }
         public string Owner { get => owner; set => owner = value; }
-        public int Id { get => id; set => id = value; }
     }
 }
