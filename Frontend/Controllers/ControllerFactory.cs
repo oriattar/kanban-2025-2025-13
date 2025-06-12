@@ -3,7 +3,7 @@ using IntroSE.Kanban.Backend.ServiceLayer;
 
 public class ControllerFactory
 {
-    public static ControllerFactory Instance { get; } = new ControllerFactory();
+    private static ControllerFactory instance = new ControllerFactory(); //singelton class
 
     public readonly UserController UserController;
     public readonly BoardController boardController;
@@ -14,7 +14,9 @@ public class ControllerFactory
         ServiceFactory serviceFactory = new ServiceFactory();
         UserController = new UserController(serviceFactory.Us);
         boardController = new BoardController(serviceFactory.bs);
-        taskController = new TaskController(serviceFactory.ts);
+        taskController = new TaskController(serviceFactory.ts); //constructs the controllers using the services.
 
     }
+
+    public static ControllerFactory Instance { get => instance; }
 }

@@ -13,6 +13,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
     public class TaskSL
     {
+        public readonly int COL_ID_SPLITTER = 1;
         public int Id { get; set; }
         public DateTime CreationTime { get; set; }
         public DateTime DueDate { get; set; }
@@ -20,19 +21,13 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         public string Description { get; set; }
 
         public string Asignee { get;set; }
+        public int ColID { get => colID; set => colID = value; }
+
+        private int colID;
 
 
-        
 
-        public TaskSL(int id, DateTime creationtime, DateTime deadline, string title, string description)
-        {
-            Id = id;
-            this.CreationTime = creationtime;
-            this.DueDate = deadline;
-            this.Title = title;
-            this.Description = description;
-        }
-        
+
         public TaskSL(TaskBL t)
         {
             this.Id = t.Id;
@@ -41,6 +36,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             this.Title = t.Title;
             this.Description = t.Description;
             this.Asignee = t.Asignee;
+
+            string col_id = t.ColID.Split('_')[COL_ID_SPLITTER];
+            this.colID = int.Parse(col_id);
         }
 
         public TaskSL() { }

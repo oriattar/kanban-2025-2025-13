@@ -71,6 +71,9 @@ namespace Frontend.ViewModel
             }
         }
 
+        /// <summary>
+        /// Property that controls the err msg color
+        /// </summary>
         public bool Status
         {
             get => status; set
@@ -99,7 +102,7 @@ namespace Frontend.ViewModel
                 {
                     this.boardController.CreateBoard(this.boardCreationName,this.User.Email);
 
-                    this.boards.Add(new BoardModel(this.boardCreationName, this.User.Email)); //adds the new board to an observable colletion, so the gui updates on the spot.
+                    this.boards.Add(this.boardController.GetBoard(this.UserEmail,this.BoardCreationName)); //adds the new board to an observable colletion, so the gui updates on the spot.
                     ErrorMsg = "Board Created Successfully";
                     Status = true; //colors the msg green
                 }

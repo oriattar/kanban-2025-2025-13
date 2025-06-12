@@ -7,10 +7,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Frontend.View"
         mc:Ignorable="d"
-        Title="BoardView" Height="480" Width="820">
+        Title="BoardView" Height="550" Width="820">
     <Grid Background="White" Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="5*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
@@ -30,9 +31,6 @@
                        DockPanel.Dock="Left"
                        FontWeight="Bold"/>
 
-            <Label Content="{Binding Path=ErrorMsg ,Mode=OneWay}" HorizontalAlignment="Center" Width="300" Margin="250,0,0,0" Height="35" FontSize="14" FontWeight="SemiBold"
-                   ></Label>
-
 
             <Button DockPanel.Dock="Right" 
         BorderThickness="2" 
@@ -44,6 +42,7 @@
         HorizontalAlignment="Right"
         Cursor="Hand"
         Margin="0,0,7,0"
+        Click="Details_click"
                 >
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="3">
                     <TextBlock Text="פרטים" 
@@ -63,7 +62,8 @@
             </Button>
 
         </DockPanel>
-        <UniformGrid Grid.Row="1" Columns="3" HorizontalAlignment="Center" Margin="5" Width="760" >
+
+        <UniformGrid Grid.Row="1" Columns="3" HorizontalAlignment="Center" Margin="5" Width="760" Height="350" >
             <Border BorderBrush="Gray" BorderThickness="1" Margin="5">
                 <StackPanel>
                     <Grid Margin="5" VerticalAlignment="Center">
@@ -71,11 +71,11 @@
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
-
+                            
                         <TextBlock Text="Backlog" FontWeight="Bold" Grid.Column="0" VerticalAlignment="Center"/>
 
-                        
-                            <Button Width="20" Height="20" Grid.Column="1" VerticalAlignment="Center" Background="Transparent" Click="TaskCreation_Click">
+
+                        <Button Width="20" Height="20" Grid.Column="1" VerticalAlignment="Center" Background="Transparent" Click="TaskCreation_Click">
                                 <materialDesign:PackIcon Kind="NotePlusOutline" Width="15" Height="15"/>
                             </Button>
                         
@@ -83,7 +83,7 @@
                     </Grid>
                     <Separator Margin="5,0" Height="2" Background="Gray"/>
 
-                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Height="295">
+                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Height="300">
 
                         <ItemsControl ItemsSource="{Binding Backlog}">
                         <ItemsControl.ItemTemplate>
@@ -124,6 +124,7 @@
                                                     BorderThickness="0"
                                                     Padding="0"
                                                     Cursor="Hand"
+                                                    Click="Edit_click"
                                                     ToolTip="Edit">
                                                         <materialDesign:PackIcon Kind="CircleEditOutline"
                                                          Width="18"
@@ -138,6 +139,7 @@
                                                         Background="Transparent"
                                                         BorderBrush="Transparent"
                                                         BorderThickness="0"
+                                                        Click="TaskAdvance_Click"
                                                         Padding="0"
                                                         Margin="5,0,0,0"
                                                         Cursor="Hand"
@@ -168,8 +170,11 @@
             
             
             <Border BorderBrush="Gray" BorderThickness="1" Margin="5">
+  
                 <StackPanel>
-                    <TextBlock Text="In progress" FontWeight="Bold" Margin="5"/>
+                    <TextBlock Text="In Progress" FontWeight="Bold" Margin="7"/>
+
+
                     <Separator Margin="5,0" Height="2" Background="Gray"/>
 
                     <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Height="300">
@@ -211,6 +216,7 @@
                                                                 BorderThickness="0"
                                                                 Padding="0"
                                                                 Cursor="Hand"
+                                                                Click="Edit_click"
                                                                 ToolTip="Edit">
                                                         <materialDesign:PackIcon Kind="CircleEditOutline"
                                                                  Width="18"
@@ -226,6 +232,7 @@
                                                                         BorderBrush="Transparent"
                                                                         BorderThickness="0"
                                                                         Padding="0"
+                                                                        Click="TaskAdvance_Click"
                                                                         Margin="5,0,0,0"
                                                                         Cursor="Hand"
                                                                         ToolTip="Advance">
@@ -252,7 +259,7 @@
             </Border>
             <Border BorderBrush="Gray" BorderThickness="1" Margin="5">
                 <StackPanel>
-                    <TextBlock Text="Done" FontWeight="Bold" Margin="5"/>
+                    <TextBlock Text="Done" FontWeight="Bold" Margin="7"/>
                     <Separator Margin="5,0" Height="2" Background="Gray"/>
                     <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Height="300">
 
@@ -274,7 +281,7 @@
            Grid.Row="0"
            Margin="0,0,0,5"/>
 
-                                            
+
                                             <Grid Grid.Row="2">
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="*"/>
@@ -282,29 +289,12 @@
                                                 </Grid.ColumnDefinitions>
 
                                                 <StackPanel Grid.Column="0" Orientation="Vertical">
-                                                        <TextBlock Text="{Binding AssignedTo}" FontSize="12" Foreground="Gray"/>
-                                                        <TextBlock Text="{Binding CreationTime}" FontSize="10" Foreground="Gray" Margin="0,4,0,0"/>
-                                                        <TextBlock Text="{Binding DueDate}" FontSize="10" Foreground="Gray" Margin="0,4,0,0" FontWeight="Bold"/>
+                                                    <TextBlock Text="{Binding AssignedTo}" FontSize="12" Foreground="Gray"/>
+                                                    <TextBlock Text="{Binding CreationTime}" FontSize="10" Foreground="Gray" Margin="0,4,0,0"/>
+                                                    <TextBlock Text="{Binding DueDate}" FontSize="10" Foreground="Gray" Margin="0,4,0,0" FontWeight="Bold"/>
                                                 </StackPanel>
 
-                                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1" Margin="0,20,0,0" >
 
-                                                    <Button Width="30" Height="30"
-                                                            Background="Transparent"
-                                                            BorderBrush="Transparent"
-                                                            BorderThickness="0"
-                                                            Padding="0"
-                                                            Cursor="Hand"
-                                                            ToolTip="Edit">
-                                                        <materialDesign:PackIcon Kind="CircleEditOutline"
-                                                            Width="18"
-                                                            Height="18"
-                                                            Foreground="Black"
-                                                            VerticalAlignment="Center"
-                                                            HorizontalAlignment="Center"/>
-                                                    </Button>
-
-                                                </StackPanel>
                                             </Grid>
                                         </Grid>
                                     </Border>
@@ -312,12 +302,41 @@
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
                     </ScrollViewer>
-
-
                 </StackPanel>
             </Border>
         </UniformGrid>
-        
+        <Label Content="{Binding Path=ErrorMsg ,Mode=OneWay}" Grid.Row="2" HorizontalAlignment="Left" Width="500" Margin="8,30,0,0" Height="35" FontSize="12" FontWeight="SemiBold" Foreground="Red"
+        ></Label>
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,5,7,0">
+
+            <Button Content="Limit"
+            Width="60"
+            Height="60"
+            Margin="0,0,10,0"
+            VerticalAlignment="Center"
+            FontWeight="SemiBold" Click="Limit_Click" />
+
+            
+            <StackPanel>
+                <TextBox Width="150"
+                 Height="30"
+                 Margin="0,0,0,5"
+                 HorizontalAlignment="Right"
+                 FontSize="14"
+                 Text="{Binding Path=LimitText,Mode=OneWayToSource}"></TextBox>
+         
+
+
+                <ComboBox SelectedItem ="{Binding Path=SelectedCol,Mode=OneWayToSource}" Width="150"
+                  Height="30"
+                  SelectedIndex="0">
+                    <ComboBoxItem Content="Backlog" />
+                    <ComboBoxItem Content="In Progress" />
+                    <ComboBoxItem Content="Done"/>
+                </ComboBox>
+            </StackPanel>
+
+        </StackPanel>
     </Grid>
     
 </Window>

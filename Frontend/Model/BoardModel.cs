@@ -12,6 +12,7 @@ namespace Frontend.Model
     {
         private string owner;
         private string bName;
+        private int id;
         
 
         /// <summary>
@@ -22,14 +23,11 @@ namespace Frontend.Model
 
             this.owner = b.Owner;
             this.bName = b.Name;
+            this.id = b.Id;
         }
 
-        public BoardModel(string name,string owner)
-        {
-            this.owner = owner;
-            this.bName = name;
-        }
         public string BName { get => bName; set => bName = value; }
         public string Owner { get => owner; set => owner = value; }
+        public int Id { get => id; set => id = value; }
     }
 }

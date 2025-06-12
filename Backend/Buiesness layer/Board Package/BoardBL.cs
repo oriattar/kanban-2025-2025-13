@@ -102,16 +102,22 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
 
             if (limit < NO_LIMIT || col < BACKLOG || col > DONE) //allows removing the limit aswell
             {
-                Log.Warn("Ileagal collumn number or limit - BOARDBL");
-                throw new Exception("Ileagal collumn number or limit");
+                Log.Warn("Ileagal column number or limit - BOARDBL");
+                throw new Exception("Ileagal column number or limit.");
             }
 
             ColumnBL c = this.Columns[col];
 
+            if(c.TaskLimit == limit)
+            {
+                Log.Warn("This limit is already set. - BOARDBL");
+                throw new Exception("This limit is already set.");
+            }
+
             if (c.Tasks.Count > limit && limit != NO_LIMIT)
             {
                 Log.Warn("Cant set the new limit, as there are more tasks than the new limit - BOARDBL");
-                throw new Exception("Cant set the new limit, as there are more tasks than the new limit");
+                throw new Exception("Cant set the new limit, as there are more tasks than the new limit.");
             }
            
 
@@ -165,9 +171,13 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
                 Log.Warn("Creating a task with invalid due date - BOARDBL");
                 throw new Exception("Creating a task with invalid due date");
             }
-
+            if (this.columns[BACKLOG].TaskLimit >= this.columns[BACKLOG].Tasks.Count)
+            {
+                Log.Warn("Cant create a task - limit has reached. - BOARDBL");
+                throw new Exception("Cant create a task - limit has reached.");
+            }
             TaskBL t =new TaskBL(taskID, this.Columns[BoardBL.BACKLOG].ColID,DateTime.Now,dueDate,title,description);
-            this.columns[0].addTask(t);
+            this.columns[BACKLOG].addTask(t);
         }
 
         /// <summary>

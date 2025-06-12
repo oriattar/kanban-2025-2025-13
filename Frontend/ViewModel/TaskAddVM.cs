@@ -20,6 +20,11 @@ namespace Frontend.ViewModel
 
         private string errorMsg;
 
+        /// <summary>
+        /// Constructs the windows data context
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="board"></param>
         public TaskAddVM(UserModel user, BoardModel board)
         {
             this.user = user;
@@ -44,6 +49,9 @@ namespace Frontend.ViewModel
             }
         }
 
+        /// <summary>
+        /// Operates task creation using the properties.
+        /// </summary>
         public void CreateTask()
         {
             try

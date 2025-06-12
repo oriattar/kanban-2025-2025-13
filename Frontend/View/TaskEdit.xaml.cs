@@ -11,6 +11,9 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Frontend.Model;
+using Frontend.ViewModel;
+
 
 namespace Frontend.View
 {
@@ -19,14 +22,57 @@ namespace Frontend.View
     /// </summary>
     public partial class TaskEdit : Window
     {
-        public TaskEdit()
+
+        private TaskEditVM tevm;
+
+        /// <summary>
+        /// Constructs the window.
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="board"></param>
+        /// <param name="task"></param>
+        public TaskEdit(UserModel user,BoardModel board,TaskModel task)
         {
             InitializeComponent();
+            this.tevm = new TaskEditVM(user, board, task);
+            this.DataContext = tevm;
         }
 
-        private void SaveTask_Click(object sender, RoutedEventArgs e)
+        /*
+         * 
+         * Following method calling for update methods for each task property, when the corresponding button is pressed.
+         * 
+         */
+        private void Title_Click(object sender,RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            this.tevm.Edit_Title();
+        }
+
+        private void Description_Click(object sender, RoutedEventArgs e)
+        {
+            this.tevm.Edit_Description();
+        }
+
+        private void Assignee_Click(object sender, RoutedEventArgs e)
+        {
+            this.tevm.Edit_Assignee();
+        }
+
+        private void DueDate_Click(object sender, RoutedEventArgs e)
+        {
+            this.tevm.Edit_DueDate();
+        }
+
+        /// <summary>
+        /// Operates the go back operation, showing the board view again
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Back_Click(object sender, RoutedEventArgs e)
+        {
+            BoardView view = new BoardView(tevm.User,tevm.Board);
+            view.Show();
+            this.Close();
         }
     }
 }
