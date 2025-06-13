@@ -71,8 +71,11 @@
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
-                            
-                        <TextBlock Text="Backlog" FontWeight="Bold" Grid.Column="0" VerticalAlignment="Center"/>
+
+                        <StackPanel Grid.Column="0" VerticalAlignment="Center" Margin="0,5,0,0">
+                            <TextBlock Text="Backlog" FontWeight="Bold" />
+                            <TextBlock Text="{Binding Backlog_limit, Mode=OneWay}" FontSize="12" Foreground="Gray" HorizontalAlignment="Left" Width="15" Height="15"/>
+                        </StackPanel>
 
 
                         <Button Width="20" Height="20" Grid.Column="1" VerticalAlignment="Center" Background="Transparent" Click="TaskCreation_Click">
@@ -172,7 +175,10 @@
             <Border BorderBrush="Gray" BorderThickness="1" Margin="5">
   
                 <StackPanel>
-                    <TextBlock Text="In Progress" FontWeight="Bold" Margin="7"/>
+                    <StackPanel Margin="7">
+                        <TextBlock Text="In Progress" FontWeight="Bold"/>
+                        <TextBlock Text="{Binding Inprogress_limit , Mode=OneWay}" FontSize="12" Foreground="Gray" HorizontalAlignment="Left" Width="15" Height="15"/>
+                    </StackPanel>
 
 
                     <Separator Margin="5,0" Height="2" Background="Gray"/>
@@ -259,7 +265,10 @@
             </Border>
             <Border BorderBrush="Gray" BorderThickness="1" Margin="5">
                 <StackPanel>
-                    <TextBlock Text="Done" FontWeight="Bold" Margin="7"/>
+                    <StackPanel Margin="7">
+                        <TextBlock Text="Done" FontWeight="Bold"/>
+                        <TextBlock Text="{Binding Done_limit ,Mode=OneWay}" FontSize="12" Foreground="Gray" HorizontalAlignment="Left" Width="15" Height="15"/>
+                    </StackPanel>
                     <Separator Margin="5,0" Height="2" Background="Gray"/>
                     <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Height="300">
 
