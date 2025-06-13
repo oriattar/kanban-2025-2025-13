@@ -16,15 +16,15 @@
 
         <DockPanel Grid.Row="0" Margin="0,0,0,10">
 
-            <Button DockPanel.Dock="Left" Background="Transparent" BorderThickness="0" Padding="0" Margin="0,0,10,0">
+            <Button DockPanel.Dock="Left" Background="Transparent" BorderThickness="0" Padding="0" Margin="0,0,10,0" Click="Back_Click">
                 <materialDesign:PackIcon Kind="Backburger"
                                  Height="25"
                                  Width="25"
                                  VerticalAlignment="Center"
                                  Foreground="Black"/>
             </Button>
-            
-            <TextBlock Text="board name" 
+
+            <TextBlock Text="{Binding BoardName}" 
                        FontSize="25" 
                        VerticalAlignment="Center" 
                        DockPanel.Dock="Left"
@@ -60,7 +60,7 @@
             </Button>
 
         </DockPanel>
-        <UniformGrid Grid.Row="1" Columns="3" HorizontalAlignment="Center" Margin="5" Width="760" >
+        <UniformGrid Grid.Row="1" Columns="3" HorizontalAlignment="Center" Margin="5" Width="740" >
             <Border BorderBrush="Gray" BorderThickness="1" Margin="5">
                 <StackPanel>
                     <Grid Margin="5" VerticalAlignment="Center">

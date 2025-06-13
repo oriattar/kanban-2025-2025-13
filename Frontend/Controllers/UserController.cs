@@ -32,7 +32,7 @@ namespace Frontend.Controllers
         }
 
 
-        public UserModel Register(string username, string password)
+        public void Register(string username, string password)
         {
             var json = Us.Register(username, password);
             var response = JsonSerializer.Deserialize<Response<string>>(json);
@@ -40,7 +40,6 @@ namespace Frontend.Controllers
             if (response.ErrorMessage != null)
                 throw new Exception(response.ErrorMessage);
 
-            return new UserModel(response.ReturnValue);
         }
 
     }

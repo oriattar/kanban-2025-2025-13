@@ -109,6 +109,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             {
                 var user = new UserDAL(reader.GetString(PARAM_0), reader.GetString(PARAM_1));
                 Log.Info($"Converted user: {user.Email}- USERCONTROLLER");
+                user.IsPersisted = true; // marking that the entry exist in the db.
                 return user;
             }
             catch (Exception ex)

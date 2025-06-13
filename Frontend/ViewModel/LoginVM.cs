@@ -82,7 +82,8 @@ namespace Frontend.ViewModel
             }
             try
             {
-                return userController.Register(Email, Password);
+               userController.Register(Email, Password);
+               return new UserModel(Email);
             }
             catch (Exception e)
             {

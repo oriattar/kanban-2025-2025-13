@@ -24,7 +24,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         private string boardName;
         private int boardID;
         private string boardOwner;
-        bool isPresisted;
+        private bool isPresisted;
 
         private Dictionary<int,ColumnDAL> columns;
 
@@ -90,6 +90,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 boardOwner = value;
             }
         }
+
+        public bool IsPresisted { get => isPresisted; set => isPresisted = value; }
 
 
         /// <summary>

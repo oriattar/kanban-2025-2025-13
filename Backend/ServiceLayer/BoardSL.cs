@@ -14,11 +14,11 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         public static readonly int DONE = 2;
 
 
-        public string name;
-        public string owner;
-        
-        public int id;
-        
+        private string name;
+        private string owner;
+
+
+
         /// <summary>
         /// A consturctor for the boardSL
         /// </summary>
@@ -27,7 +27,14 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         { 
             this.owner = b.Owner;
             this.name = b.Name;
-            this.id = b.BoardID;
-        }   
+        }
+
+        public BoardSL()
+        {
+            
+        }
+
+        public string Name { get => name; set => name = value; }
+        public string Owner { get => owner; set => owner = value; }
     }
 }

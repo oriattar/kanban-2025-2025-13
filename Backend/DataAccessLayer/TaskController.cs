@@ -154,6 +154,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 );
 
                 Log.Info($"Converted task: {task.TaskId} - TASKCONTROLLER");
+                task.IsPersisted = true;
                 return task;
             }
             catch (Exception ex)

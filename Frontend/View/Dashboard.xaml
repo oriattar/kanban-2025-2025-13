@@ -8,7 +8,7 @@
         xmlns:local="clr-namespace:Frontend.View"
         mc:Ignorable="d"
         Title="Dashboard" Height="450" Width="800">
-    
+
     <Grid Background="White" Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -55,56 +55,74 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
-                <ItemsControl ItemsSource="{Binding Boards}">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <StackPanel Orientation="Vertical"/>
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
+            <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto">
+                <Border BorderThickness="2" BorderBrush="Gray" CornerRadius="5" Padding="3">
+                    <ItemsControl ItemsSource="{Binding Path=Boards}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Vertical"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
 
-                    <ItemsControl.Resources>
-                        <Style TargetType="Border">
-                            <Setter Property="Margin" Value="5"/>
-                            <Setter Property="Padding" Value="10"/>
-                            <Setter Property="BorderBrush" Value="Gray"/>
-                            <Setter Property="BorderThickness" Value="1"/>
-                            <Setter Property="Background" Value="#F0F0F0"/>
-                        </Style>
-                    </ItemsControl.Resources>
+                        <ItemsControl.Resources>
+                            <Style TargetType="Border">
+                                <Setter Property="Margin" Value="5"/>
+                                <Setter Property="Padding" Value="10"/>
+                                <Setter Property="BorderBrush" Value="Gray"/>
+                                <Setter Property="BorderThickness" Value="1"/>
+                                <Setter Property="Background" Value="#F0F0F0"/>
+                            </Style>
+                        </ItemsControl.Resources>
 
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Border>
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="Auto"/>
-                                    </Grid.ColumnDefinitions>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="2*"/>
+                                            <ColumnDefinition Width="2*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
 
-                                    <TextBlock Text="{Binding BName}" VerticalAlignment="Center" FontSize="16" Grid.Column="0" />
+                                        <TextBlock Text="{Binding BName}" VerticalAlignment="Center" FontSize="16" FontFamily="Arial" FontWeight="DemiBold" Grid.Column="0" />
+                                        <TextBlock Text="{Binding Owner}" VerticalAlignment="Center" FontSize="16" Grid.Column="1"></TextBlock>
+                                        <StackPanel Orientation="Horizontal" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Right" >
+                                            <Button Content="✕" Margin="130,0,0,0" Width="30" Height="30" Cursor="Hand" ToolTip="מחק לוח" Background="Transparent" BorderThickness="0" Click="BoardDelete" />
 
-                                    <StackPanel Orientation="Horizontal" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" >
-                                        <Button Content="✕" Width="30" Height="30" Cursor="Hand" ToolTip="מחק לוח" Background="Transparent" BorderThickness="0" />
-
-                                        <Button Width="30" Height="30" Cursor="Hand" ToolTip="פרטים" Background="Transparent" BorderThickness="0" Margin="10,0,0,0">
-                                            <materialDesign:PackIcon Kind="DotsVertical" Height="18" Width="18" Foreground="Black" VerticalAlignment="Center"/>
-                                        </Button>
-                                    </StackPanel>
-                                </Grid>
-                            </Border>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
+                                            <Button Width="30" Height="30" Cursor="Hand" ToolTip="פרטים" Background="Transparent" BorderThickness="0" Margin="0,0,0,0" Click="Details_Click">
+                                                <materialDesign:PackIcon Kind="DotsVertical" Height="18" Width="18" Foreground="Black" VerticalAlignment="Center"/>
+                                            </Button>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </Border>
             </ScrollViewer>
 
+            <TextBox Grid.Row="1" Name="BoardCreationText" Height="35" Width="150" HorizontalAlignment="Right" Margin="0,10,130,0" FontSize="17" FontWeight="Regular" 
+                     Text="{Binding Path=BoardCreationName,Mode=OneWayToSource}"></TextBox>
+            <Label Grid.Row="1" Name="FeedbackLabel" Height="30" Width="450" HorizontalAlignment="Left" Margin="0,10,0,0" FontSize="14"
+                     FontWeight="Black" Content="{Binding Path=ErrorMsg, Mode=OneWay}">
+                <Label.Style>
+                    <Style TargetType="Label">
+                        <Setter Property="Foreground" Value="Red"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Status}" Value="True">
+                                <Setter Property="Foreground" Value="Green"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Label.Style>
+            </Label>
             <Button Grid.Row="1"
             Width="120"
             Height="35"
             HorizontalAlignment="Right"
-            Margin="3"
+            Margin="10,10,0,0"
             Cursor="Hand"
-            Foreground="Black" Click="Button_Click">
+            Foreground="Black" Click="CreateBoard_Click">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" >
                     <materialDesign:PackIcon Kind="PlusBox" Width="20" Height="20" Margin="0,0,5,0" VerticalAlignment="Center"/>
                     <TextBlock Text="Add Board" VerticalAlignment="Center"/>

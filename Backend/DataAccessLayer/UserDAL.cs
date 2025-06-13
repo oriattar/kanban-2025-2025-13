@@ -19,7 +19,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 
         private string email;
         private string password;
-        bool isPersisted ;
+        private bool isPersisted ;
 
         private readonly UserController controller;
 
@@ -64,6 +64,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         /// </summary>
 
         public UserController Controller { get; }
+        public bool IsPersisted { get => isPersisted; set => isPersisted = value; }
 
 
         /// <summary>

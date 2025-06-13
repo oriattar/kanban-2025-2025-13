@@ -85,7 +85,9 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         /// <returns></returns>
         private ColumnDAL ConvertReaderToColumnDAL(SQLiteDataReader dataReader)
         {
-            return new ColumnDAL(dataReader.GetString(PARAM_0),dataReader.GetInt32(PARAM_1),dataReader.GetString(PARAM_2),dataReader.GetInt32(PARAM_3));//null we be replaced after connection is closed
+            ColumnDAL c = new ColumnDAL(dataReader.GetString(PARAM_0), dataReader.GetInt32(PARAM_1), dataReader.GetString(PARAM_2), dataReader.GetInt32(PARAM_3));
+            c.IsPresisted = true; // marks that the entry exist in db.
+            return c;
         }
 
         /// <summary>

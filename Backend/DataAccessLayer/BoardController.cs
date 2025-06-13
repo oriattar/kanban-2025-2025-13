@@ -74,6 +74,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             {
 
                 b.ActiveUsers = this.LoadActiveUsers(b.BoardID);
+                b.IsPresisted = true;
                 List<ColumnDAL> cols = new ColumnController().SelectColumns(b.BoardID);
                 b.SetColumns(cols[BoardDAL.BACKLOG], cols[BoardDAL.IN_PROGRESS], cols[BoardDAL.DONE]);
             }
