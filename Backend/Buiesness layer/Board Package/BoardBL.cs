@@ -171,7 +171,7 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
                 Log.Warn("Creating a task with invalid due date - BOARDBL");
                 throw new Exception("Creating a task with invalid due date");
             }
-            if (this.columns[BACKLOG].TaskLimit <= this.columns[BACKLOG].Tasks.Count)
+            if (this.columns[BACKLOG].TaskLimit!=-1 && this.columns[BACKLOG].TaskLimit <= this.columns[BACKLOG].Tasks.Count)
             {
                 Log.Warn("Cant create a task - limit has reached. - BOARDBL");
                 throw new Exception("Cant create a task - limit has reached.");
