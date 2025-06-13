@@ -17,7 +17,15 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Text="board name"
+        <Button DockPanel.Dock="Left" Background="Transparent" BorderThickness="0" Padding="0" Margin="0,0,10,0" Click="Back_ToBoardView" HorizontalAlignment="Left">
+            <materialDesign:PackIcon Kind="Backburger"
+                     Height="25"
+                     Width="25"
+                     VerticalAlignment="Center"
+
+                     Foreground="Black"/>
+        </Button>
+        <TextBlock Text="{Binding Path=BoardName}"
                    FontSize="25"
                    FontWeight="Bold"
                    HorizontalAlignment="Center"

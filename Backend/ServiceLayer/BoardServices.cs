@@ -326,6 +326,25 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         }
 
         /// <summary>
+        /// Service for getting a board sl from backend, using its name
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="boardName"></param>
+        /// <returns></returns>
+        public string GetBoard(string email, string boardName)
+        {
+            Response<BoardSL> res = null;
+            try
+            {
+                res = new Response<BoardSL>(null, new BoardSL(this.bFacade.GetBoard(email, boardName)));
+            }
+            catch (Exception e)
+            {
+                res = new Response<BoardSL>(e.Message, null);
+            }
+            return JsonSerializer.Serialize(res);
+        }
+        /// <summary>
         /// Helper method that loads the boards on startup
         /// </summary>
         public void LoadBoards()

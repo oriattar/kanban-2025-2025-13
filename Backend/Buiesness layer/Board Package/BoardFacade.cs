@@ -340,6 +340,7 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
                 Log.Warn("Cant get the column while not logged in. - BOARDFACADE");
                 throw new Exception("Cant get the column while not logged in.");
             }
+            
             BoardBL b = this.GetBoard(email,bName);
             if(col<0 || col>2)
             {

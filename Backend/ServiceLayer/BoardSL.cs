@@ -16,6 +16,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
         private string name;
         private string owner;
+        private int id;
 
 
 
@@ -27,6 +28,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         { 
             this.owner = b.Owner;
             this.name = b.Name;
+            this.id = b.BoardID;
         }
 
         public BoardSL()
@@ -36,5 +38,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
         public string Name { get => name; set => name = value; }
         public string Owner { get => owner; set => owner = value; }
+        public int Id { get => id; set => id = value; }
     }
 }

@@ -11,6 +11,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Frontend.Model;
+using Frontend.ViewModel;
 
 namespace Frontend.View
 {
@@ -19,11 +21,21 @@ namespace Frontend.View
     /// </summary>
     public partial class BoardDetails : Window
     {
-        public BoardDetails()
+
+        private BoardDetailsVM bdvm;
+        public BoardDetails(UserModel user,BoardModel board)
         {
             InitializeComponent();
+            this.bdvm = new BoardDetailsVM(user,board);
+            this.DataContext = bdvm;
         }
 
+        private void Back_ToBoardView(object sender, EventArgs e)
+        {
+            BoardView boardView= new BoardView(this.bdvm.User,this.bdvm.Board);
+            boardView.Show();
+            this.Close();
+        }
         private void AddMember_Click(object sender, RoutedEventArgs e)
         {
             throw new NotImplementedException();

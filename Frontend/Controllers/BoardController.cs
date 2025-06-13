@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using ControlzEx.Standard;
 using Frontend.Model;
 using IntroSE.Kanban.Backend.ServiceLayer;
 
@@ -30,6 +31,21 @@ namespace Frontend.Controllers
             if (response.ErrorMessage != null)
                 throw new Exception(response.ErrorMessage);
 
+        }
+
+        /// <summary>
+        /// Locating board in the backend
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="bName"></param>
+        /// <returns></returns>
+        public BoardModel GetBoard(string email,string bName)
+        {
+            Response<BoardSL> res = JsonSerializer.Deserialize<Response<BoardSL>>(this.bs.GetBoard(email, bName));
+            if (res.ErrorMessage != null)
+                throw new Exception(res.ErrorMessage);
+
+            return new BoardModel(res.ReturnValue);
         }
 
         /// <summary>
@@ -60,6 +76,55 @@ namespace Frontend.Controllers
 
             return new ObservableCollection<BoardModel>(res.ReturnValue.Select(b => new BoardModel(b))); //constructs and OC list from boardmodel list.
 
+        }
+
+        /// <summary>
+        /// Loads the tasks of the input column from backend, using the service.
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="boardName"></param>
+        /// <param name="col"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public ObservableCollection<TaskModel> GetTasks(string email,string boardName,int col)
+        {
+            Response<List<TaskSL>> res = JsonSerializer.Deserialize<Response<List<TaskSL>>>(this.bs.GetColTasks(email,boardName,col));
+            if(res.ErrorMessage != null)
+                throw new Exception(res.ErrorMessage);
+
+            return new ObservableCollection<TaskModel>(res.ReturnValue.Select(t=>new TaskModel(t)));
+        }
+
+        /// <summary>
+        /// Calls for the limit set in the backend
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="boardName"></param>
+        /// <param name="lim"></param>
+        /// <param name="col"></param>
+        /// <exception cref="Exception"></exception>
+        public void Limit_Col(string email,string boardName, int lim,int col)
+        {
+            Response<string> response = JsonSerializer.Deserialize<Response<string>>(this.bs.SetLimit(email,boardName,lim,col)); //calls the board deletion service
+            if (response.ErrorMessage != null)
+                throw new Exception(response.ErrorMessage);
+        }
+
+        /// <summary>
+        /// A method that returns a column limit from backend
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="boardName"></param>
+        /// <param name="col"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public int GetLimit(string email,string boardName,int col)
+        {
+            Response<int> response = JsonSerializer.Deserialize<Response<int>>(this.bs.GetColLimit(email,boardName,col)); //calls the board deletion service
+            if (response.ErrorMessage != null)
+                throw new Exception(response.ErrorMessage);
+
+            return response.ReturnValue;
         }
     }
 }

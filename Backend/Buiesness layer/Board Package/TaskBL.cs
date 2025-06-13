@@ -136,7 +136,7 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
         /// <exception cref="ArgumentException"></exception>
         public void EditDescription(string newDescription)
         {
-            if (newDescription.Length > DESCRIPTION_LIMIT)
+            if (newDescription != null && newDescription.Length > DESCRIPTION_LIMIT)
                 throw new ArgumentException("Description too long.");
             Description = newDescription;
         }
