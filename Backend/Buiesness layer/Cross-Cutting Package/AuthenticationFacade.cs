@@ -35,7 +35,7 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
             if (!this.uStatus.ContainsKey(un))
             {
                 Log.Warn("Checking log in for unregisted user -AUTH_FACADE");
-                throw new Exception("User is not registerd in authenticationFacade -AUTH_FACADE");
+                throw new Exception("User is not registerd in authenticationFacade.");
             }
                 
 
@@ -95,5 +95,14 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
             this.uStatus[un] = false;
         }
 
+        /// <summary>
+        /// Method that returns if a user is registered.
+        /// </summary>
+        /// <param name="un"></param>
+        /// <returns></returns>
+        public bool isRegisterd(string un)
+        {
+            return this.uStatus.ContainsKey(un);
+        }
     }
 }

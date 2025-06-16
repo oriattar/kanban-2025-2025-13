@@ -175,6 +175,11 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
         /// <exception cref="Exception"></exception>
         public void RegisterInFacade(string email)
         {
+            if(!this.aFacade.isRegisterd(email))
+            {
+                Log.Warn("User isnt registerd - cant create an entery");
+                throw new Exception("User isnt registerd - cant create an entery");
+            }
             if (!this.boards.ContainsKey(email))
             {
                 this.boards.Add(email, new List<BoardBL>());
@@ -576,6 +581,12 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
         /// <returns></returns>
         public List<BoardBL> GetBoards(string email)
         {
+            if (!this.aFacade.IsLoggedIn(email))
+            {
+                Log.Warn("Cant collect boards while not logged in. - BOARDFACADE");
+                throw new Exception("Cant collect boards while not logged in.");
+            }
+
             this.RegisterInFacade(email); // first of checks if a user needs to be registered.
             List<int> ids = this.CollectBoardIds(email);
             List<BoardBL> res = new List<BoardBL>();
@@ -586,6 +597,38 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
             }
 
             return res;
+        }
+
+        /// <summary>
+        /// Collects active users from the input board and returns it.
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="boardName"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public List<string> GetActiveUsers(string email,string boardName)
+        {
+            if (!this.aFacade.IsLoggedIn(email))
+            {
+                Log.Warn("Cant collect active users while not logged in. - BOARDFACADE");
+                throw new Exception("Cant collect active users while not logged in.");
+            }
+
+            return this.GetBoard(email,boardName).ActiveUsers;
+        }
+
+        /// <summary>
+        /// Method that allowes adding a member to a board while he is offline.
+        /// </summary>
+        /// <param name="toAddEmail"></param>
+        /// <param name="boardId"></param>
+        public void OfflineJoinBoard(string toAddEmail, int boardId)
+        {
+            BoardBL targetBoard = this.GetBoardById(boardId); // locates the boards
+
+            targetBoard.AddUserAsMember(toAddEmail); // adding the user email to the board
+            this.AddBoardToUserList(toAddEmail, targetBoard); // adding the board to the input user list
+            Log.Info("User " + toAddEmail + " joined board:" + targetBoard.Name);
         }
     }
 }

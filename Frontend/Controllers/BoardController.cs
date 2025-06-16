@@ -7,6 +7,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using ControlzEx.Standard;
 using Frontend.Model;
+using IntroSE.Kanban.Backend.Buiesness_layer;
 using IntroSE.Kanban.Backend.ServiceLayer;
 
 namespace Frontend.Controllers
@@ -125,6 +126,62 @@ namespace Frontend.Controllers
                 throw new Exception(response.ErrorMessage);
 
             return response.ReturnValue;
+        }
+
+        /// <summary>
+        /// Returns the active users from a board from the backend.
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="boardName"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public ObservableCollection<UserModel> Get_ActiveMemebers(string email,string boardName)
+        {
+            Response<List<string>> res = JsonSerializer.Deserialize<Response<List<string>>>(this.bs.GetActiveMembers(email,boardName));
+            if (res.ErrorMessage != null)
+                throw new Exception(res.ErrorMessage);
+
+            return new ObservableCollection<UserModel>(res.ReturnValue.Select(user=>new UserModel(user)));
+        }
+
+        /// <summary>
+        /// Calls for the join user service
+        /// </summary>
+        /// <param name="inputEmail"></param>
+        /// <param name="boardID"></param>
+        /// <exception cref="Exception"></exception>
+        public void JoinUser(string inputEmail, int boardID)
+        {
+            Response<string> response = JsonSerializer.Deserialize<Response<string>>(this.bs.OfflineJoinBoard(inputEmail, boardID));
+            if (response.ErrorMessage != null)
+                throw new Exception(response.ErrorMessage);
+        }
+
+        /// <summary>
+        /// Method responsible removing a user from the board, using leave board service
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="boardID"></param>
+        /// <exception cref="Exception"></exception>
+        public void Leave_Board(string email,int boardID)
+        {
+            Response<string> response = JsonSerializer.Deserialize<Response<string>>(this.bs.LeaveBoard(email, boardID));
+            if (response.ErrorMessage != null)
+                throw new Exception(response.ErrorMessage);
+        }
+
+        /// <summary>
+        /// Operates owner change using the service
+        /// </summary>
+        /// <param name="currentOwner"></param>
+        /// <param name="newOwner"></param>
+        /// <param name="boardName"></param>
+        /// <exception cref="Exception"></exception>
+        public void Change_Owner(string currentOwner,string newOwner,string boardName)
+        {
+            Response<string> response = JsonSerializer.Deserialize<Response<string>>(this.bs.ChangeOwner(currentOwner,newOwner,boardName));
+            if (response.ErrorMessage != null)
+                throw new Exception(response.ErrorMessage);
         }
     }
 }

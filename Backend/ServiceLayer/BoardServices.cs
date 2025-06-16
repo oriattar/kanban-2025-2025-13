@@ -341,9 +341,49 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             catch (Exception e)
             {
                 res = new Response<BoardSL>(e.Message, null);
+                Log.Error("Cant find the input board. - BOARDSERVICES:" + e.Message);
             }
             return JsonSerializer.Serialize(res);
         }
+
+        /// <summary>
+        /// Service that collects the active members of a board.
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="boardName"></param>
+        /// <returns></returns>
+        public string GetActiveMembers(string email,string boardName)
+        {
+            Response<List<string>> res = null;
+            try
+            {
+                res = new Response<List<string>>(null,this.bFacade.GetActiveUsers(email, boardName));
+            }
+            catch (Exception e)
+            {
+                res = new Response<List<string>>(e.Message, null);
+                Log.Error("Cant collect active members. - BOARDSERVICES:" + e.Message);
+            }
+            return JsonSerializer.Serialize(res);
+        }
+
+        public string OfflineJoinBoard(string email, int boardID)
+        {
+            Response<string> res = null;
+            try
+            {
+                this.bFacade.RegisterInFacade(email); // ensuring an entry exist in facade
+                this.bFacade.OfflineJoinBoard(email, boardID);
+                res = new Response<string>(null, null);
+            }
+            catch (Exception ex)
+            {
+                res = new Response<string>(ex.Message, null);
+                Log.Error("Error in adding a memeber user to a board - BOARDSERVICES:" + ex.Message);
+            }
+            return JsonSerializer.Serialize(res);
+        }
+
         /// <summary>
         /// Helper method that loads the boards on startup
         /// </summary>

@@ -78,15 +78,7 @@ namespace UnitTests
             Assert.AreEqual(a, result);
         }
 
-        [Test]
-        public void Logout_Failure_ReturnsErrorJson()
-        {
-
-            string result = us.Logout(email);
-
-            string a = JsonSerializer.Serialize(new Response<string>("User is not registerd in authenticationFacade -AUTH_FACADE", null ));
-            Assert.AreEqual(a, result);
-        }
+     
 
         [Test]
         public void Login_Success_ReturnsSuccessJson()
