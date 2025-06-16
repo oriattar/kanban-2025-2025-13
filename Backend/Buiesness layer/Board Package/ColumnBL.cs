@@ -58,8 +58,9 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
         /// </summary>
         public int TaskLimit { get => taskLimit; set
             {
-                taskLimit = value;
+                
                 this.columnDTO.TaskLimit = value;
+                taskLimit = value;
             }
         }
         public ColumnDAL ColumnDTO { get => columnDTO;  }

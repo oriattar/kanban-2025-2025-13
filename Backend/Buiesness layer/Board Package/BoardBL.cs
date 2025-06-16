@@ -87,8 +87,9 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
             set
             {
 
-                this.owner = value;
+                
                 this.boardDTO.BoardOwner = value;
+                this.owner = value;
             }
         }
 
@@ -237,8 +238,9 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
                 Log.Warn("Input user is already an active member. - BOARDBL");
                 throw new Exception("Input user is already an active member.");
             }
-            this.activeUsers.Add(email);
+            
             this.boardDTO.AddUser(email);
+            this.activeUsers.Add(email);
         }
         /// <summary>
         /// Removes a user's email from active user list, if he is one
@@ -252,8 +254,9 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
                 Log.Warn("Input user is not an active member. - BOARDBL");
                 throw new Exception("Input user is not an active member.");
             }
-            this.activeUsers.Remove(email);
+            
             this.boardDTO.RemoveUser(email);
+            this.activeUsers.Remove(email);
         }
             
 
