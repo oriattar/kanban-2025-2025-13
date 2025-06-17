@@ -7,7 +7,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Frontend.View"
         mc:Ignorable="d"
-        Title="BoardDetails" Height="495"
+        Title="BoardDetails" Height="505"
         Width="720">
     <Grid Margin="20">
         <Grid.RowDefinitions>
@@ -40,7 +40,7 @@
                     <TextBlock Text="{Binding Path=BoardOwner,Mode=OneWay}" FontWeight="Bold"/>
                     <TextBlock Text="  (Manager)" Foreground="Gray" Margin="5,0,0,0"/>
                 </StackPanel>
-                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Height="140">
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Height="120">
                     <StackPanel>
                         
 
