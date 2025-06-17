@@ -17,6 +17,7 @@ namespace Frontend.ViewModel
         private string boardCreationName;
         private string errorMsg;
         private string userEmail;
+        private string boardIdText;
 
         private bool status;
 
@@ -34,6 +35,8 @@ namespace Frontend.ViewModel
             this.BoardCreationName = string.Empty;
             this.errorMsg = string.Empty;
             this.userEmail = u.Email;
+            this.boardIdText = string.Empty;
+            this.boardCreationName = string.Empty;
             
             LoadUserBoards();
         }
@@ -83,7 +86,9 @@ namespace Frontend.ViewModel
             }
         }
 
-        
+        public string BoardIdText { get => boardIdText; set => boardIdText = value; }
+
+
 
         /// <summary>
         /// A method operates the board creation operation
@@ -136,6 +141,27 @@ namespace Frontend.ViewModel
         }
 
         /// <summary>
+        /// Operates the join board service
+        /// </summary>
+        public void JoinBoard()
+        {
+            try
+            {
+                if (!int.TryParse(boardIdText, out _))
+                    throw new Exception("Id must be numeric");
+                this.boardController.JoinUserOnline(this.User.Email, int.Parse(this.BoardIdText)); //goins the board
+                this.boards.Add(this.boardController.GetBoard(UserEmail, this.boardController.GetBoardName(int.Parse(this.BoardIdText)))); //getting the target board from the backend
+                ErrorMsg = "Joined successfuly.";
+                Status = true;
+            }
+            catch (Exception e)
+            {
+                ErrorMsg = e.Message;
+                Status = false;
+            }
+        }
+
+        /// <summary>
         /// Helper method in the datacontext, looks for a board by its name in the observable collection
         /// </summary>
         /// <param name="bName"></param>
@@ -151,6 +177,8 @@ namespace Frontend.ViewModel
 
             throw new Exception("Target board was not found in list");
         }
+
+        
 
     }
 }

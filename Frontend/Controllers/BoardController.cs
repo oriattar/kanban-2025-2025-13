@@ -183,5 +183,33 @@ namespace Frontend.Controllers
             if (response.ErrorMessage != null)
                 throw new Exception(response.ErrorMessage);
         }
+
+        /// <summary>
+        /// Allows online joining to a board
+        /// </summary>
+        /// <param name="inputEmail"></param>
+        /// <param name="boardID"></param>
+        /// <exception cref="Exception"></exception>
+        public void JoinUserOnline(string inputEmail, int boardID)
+        {
+            Response<string> response = JsonSerializer.Deserialize<Response<string>>(this.bs.JoinBoard(inputEmail, boardID));
+            if (response.ErrorMessage != null)
+                throw new Exception(response.ErrorMessage);
+        }
+
+        /// <summary>
+        /// Method uses the get name by id of a board service
+        /// </summary>
+        /// <param name="bId"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public string GetBoardName(int bId)
+        {
+            Response<string> response = JsonSerializer.Deserialize<Response<string>>(this.bs.GetBoardName(bId));
+            if (response.ErrorMessage != null)
+                throw new Exception(response.ErrorMessage);
+
+            return response.ReturnValue;
+        }
     }
 }

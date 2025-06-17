@@ -89,6 +89,16 @@ namespace Frontend.View
             this.Close();
         }
 
+        /// <summary>
+        /// Operates the join board button click.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public void JoinBoard_Click(object sender, RoutedEventArgs e)
+        {
+            this.dashboardVM.JoinBoard();
+        }
+
         
     }
 }
