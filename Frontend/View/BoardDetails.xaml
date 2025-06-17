@@ -7,14 +7,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Frontend.View"
         mc:Ignorable="d"
-        Title="BoardDetails" Height="405"
+        Title="BoardDetails" Height="495"
         Width="720">
     <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="4*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <Button DockPanel.Dock="Left" Background="Transparent" BorderThickness="0" Padding="0" Margin="0,0,10,0" Click="Back_ToBoardView" HorizontalAlignment="Left">
@@ -32,17 +33,18 @@
                    Margin="10"
                    Grid.Row="0"/>
 
-        <Border Grid.Row="1" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Padding="10">
+        <Border Grid.Row="1" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Padding="10" Height="200">
             <StackPanel>
                 <TextBlock Text="Board Members" FontSize="17" FontWeight="Bold" Margin="0,0,0,10"/>
-                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                    <TextBlock Text="{Binding Path=BoardOwner,Mode=OneWay}" FontWeight="Bold"/>
+                    <TextBlock Text="  (Manager)" Foreground="Gray" Margin="5,0,0,0"/>
+                </StackPanel>
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Height="140">
                     <StackPanel>
-                        <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
-                            <TextBlock Text="aaaa@gmail.com" FontWeight="Bold"/>
-                            <TextBlock Text="  (Manager)" Foreground="Gray" Margin="5,0,0,0"/>
-                        </StackPanel>
+                        
 
-                        <ItemsControl>
+                        <ItemsControl  ItemsSource="{Binding Path=ActiveUsers}">
                             <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <StackPanel Orientation="Vertical"/>
@@ -50,8 +52,8 @@
                             </ItemsControl.ItemsPanel>
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <Border BorderBrush="LightGray" BorderThickness="0,0,0,1" Padding="5">
-                                        <TextBlock Text="{Binding}" FontSize="14"/>
+                                    <Border BorderBrush="LightGray" BorderThickness="0,1,0,1" Padding="5">
+                                        <TextBlock Text="{Binding Email}" FontSize="14"/>
                                     </Border>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
@@ -67,7 +69,7 @@
                 <TextBox x:Name="EmailTextBox" Width="300" Height="25" Margin="0,0,20,0"
                          VerticalContentAlignment="Center"
                          FontSize="14"
-                         Text="Enter email"/>
+                         Text="{Binding Path=AddMemberText, Mode=OneWayToSource}"/>
                 <Button Width="140" Height="25" Margin="0" Cursor="Hand" Click="AddMember_Click">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                         <materialDesign:PackIcon Kind="AccountPlus" Width="20" Height="20"  Margin="0,0,5,0" VerticalAlignment="Center"/>
@@ -88,8 +90,8 @@
                 <TextBox x:Name="UsernameTextBox" Width="300" Height="25" Margin="0,0,20,0"
                          VerticalContentAlignment="Center"
                          FontSize="14"
-                         Text="Enter email"/>
-                <Button Width="140" Height="25" Margin="0" Cursor="Hand" Click="AddUsername_Click">
+                         Text="{Binding Path=ChangeOwnerText , Mode=OneWayToSource}"/>
+                <Button Width="140" Height="25" Margin="0" Cursor="Hand" Click="ChangeOwner_Click">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                         <materialDesign:PackIcon Kind="AccountSwitch" Width="20" Height="20" Margin="0,0,5,0" />
                         <TextBlock Text="Change Owner" VerticalAlignment="Center" FontSize="14"/>
@@ -112,11 +114,25 @@
                 HorizontalAlignment="Center"
                 Width="250"
                 Background="LightGray"
+                Click="LeaveBoard_Click"
                 Cursor="Hand">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                 <materialDesign:PackIcon Kind="ExitToApp" Width="20" Height="20" Margin="0,0,5,0" VerticalAlignment="Center"/>
                 <TextBlock Text="Leave Board" VerticalAlignment="Center" FontSize="14"/>
             </StackPanel>
         </Button>
+
+        <Label Content="{Binding ErrorMsg}" FontSize="14" Grid.Row="4" Height="30" Width="600" HorizontalAlignment="Left" Margin="0,15,0,0" FontWeight="Bold">
+            <Label.Style>
+                <Style TargetType="Label">
+                    <Setter Property="Foreground" Value="Red"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Status}" Value="True">
+                            <Setter Property="Foreground" Value="Green"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Label.Style>
+        </Label>
     </Grid>
 </Window>

@@ -76,31 +76,35 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
             get => deadline;
             set
             {
-                this.deadline = value;
+                
                 this.TaskDTO.DueAt = value;
+                this.deadline = value;
             }
         }
         public string Title
         {
             get => title; set
             {
-                this.title = value;
+                
                 this.taskDTO.TaskTitle = value;
+                this.title = value;
             }
         }
         public string Description { get => description; 
             set
             {
-                this.description = value;
+                
                 this.taskDTO.TaskDescription = value;
+                this.description = value;
             }
 
         }
         public string Asignee { get => asignee; 
             set
             {
-                this.asignee = value;
+                
                 this.taskDTO.AssignedUser = value;
+                this.asignee = value;
             }
         }
         public TaskDAL TaskDTO { get => taskDTO; }
@@ -109,8 +113,9 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
             get => colID; 
             set
             {
-                colID = value;
+                
                 this.taskDTO.ColID = value;
+                colID = value;
             }
 
         }

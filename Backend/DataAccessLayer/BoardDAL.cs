@@ -100,7 +100,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         /// <param name="email"></param>
         public void AddUser(string email)
         {
-            this.activeUsers.Add(email);
             this.controller.InsertUser(this.BoardID, email);
         }
 
@@ -110,7 +109,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         /// <param name="email"></param>
         public void RemoveUser(string email)
         {
-            this.activeUsers.Remove(email);
             this.controller.RemoveUser(this, email);
         }
 

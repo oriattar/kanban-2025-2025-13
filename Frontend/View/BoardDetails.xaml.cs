@@ -23,6 +23,12 @@ namespace Frontend.View
     {
 
         private BoardDetailsVM bdvm;
+
+        /// <summary>
+        /// Constructs the board details window
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="board"></param>
         public BoardDetails(UserModel user,BoardModel board)
         {
             InitializeComponent();
@@ -30,20 +36,55 @@ namespace Frontend.View
             this.DataContext = bdvm;
         }
 
+        /// <summary>
+        /// Operates the back button
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Back_ToBoardView(object sender, EventArgs e)
         {
             BoardView boardView= new BoardView(this.bdvm.User,this.bdvm.Board);
             boardView.Show();
             this.Close();
         }
+
+        /// <summary>
+        /// Operates the member adding button
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void AddMember_Click(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            this.bdvm.AddMember();
         }
 
-        private void AddUsername_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// operates owner change button click
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ChangeOwner_Click(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            this.bdvm.ChangeOwner();
+        }
+
+        /// <summary>
+        /// Operates the board leave, if board leaving was success full, leaving the board
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void LeaveBoard_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                this.bdvm.LeaveBoard();
+                Dashboard dashboard = new Dashboard(this.bdvm.User);
+                dashboard.Show();
+                this.Close();
+            }
+            catch (Exception ex)
+            {
+            }
         }
     }
 }
