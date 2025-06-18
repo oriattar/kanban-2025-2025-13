@@ -7,29 +7,34 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Frontend.View"
         mc:Ignorable="d"
-        Title="LoginRegister" Height="450" Width="800">
-
-    <Grid Margin="30">
+        Title="LoginRegister"  Height="688" Width="1025">
+    <Border BorderThickness="2"
+            BorderBrush="Gray"
+            CornerRadius="10"
+            Margin="50"
+            Padding="20">
+        
+        <Grid Margin="50">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Text="Welcome" FontSize="26" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,30" Grid.Row="0"/>
+        <TextBlock Text="Welcome" FontSize="50" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,40,0,30" Grid.Row="0"/>
 
         <StackPanel Grid.Row="1" Margin="30,0,30,10" >
             <StackPanel Margin="0,0,0,10"  >
-                <TextBlock Text="Email" FontWeight="SemiBold"/>
+                <TextBlock Text="Email" FontWeight="SemiBold" FontSize="15"/>
                 <TextBox  Text="{Binding Path=Email, Mode=OneWayToSource}" Height="30" VerticalContentAlignment="Center"/>
             </StackPanel>
 
-            <StackPanel Margin="0,0,0,10">
-                <TextBlock Text="Password" FontWeight="SemiBold"/>
-                <PasswordBox  x:Name="PasswordInput"  Height="30" VerticalContentAlignment="Center"/>
+            <StackPanel Margin="0,0,0,5">
+                    <TextBlock Text="Password" FontWeight="SemiBold" FontSize="15"/>
+                <PasswordBox  x:Name="PasswordInput"  Height="30"  VerticalContentAlignment="Center"/>
             </StackPanel>
 
-            <Label Margin="0,10,0,0" Content="{Binding Path=ErrorMessage, Mode=OneWay}" />
+                <Label Margin="0,10,0,0" Content="{Binding Path=ErrorMessage, Mode=OneWay}" Foreground="DarkGray " FontSize="12" />
 
         </StackPanel>
 
@@ -48,6 +53,6 @@
                     Click="Register_Click"/>
         </StackPanel>
     </Grid>
-
+    </Border>
 
 </Window>

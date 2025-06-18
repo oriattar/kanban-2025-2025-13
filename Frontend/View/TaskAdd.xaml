@@ -7,69 +7,76 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Frontend.View"
         mc:Ignorable="d"
-        Title="TaskAdd"  Height="400" Width="600">
-    <Grid Margin="20">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
+        Title="TaskAdd"   Height="688" Width="1025">
 
-        </Grid.RowDefinitions>
+    <Border BorderThickness="2"
+            BorderBrush="Gray"
+            CornerRadius="10"
+            Margin="50"
+            Padding="20">
 
-        <TextBlock Text="Add Task"
+        <Grid Margin="70">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+
+            </Grid.RowDefinitions>
+
+            <TextBlock Text="Add Task"
                 FontSize="25"
                 FontWeight="Bold"
                 HorizontalAlignment="Center"
                 Margin="0,0,0,5"
                 Grid.Row="0"/>
 
-        <Button DockPanel.Dock="Left" Background="Transparent" BorderThickness="0" Padding="0" Margin="0,0,10,0" Click="BackToBoard_Click" Grid.Row="0" HorizontalAlignment="Left">
-            <materialDesign:PackIcon Kind="Backburger"
+            <Button DockPanel.Dock="Left" Background="Transparent" BorderThickness="0" Padding="0" Margin="0,0,10,0" Click="BackToBoard_Click" Grid.Row="0" HorizontalAlignment="Left">
+                <materialDesign:PackIcon Kind="Backburger"
                      Height="25"
                      Width="25"
                      VerticalAlignment="Center"
                      Foreground="Black"/>
-        </Button>
+            </Button>
 
 
-        <StackPanel Grid.Row="1" Margin="0,10,0,0">
-            <TextBlock Text="Title:" FontWeight="SemiBold"/>
-            <TextBox x:Name="Title"
+            <StackPanel Grid.Row="1" Margin="0,10,0,0">
+                <TextBlock Text="Title:" FontWeight="SemiBold"/>
+                <TextBox x:Name="Title"
           Height="30"
           Margin="0,5,0,0"
           FontSize="17"
           TextWrapping="Wrap"
           Text="{Binding Path=Title , Mode=OneWayToSource}"/>
-        </StackPanel>
+            </StackPanel>
 
-        <StackPanel Grid.Row="2" Margin="0,10,0,0">
-            <TextBlock Text="Task Description:" FontWeight="SemiBold"/>
-            <TextBox x:Name="TaskDescriptionTextBox"
+            <StackPanel Grid.Row="2" Margin="0,10,0,0">
+                <TextBlock Text="Task Description:" FontWeight="SemiBold"/>
+                <TextBox x:Name="TaskDescriptionTextBox"
                   Height="30"
                   Margin="0,5,0,0"
                   FontSize="17"
                   TextWrapping="Wrap"
                   Text="{Binding Path=Description , Mode=OneWayToSource}" />
-            
-        </StackPanel>
 
-      
+            </StackPanel>
 
-        <StackPanel Grid.Row="3" Margin="0,10,0,0">
-            <TextBlock Text="Due Date:" FontWeight="SemiBold"/>
-            <DatePicker x:Name="DueDatePicker"
+
+
+            <StackPanel Grid.Row="3" Margin="0,10,0,0">
+                <TextBlock Text="Due Date:" FontWeight="SemiBold"/>
+                <DatePicker x:Name="DueDatePicker"
                      Height="30"
                      Margin="0,5,0,0"
                      Padding="5"
                      SelectedDate="{Binding Path=DueDate ,Mode=OneWayToSource}"/>
-        </StackPanel>
+            </StackPanel>
 
 
 
-        <Button Grid.Row="4"
+            <Button Grid.Row="4"
              Height="40"
              Width="140"
              Margin="0,20,0,0"
@@ -78,13 +85,14 @@
              Foreground="Black"
              Cursor="Hand">
 
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <materialDesign:PackIcon Kind="NotePlusOutline" Width="20" Height="20" Margin="0,0,5,0"/>
-                <TextBlock Text="Add Task" VerticalAlignment="Center"/>
-            </StackPanel>
-        </Button>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <materialDesign:PackIcon Kind="NotePlusOutline" Width="20" Height="20" Margin="0,0,5,0"/>
+                    <TextBlock Text="Add Task" VerticalAlignment="Center"/>
+                </StackPanel>
+            </Button>
 
-        <Label Grid.Row="5" Height="30" Width="500" Content="{Binding Path=ErrorMsg, Mode=OneWay}" FontWeight="SemiBold" FontSize="14" HorizontalAlignment="Left" Margin="0,10,0,0" Foreground="Red"/>
+            <Label Grid.Row="5" Height="30" Width="500" Content="{Binding Path=ErrorMsg, Mode=OneWay}" FontWeight="SemiBold" FontSize="14" HorizontalAlignment="Left" Margin="0,10,0,0" Foreground="Red"/>
 
-    </Grid>
+        </Grid>
+    </Border>
 </Window>

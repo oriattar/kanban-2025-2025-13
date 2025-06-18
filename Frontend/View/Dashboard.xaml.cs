@@ -74,11 +74,7 @@ namespace Frontend.View
 
         }
 
-        /// <summary>
-        /// Operates the details button of board from the list.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+
         private void openBoard_Click(object sender, MouseButtonEventArgs e)
         {
             FrameworkElement clickedElement = sender as FrameworkElement;
@@ -90,6 +86,12 @@ namespace Frontend.View
                 this.Close();
             }
         }
+
+        /// <summary>
+        /// Operates the details button of board from the list.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Details_Click(object sender, RoutedEventArgs e)
         {
             Button button = sender as Button;

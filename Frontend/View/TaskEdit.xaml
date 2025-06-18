@@ -8,151 +8,155 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Frontend.View"
         mc:Ignorable="d"
-        Title="TaskEdit" Height="430" Width="600">
-    <Grid Margin="20">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
+        Title="TaskEdit"  Height="688" Width="1025">
 
-        </Grid.RowDefinitions>
+    <Border BorderThickness="2"
+            BorderBrush="Gray"
+            CornerRadius="10"
+            Margin="50"
+            Padding="20">
+        <Grid Margin="70">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
 
-        <Button DockPanel.Dock="Left" HorizontalAlignment="Left" Background="Transparent" BorderThickness="0" Padding="0" Margin="0,0,10,0" Click="Back_Click">
-            <materialDesign:PackIcon Kind="Backburger"
+            </Grid.RowDefinitions>
+
+            <Button DockPanel.Dock="Left" HorizontalAlignment="Left" Background="Transparent" BorderThickness="0" Padding="0" Margin="0,0,10,0" Click="Back_Click">
+                <materialDesign:PackIcon Kind="Backburger"
                      Height="25"
                      Width="25"
                      VerticalAlignment="Center"
                      Foreground="Black"/>
-        </Button>
-        <TextBlock Text="Edit Task"
+            </Button>
+            <TextBlock Text="Edit Task"
                    FontSize="25"
                    FontWeight="Bold"
                    HorizontalAlignment="Center"
                    Margin="0,0,0,5"
                    Grid.Row="0"/>
 
-        <StackPanel Grid.Row="1" Margin="0,10,0,0">
-            <TextBlock Text="Title:" FontWeight="SemiBold"/>
-            <Grid Margin="0,5,0,0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-                <TextBox x:Name="Title"
+            <StackPanel Grid.Row="1" Margin="0,10,0,0">
+                <TextBlock Text="Title:" FontWeight="SemiBold"/>
+                <Grid Margin="0,5,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="15*"/>
+                        <ColumnDefinition Width="2*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox x:Name="Title"
+                     Grid.Column="0"
+                             HorizontalAlignment="Stretch"
                  Height="30"
-                 Width="485"
-                 HorizontalAlignment="Left"
+                
                  Text="{Binding Path=EditTitle ,Mode=OneWayToSource}"
                  TextWrapping="Wrap"/>
-                <Button Grid.Column="1"
+                    <Button Grid.Column="1"
                  Height="30"
                  Click="Title_Click"
-                 Width="50"
                 Content="Edit"
                 Margin="5,0,0,0"
                 VerticalAlignment="Center"/>
-            </Grid>
-        </StackPanel>
+                </Grid>
+            </StackPanel>
 
-        <StackPanel Grid.Row="2" Margin="0,10,0,0">
-            <TextBlock Text="Task Description:" FontWeight="SemiBold"/>
-            <Grid Margin="0,5,0,0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-                <TextBox x:Name="TaskDescriptionTextBox"
+            <StackPanel Grid.Row="2" Margin="0,10,0,0">
+                <TextBlock Text="Task Description:" FontWeight="SemiBold"/>
+                <Grid Margin="0,5,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="15*"/>
+                        <ColumnDefinition Width="2*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox x:Name="TaskDescriptionTextBox"
+                             Grid.Column="0"
+        HorizontalAlignment="Stretch"
                  Height="30"
                  Text="{Binding Path=EditDescription ,Mode=OneWayToSource}"
-                 Width="485"
-                 HorizontalAlignment="Left"
                  TextWrapping="Wrap"/>
-                <Button Grid.Column="1"
+                    <Button Grid.Column="1"
                 Content="Edit"
-                Width="50"
                 Height="30"
                 Margin="5,0,0,0"
                 VerticalAlignment="Center"
                 Click="Description_Click"/>
-            </Grid>
-        </StackPanel>
+                </Grid>
+            </StackPanel>
 
-        <StackPanel Grid.Row="3" Margin="0,10,0,0">
-            <TextBlock Text="Assign To:" FontWeight="SemiBold" Margin="0,0,0,5"/>
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-                <TextBox x:Name="AssignTextBox"
+            <StackPanel Grid.Row="3" Margin="0,10,0,0">
+                <TextBlock Text="Assign To:" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="15*"/>
+                        <ColumnDefinition Width="2*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox x:Name="AssignTextBox"
                  Height="30"
                  TextWrapping="Wrap"
                  Text="{Binding Path=EditAssignee ,Mode=OneWayToSource}"
-                 Width="485"
-                 HorizontalAlignment="Left"
+Grid.Column="0"
+        HorizontalAlignment="Stretch"                
                  VerticalAlignment="Center"/>
-                <Button Grid.Column="1"
+                    <Button Grid.Column="1"
                 Content="Edit"
                 Margin="5,0,0,0"
-                Width="50"
                 Height="30"
                 VerticalAlignment="Center"
                 Click="Assignee_Click"/>
-            </Grid>
-            <TextBlock x:Name="ErrorTextBlock"
+                </Grid>
+                <TextBlock x:Name="ErrorTextBlock"
                Foreground="Black"
                FontSize="12"
                Margin="5,0,0,0"
                Visibility="Collapsed"
                Text="Invalid email address"/>
-        </StackPanel>
+            </StackPanel>
 
-        <StackPanel Grid.Row="4" Margin="0,10,0,0">
-            <TextBlock Text="Due Date:" FontWeight="SemiBold"/>
-            <Grid Margin="0,5,0,0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-                <DatePicker x:Name="DueDatePicker"
+            <StackPanel Grid.Row="4" Margin="0,10,0,0">
+                <TextBlock Text="Due Date:" FontWeight="SemiBold"/>
+                <Grid Margin="0,5,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="15*"/>
+                        <ColumnDefinition Width="2*"/>
+                    </Grid.ColumnDefinitions>
+                    <DatePicker x:Name="DueDatePicker"
                     Height="30"
                     SelectedDate="{Binding Path=EditDate ,Mode=OneWayToSource}"
-                    Width="485"
-                    HorizontalAlignment="Left"
+Grid.Column="0"
+        HorizontalAlignment="Stretch"                   
                     Padding="5"/>
-                <Button Grid.Column="1"
+                    <Button Grid.Column="1"
                 Content="Edit"
                 Margin="5,0,0,0"
                 VerticalAlignment="Center"
-                Width="50"
                 Height="30"
                 Click="DueDate_Click"/>
-            </Grid>
-        </StackPanel>
+                </Grid>
+            </StackPanel>
 
 
-        <Label Grid.Row="5"
+            <Label Grid.Row="5"
        Height="30"
        Width="500"
        HorizontalAlignment="Left"
        FontSize="14"
        FontWeight="SemiBold"
-       Margin="0,40,0,0"
+       Margin="0,10,0,0"
        Content="{Binding Path=ErrorMsg, Mode=OneWay}">
-            <Label.Style>
-                <Style TargetType="Label">
-                    <Setter Property="Foreground" Value="Red"/>
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding Status}" Value="True">
-                            <Setter Property="Foreground" Value="Green"/>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </Label.Style>
-        </Label>
+                <Label.Style>
+                    <Style TargetType="Label">
+                        <Setter Property="Foreground" Value="Red"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Status}" Value="True">
+                                <Setter Property="Foreground" Value="Green"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Label.Style>
+            </Label>
 
-    </Grid>
+        </Grid>
+    </Border>
 </Window>
