@@ -79,7 +79,7 @@
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <Border>
-                                    <Grid>
+                                    <Grid  MouseLeftButtonUp="openBoard_Click">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="2*"/>
                                             <ColumnDefinition Width="2*"/>
