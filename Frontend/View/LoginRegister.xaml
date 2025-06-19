@@ -34,7 +34,7 @@
                 <PasswordBox  x:Name="PasswordInput"  Height="30"  VerticalContentAlignment="Center"/>
             </StackPanel>
 
-                <Label Margin="0,10,0,0" Content="{Binding Path=ErrorMessage, Mode=OneWay}" Foreground="DarkGray " FontSize="12" />
+                <Label Margin="0,10,0,0" Content="{Binding Path=ErrorMessage, Mode=OneWay}" Foreground="Red" FontSize="12" />
 
         </StackPanel>
 

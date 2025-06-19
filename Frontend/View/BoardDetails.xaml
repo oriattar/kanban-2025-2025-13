@@ -123,7 +123,7 @@
             </StackPanel>
         </Button>
 
-        <Label Content="{Binding ErrorMsg}" FontSize="14" Grid.Row="6" Width="600" HorizontalAlignment="Left"  FontWeight="Bold" Margin="5">
+        <Label Content="{Binding ErrorMsg}" FontSize="14" Grid.Row="6" Width="600" HorizontalAlignment="Left"  FontWeight="Bold" Margin="0">
             <Label.Style>
                 <Style TargetType="Label">
                     <Setter Property="Foreground" Value="Red"/>

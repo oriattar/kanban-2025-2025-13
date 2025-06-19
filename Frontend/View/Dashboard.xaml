@@ -149,7 +149,7 @@ Height="30"        HorizontalAlignment="Right"
         Content="Join Board"
         Click="JoinBoard_Click"
         Foreground="Black"/>
-            <Label Grid.Row="1" Name="FeedbackLabel" Height="30" Width="450" HorizontalAlignment="Left"  Margin="0,50,120,0" FontSize="18"
+            <Label Grid.Row="1" Name="FeedbackLabel" Height="30" Width="450" HorizontalAlignment="Left"  Margin="0,50,120,0" FontSize="16"
                      FontWeight="Black" Content="{Binding Path=ErrorMsg, Mode=OneWay}">
                 <Label.Style>
                     <Style TargetType="Label">
