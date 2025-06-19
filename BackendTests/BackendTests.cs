@@ -31,7 +31,7 @@ public class Test
 
       
 
-        Console.WriteLine(g.LoadData());
+        Console.WriteLine(g.DeleteData());
         g.Login("oriattar12@gmail.com", "Aa123456");
         g.Login("oriattar123@gmail.com", "Aa123456");
 
@@ -74,6 +74,7 @@ public class Test
         Console.WriteLine(g.AdvanceTask("oriattar12@gmail.com", "T1", 0, 0));
         Console.WriteLine(g.Register("oriattar1234@gmail.com", "Aa123456"));
         Console.WriteLine(g.GetUserBoards("oriattar1234@gmail.com"));
+        Console.WriteLine(g.DeleteData());
     }
 
     /// <summary>
