@@ -39,7 +39,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             XmlConfigurator.Configure(logRepo, new FileInfo("log4net.config")); //inits the logger
 
 
-            this.Us = new UserServices(uf);
+            this.us = new UserServices(uf);
             this.bs = new BoardServices(bf);
             this.ts = new TaskServices(bf); //creates the services
 
