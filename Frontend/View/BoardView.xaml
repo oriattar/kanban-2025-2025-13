@@ -65,15 +65,24 @@
         </DockPanel>
 
         <UniformGrid Grid.Row="1" Columns="3" HorizontalAlignment="Stretch" Margin="5" >
+            
             <Border BorderBrush="Gray" BorderThickness="1" Margin="5">
-                <StackPanel>
-                    <Grid Margin="5" VerticalAlignment="Center">
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+
+                        <Grid Margin="5" VerticalAlignment="Center" Grid.Column="0">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
 
-                        <StackPanel Grid.Column="0" VerticalAlignment="Center" Margin="0,5,0,0">
+                        <StackPanel Grid.Row="0" VerticalAlignment="Center" Margin="0,5,0,0">
                             <TextBlock Text="Backlog" FontWeight="Bold" />
                             <TextBlock Text="{Binding Backlog_limit, Mode=OneWay}" FontSize="12" Foreground="Gray" HorizontalAlignment="Left" Width="100" Height="15"/>
                         </StackPanel>
@@ -85,9 +94,9 @@
                         
                         
                     </Grid>
-                    <Separator Margin="5,0" Height="2" Background="Gray"/>
+                    <Separator Margin="5,0" Height="2" Background="Gray" Grid.Row="1"/>
 
-                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Height="300">
+                        <ScrollViewer  VerticalScrollBarVisibility="Auto" Grid.Row="2">
 
                         <ItemsControl ItemsSource="{Binding Backlog}">
                         <ItemsControl.ItemTemplate>
@@ -166,7 +175,8 @@
                     </ItemsControl>
                     </ScrollViewer>
 
-                </StackPanel>
+                </Grid>
+
             </Border>
             
             
@@ -174,17 +184,22 @@
             
             
             <Border BorderBrush="Gray" BorderThickness="1" Margin="5">
-  
-                <StackPanel>
-                    <StackPanel Margin="7">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Margin="7" Grid.Row="0">
                         <TextBlock Text="In Progress" FontWeight="Bold"/>
                         <TextBlock Text="{Binding Inprogress_limit , Mode=OneWay}" FontSize="12" Foreground="Gray" HorizontalAlignment="Left" Width="100" Height="15"/>
                     </StackPanel>
 
 
-                    <Separator Margin="5,0" Height="2" Background="Gray"/>
+                    <Separator Margin="5,0" Height="2" Background="Gray" Grid.Row="1"/>
 
-                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Height="300">
+                    <ScrollViewer  VerticalScrollBarVisibility="Auto" Grid.Row="2">
 
                         <ItemsControl ItemsSource="{Binding Inprogress}">
                             <ItemsControl.ItemTemplate>
@@ -231,10 +246,10 @@
                                                                  Foreground="Black"
                                                              VerticalAlignment="Center"
                                                              HorizontalAlignment="Center"/>
-                                                     </Button>
+                                                    </Button>
 
 
-                                                        <Button Width="30" Height="30"
+                                                    <Button Width="30" Height="30"
                                                                         Background="Transparent"
                                                                         BorderBrush="Transparent"
                                                                         BorderThickness="0"
@@ -259,19 +274,24 @@
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
                     </ScrollViewer>
-
-
-                    
-                </StackPanel>
+                </Grid>
             </Border>
+                
             <Border BorderBrush="Gray" BorderThickness="1" Margin="5">
-                <StackPanel>
-                    <StackPanel Margin="7">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+
+                    <StackPanel Margin="7" Grid.Row="0">
                         <TextBlock Text="Done" FontWeight="Bold"/>
                         <TextBlock Text="{Binding Done_limit ,Mode=OneWay}" FontSize="12" Foreground="Gray" HorizontalAlignment="Left" Width="100" Height="15"/>
                     </StackPanel>
-                    <Separator Margin="5,0" Height="2" Background="Gray"/>
-                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Height="300">
+                    <Separator Margin="5,0" Height="2" Background="Gray" Grid.Row="1"/>
+                    <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="2">
 
                         <ItemsControl ItemsSource="{Binding Done}">
                             <ItemsControl.ItemTemplate>
@@ -312,7 +332,7 @@
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
                     </ScrollViewer>
-                </StackPanel>
+                </Grid>
             </Border>
         </UniformGrid>
         <Label Content="{Binding Path=ErrorMsg ,Mode=OneWay}" Grid.Row="2" HorizontalAlignment="Left" Width="500" Margin="5" Height="35" FontSize="12" FontWeight="SemiBold" Foreground="Red"
