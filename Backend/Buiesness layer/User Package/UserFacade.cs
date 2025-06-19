@@ -29,7 +29,6 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
         {
             this.users = new Dictionary<string, UserBL>();
             this.aFacade = aFacade;
-            LoadAllUsers();
         }
 
 

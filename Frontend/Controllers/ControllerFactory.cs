@@ -12,7 +12,7 @@ public class ControllerFactory
     private ControllerFactory()
     {
         ServiceFactory serviceFactory = new ServiceFactory();
-        UserController = new UserController(serviceFactory.Us);
+        UserController = new UserController(serviceFactory.us);
         boardController = new BoardController(serviceFactory.bs);
         taskController = new TaskController(serviceFactory.ts); //constructs the controllers using the services.
 

@@ -54,9 +54,9 @@ namespace UnitTests
             this._boardFacade.AddUserAsMember(testUser2.Email, 0);
             this._boardFacade.CreateTask(testUser2.Email, "Test1", "A", "", DateTime.MaxValue);
             this._boardFacade.AssignTaskToMember(testUser2.Email, "Test1", 0, 1, testUser2.Email);
-            this._boardFacade.EditTask(testUser2.Email, "Test1", 0, 1, DateTime.Now, null, null);
-            this._boardFacade.EditTask(testUser2.Email, "Test1", 0, 1, DateTime.MinValue, "AA", null);
-            this._boardFacade.EditTask(testUser2.Email, "Test1", 0, 1, DateTime.MinValue, null, "Desc");
+            this._boardFacade.EditTask(testUser2.Email, "Test1", 0, 1, DateTime.Now, null, null,BoardFacade.DUEDATE);
+            this._boardFacade.EditTask(testUser2.Email, "Test1", 0, 1, DateTime.MinValue, "AA", null,BoardFacade.TITLE);
+            this._boardFacade.EditTask(testUser2.Email, "Test1", 0, 1, DateTime.MinValue, null, "Desc", BoardFacade.DESCRIPTION);
             this._boardFacade.CreateTask(testUser.Email, "Test1", "B", "", DateTime.MaxValue);
             this._boardFacade.TransferOwnership(testUser.Email, testUser2.Email, "Test1");
             this._boardFacade.TransferOwnership(testUser2.Email, testUser.Email, "Test1");

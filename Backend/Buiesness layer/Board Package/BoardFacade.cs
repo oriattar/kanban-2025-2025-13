@@ -23,7 +23,11 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
 
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        
+        public static readonly int TITLE = 0;
+        public static readonly int DESCRIPTION = 1;
+        public static readonly int DUEDATE = 2;
+
+
 
         /// <summary>
         /// A constructor to the boardFacade, inits the dict
@@ -36,7 +40,6 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
             this.aFacade = aFacade;
             this.taskIdGenerator = SystemController.DEFULT_GENERATOR;
             this.boardIdGenerator = SystemController.DEFULT_GENERATOR;
-            LoadAllBoards();
         }
 
         /// <summary>
@@ -281,7 +284,7 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
         /// <param name="title"></param>
         /// <param name="desc"></param>
         /// <exception cref="Exception"></exception>
-        public void EditTask(string email, string boardName, int col, int taskId, DateTime dueDate, string title, string desc) // needs to be tested when tasks are implemented
+        public void EditTask(string email, string boardName, int col, int taskId, DateTime dueDate, string title, string desc,int property) // needs to be tested when tasks are implemented
         {
             if (!this.aFacade.IsLoggedIn(email))
             {
@@ -303,7 +306,12 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
                 throw new Exception("A task that is not done can only be changed by its asignee");
             }
 
-            targetBoard.EditTask(dueDate, title, desc, col, taskId);
+            if (property == TITLE)
+                targetBoard.EditTitle(col, taskId, title);
+            else if(property == DESCRIPTION)
+                targetBoard.EditDescription(col, taskId, desc);
+            else if (property == DUEDATE)
+                targetBoard.EditDueDate(col, taskId, dueDate);
         }
 
         /// <summary>
