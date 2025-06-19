@@ -74,6 +74,19 @@ namespace Frontend.View
 
         }
 
+
+        private void openBoard_Click(object sender, MouseButtonEventArgs e)
+        {
+            FrameworkElement clickedElement = sender as FrameworkElement;
+
+            if (clickedElement != null && clickedElement.DataContext is BoardModel b)
+            {
+                BoardView bWindow = new BoardView(this.dashboardVM.User, b);
+                bWindow.Show();
+                this.Close();
+            }
+        }
+
         /// <summary>
         /// Operates the details button of board from the list.
         /// </summary>
@@ -81,12 +94,13 @@ namespace Frontend.View
         /// <param name="e"></param>
         private void Details_Click(object sender, RoutedEventArgs e)
         {
-            Button button = (Button)sender;
-            BoardModel b = (BoardModel)(button.DataContext); // casting to the right object
-
-            BoardView bWindow = new BoardView(this.dashboardVM.User, b); //creating the board window
-            bWindow.Show();
-            this.Close();
+            Button button = sender as Button;
+            if (button != null && button.DataContext is BoardModel board)
+            {
+                BoardDetails details = new BoardDetails(this.dashboardVM.User, board,BoardDetails.DASHBOARD);
+                details.Show();
+                this.Close();
+            }
         }
 
         /// <summary>

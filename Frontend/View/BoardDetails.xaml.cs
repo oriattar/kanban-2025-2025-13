@@ -21,19 +21,24 @@ namespace Frontend.View
     /// </summary>
     public partial class BoardDetails : Window
     {
+        public static readonly int DASHBOARD = 0;
+        public static readonly int BOARDVIEW = 1;
+
 
         private BoardDetailsVM bdvm;
+        private int source;
 
         /// <summary>
         /// Constructs the board details window
         /// </summary>
         /// <param name="user"></param>
         /// <param name="board"></param>
-        public BoardDetails(UserModel user,BoardModel board)
+        public BoardDetails(UserModel user,BoardModel board, int source)
         {
             InitializeComponent();
             this.bdvm = new BoardDetailsVM(user,board);
             this.DataContext = bdvm;
+            this.source = source;
         }
 
         /// <summary>
@@ -41,11 +46,20 @@ namespace Frontend.View
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Back_ToBoardView(object sender, EventArgs e)
+        private void Back_Button(object sender, RoutedEventArgs e)
         {
-            BoardView boardView= new BoardView(this.bdvm.User,this.bdvm.Board);
-            boardView.Show();
-            this.Close();
+            if (source == BOARDVIEW)
+            {
+                BoardView boardView = new BoardView(this.bdvm.User, this.bdvm.Board);
+                boardView.Show();
+                this.Close();
+            }
+            else
+            {
+                Dashboard dashboard = new Dashboard(bdvm.User);
+                dashboard.Show();
+                this.Close();
+            }
         }
 
         /// <summary>

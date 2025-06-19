@@ -33,6 +33,10 @@ namespace Frontend.View
 
         private void Login_Click(object sender, RoutedEventArgs e)
         {
+            string password = PasswordInput.Password;
+            loginVM.Password = password;
+
+
             UserModel? ret = loginVM.Login();
             if (ret != null)
             {
@@ -47,6 +51,10 @@ namespace Frontend.View
 
         private void Register_Click(object sender, RoutedEventArgs e)
         {
+            string password = PasswordInput.Password;
+            loginVM.Password = password;
+
+
             UserModel? ret = loginVM.Register();
     
             if (ret != null)

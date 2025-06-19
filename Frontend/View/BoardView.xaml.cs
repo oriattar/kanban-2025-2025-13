@@ -82,7 +82,7 @@ namespace Frontend.View
         /// <param name="e"></param>
         private void Details_click(object sender, RoutedEventArgs e)
         {
-            BoardDetails details = new BoardDetails(this.bvm.User,this.bvm.Board);
+            BoardDetails details = new BoardDetails(this.bvm.User,this.bvm.Board, BoardDetails.BOARDVIEW);
             details.Show();
             this.Close();
         }

@@ -7,18 +7,20 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Frontend.View"
         mc:Ignorable="d"
-        Title="BoardDetails" Height="505"
-        Width="720">
+        Title="BoardDetails"  Height="688" Width="1025">
     <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="4*"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
 
-        <Button DockPanel.Dock="Left" Background="Transparent" BorderThickness="0" Padding="0" Margin="0,0,10,0" Click="Back_ToBoardView" HorizontalAlignment="Left">
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Center">
+
+            <Button Background="Transparent" BorderThickness="0" Padding="0" Click="Back_Button" HorizontalAlignment="Left" Width="25">
             <materialDesign:PackIcon Kind="Backburger"
                      Height="25"
                      Width="25"
@@ -29,20 +31,20 @@
         <TextBlock Text="{Binding Path=BoardName}"
                    FontSize="25"
                    FontWeight="Bold"
-                   HorizontalAlignment="Center"
-                   Margin="10"
-                   Grid.Row="0"/>
+                   Margin="20,10,0,10"
+                   Grid.Row="0" Width="600"/>
+        </StackPanel>
 
-        <Border Grid.Row="1" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Padding="10" Height="200">
+        <Border Grid.Row="1" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Height="400" Padding="10" Margin="0,4,0,2" Grid.RowSpan="2">
             <StackPanel>
-                <TextBlock Text="Board Members" FontSize="17" FontWeight="Bold" Margin="0,0,0,10"/>
+                <TextBlock Text="Board Members" FontSize="20" FontWeight="Bold" Margin="0,0,0,10"/>
                 <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
-                    <TextBlock Text="{Binding Path=BoardOwner,Mode=OneWay}" FontWeight="Bold"/>
-                    <TextBlock Text="  (Manager)" Foreground="Gray" Margin="5,0,0,0"/>
+                    <TextBlock Text="{Binding Path=BoardOwner,Mode=OneWay}" FontWeight="Bold" FontSize="16"/>
+                    <TextBlock Text="  (Manager)" Foreground="Gray" Margin="5,0,0,0" FontSize="16"/>
                 </StackPanel>
                 <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Height="120">
                     <StackPanel>
-                        
+
 
                         <ItemsControl  ItemsSource="{Binding Path=ActiveUsers}">
                             <ItemsControl.ItemsPanel>
@@ -63,7 +65,7 @@
             </StackPanel>
         </Border>
 
-        <StackPanel Grid.Row="2" HorizontalAlignment="Center" Margin="10">
+        <StackPanel Grid.Row="3" HorizontalAlignment="Center" Margin="0,10,0,10" Width="460">
 
             <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
                 <TextBox x:Name="EmailTextBox" Width="300" Height="25" Margin="0,0,20,0"
@@ -108,9 +110,8 @@
                        Text="Invalid username"/>
         </StackPanel>
 
-        <Button Grid.Row="3"
-                Margin="0,1,0,1"
-                Height="30"
+        <Button Grid.Row="4"
+                Margin="0,10,0,10"
                 HorizontalAlignment="Center"
                 Width="250"
                 Background="LightGray"
@@ -122,7 +123,7 @@
             </StackPanel>
         </Button>
 
-        <Label Content="{Binding ErrorMsg}" FontSize="14" Grid.Row="4" Height="30" Width="600" HorizontalAlignment="Left" Margin="0,15,0,0" FontWeight="Bold">
+        <Label Content="{Binding ErrorMsg}" FontSize="14" Grid.Row="6" Width="600" HorizontalAlignment="Left"  FontWeight="Bold" Margin="5">
             <Label.Style>
                 <Style TargetType="Label">
                     <Setter Property="Foreground" Value="Red"/>
