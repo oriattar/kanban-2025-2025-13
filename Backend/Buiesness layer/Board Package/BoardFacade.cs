@@ -40,6 +40,7 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
             this.aFacade = aFacade;
             this.taskIdGenerator = SystemController.DEFULT_GENERATOR;
             this.boardIdGenerator = SystemController.DEFULT_GENERATOR;
+            this.LoadAllBoards();
         }
 
         /// <summary>
