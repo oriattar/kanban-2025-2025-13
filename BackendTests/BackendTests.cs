@@ -49,9 +49,9 @@ public class Test
         Console.WriteLine(g.LimitColumn("oriattar12@gmail.com", "T1", 1, 10));
         Console.WriteLine(g.AddTask("oriattar12@gmail.com","T1","A","",DateTime.MaxValue));
         Console.WriteLine(g.AssignTask("oriattar12@gmail.com", "T1", 0, 0, "oriattar12@gmail.com"));
-        Console.WriteLine(g.UpdateTaskDescription("oriattar12@gmail.com", "T1", 0, 0, "desc"));
+        Console.WriteLine(g.UpdateTaskDescription("oriattar12@gmail.com", "T1", 0, 0, "                                                                                                                                                                                                                                                                                                                                                    "));
         Console.WriteLine(g.UpdateTaskDueDate("oriattar12@gmail.com", "T1", 0, 0, DateTime.Now));
-        Console.WriteLine(g.UpdateTaskTitle("oriattar12@gmail.com", "T1", 0, 0, "Title"));
+        Console.WriteLine(g.UpdateTaskTitle("oriattar12@gmail.com", "T1", 0, 0, null));
         Console.WriteLine(g.GetUserBoards("oriattar12@gmail.com"));
         Console.WriteLine(g.Register("oriattar123@gmail.com", "Aa123456"));
         Console.WriteLine(g.JoinBoard("oriattar123@gmail.com",0));
@@ -74,6 +74,8 @@ public class Test
         Console.WriteLine(g.AdvanceTask("oriattar12@gmail.com", "T1", 0, 0));
         Console.WriteLine(g.Register("oriattar1234@gmail.com", "Aa123456"));
         Console.WriteLine(g.GetUserBoards("oriattar1234@gmail.com"));
+        
+
         Console.WriteLine(g.DeleteData());
     }
 

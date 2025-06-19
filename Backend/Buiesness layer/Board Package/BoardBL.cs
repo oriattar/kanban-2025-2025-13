@@ -6,8 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 
 using IntroSE.Kanban.Backend.DataAccessLayer;
-
-
 using log4net;
 
 
@@ -182,19 +180,13 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
         }
 
         /// <summary>
-        /// A method that divides to cases and updates the task accordingly
-        /// If deadline is minValue it means we are not editing tasksDeadline
-        /// if title is null we are not editing title
-        /// if desc is null we are not editing description
-        /// 
-        /// input valitidy happends in TaskBL->Update
+        /// Methods for editing task properties.
         /// </summary>
-        /// <param name="deadline"></param>
+        /// <param name="col"></param>
+        /// <param name="id"></param>
         /// <param name="title"></param>
-        /// <param name="descripition"></param>
-        /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
-        public void EditTask(DateTime deadline, string title, string descripition,int col ,int taskId)
+        /// <exception cref="Exception"></exception>
+        public void EditTitle(int col, int id, string title)
         {
             if (col < BACKLOG || col >= DONE)
             {
@@ -202,14 +194,35 @@ namespace IntroSE.Kanban.Backend.Buiesness_layer
                 throw new Exception("Cant edit a with the given column." + col);
             }
 
-            TaskBL toEdit = this.columns[col].FindTask(taskId);
-            if (title != null)
-                toEdit.EditTitle(title); 
-            else if(deadline != DateTime.MinValue)
-                toEdit.EditDueDate(deadline);
-            else
-                toEdit.EditDescription(descripition);
+            TaskBL toEdit = this.columns[col].FindTask(id);
+            toEdit.EditTitle(title);
         }
+
+        public void EditDescription(int col, int id, string desc)
+        {
+            if (col < BACKLOG || col >= DONE)
+            {
+                Log.Warn("Cant edit a with the given column. - BOARDBL");
+                throw new Exception("Cant edit a with the given column." + col);
+            }
+
+            TaskBL toEdit = this.columns[col].FindTask(id);
+            toEdit.EditDescription(desc);
+        }
+
+        public void EditDueDate(int col, int id, DateTime dueDate)
+        {
+            if (col < BACKLOG || col >= DONE)
+            {
+                Log.Warn("Cant edit a with the given column. - BOARDBL");
+                throw new Exception("Cant edit a with the given column." + col);
+            }
+
+            TaskBL toEdit = this.columns[col].FindTask(id);
+            toEdit.EditDueDate(dueDate);
+        }
+
+
 
         /// <summary>
         /// Returns the in the task list of the inProgress column, where the tasks assigned to the input email.

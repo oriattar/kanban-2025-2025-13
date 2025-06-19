@@ -94,7 +94,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             Response<string> response = null;
             try
             {
-                this.bFacade.EditTask(email, boardName, col, taskId, DateTime.MinValue, title, null);
+                this.bFacade.EditTask(email, boardName, col, taskId, DateTime.MinValue, title, null,BoardFacade.TITLE);
                 response = new Response<string>(null, null);
             }
             catch (Exception ex)
@@ -119,7 +119,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             Response<string> response = null;
             try
             {   
-                this.bFacade.EditTask(email, boardName, col, taskId, DateTime.MinValue, null,desc);
+                this.bFacade.EditTask(email, boardName, col, taskId, DateTime.MinValue, null,desc,BoardFacade.DESCRIPTION);
                 response = new Response<string>(null, null);
             }
             catch (Exception ex)
@@ -144,7 +144,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             Response<string> response = null;
             try
             {
-                this.bFacade.EditTask(email, boardName, col, taskId, deadline, null, null);
+                this.bFacade.EditTask(email, boardName, col, taskId, deadline, null, null, BoardFacade.DUEDATE);
                 response = new Response<string>(null, null);
             }
             catch (Exception ex)
