@@ -97,7 +97,7 @@ namespace Frontend.View
             Button button = sender as Button;
             if (button != null && button.DataContext is BoardModel board)
             {
-                BoardDetails details = new BoardDetails(this.dashboardVM.User, board);
+                BoardDetails details = new BoardDetails(this.dashboardVM.User, board,BoardDetails.DASHBOARD);
                 details.Show();
                 this.Close();
             }

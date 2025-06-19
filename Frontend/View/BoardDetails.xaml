@@ -20,7 +20,7 @@
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Center">
 
-            <Button Background="Transparent" BorderThickness="0" Padding="0" Click="Back_ToBoardView" HorizontalAlignment="Left" Width="25">
+            <Button Background="Transparent" BorderThickness="0" Padding="0" Click="Back_Button" HorizontalAlignment="Left" Width="25">
             <materialDesign:PackIcon Kind="Backburger"
                      Height="25"
                      Width="25"
